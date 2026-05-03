@@ -1,0 +1,151 @@
+\section{Related Works}
+Here, we review two lines of work closely related to long-horizon scientific discovery: agent-centric benchmarks and pipelines for scientific reasoning, and end-to-end scientific discovery systems.
+
+
+{\noindent\bf Agent-Centric Benchmarks and Pipelines.} Recent agent-centric approaches focus on improving and evaluating LLM-based scientific reasoning and searching. For example, self-evolution frameworks~\citep{mlagentbench, lin2025se, aira} introduce evolution operators and flexible benchmarks to refine agent behaviors across domains. These methods have shown strong potential in improving reasoning performance but primarily rely on static or outcome-based evaluation protocols and provide limited insights into the dynamics of scientific exploration over time, such as how agents balance exploration and exploitation over long horizons. HeuriGym~\citep{chen2025heurigym} further advances this line by introducing heuristic-guided optimization during code execution and iterative refinement. It proposes metrics such as solution quality and yield quality to complement Pass@K~\cite{chen2021evaluating}, enabling a more holistic assessment of reasoning performance. However, similar to prior work, it remains centered on task-level evaluation and lacks mechanisms to model the temporal evolution of discovery processes. More recently, \cite{liu2026evox} proposes a new evolution strategy to ensure prior solutions are selected and varied to generate new candidates. Moreover, these frameworks do not provide system-level support for scalable scientific workflows, such as experiment management, hyperparameter tuning, job scheduling, and failure recovery, which are critical for real-world discovery settings. 
+
+{\noindent\bf Scientific Discovery Systems}. 
+Complementary to improving LLMs' reasoning capacities, , recent works aim to build end-to-end systems for automated scientific discovery. AI Scientist~\citep{lu2024ai, yamada2025ai, lu2026towards} introduces an agentic framework that automates key stages of the research pipeline, including hypothesis generation, experimental design, and validation, demonstrating the potential of LLMs for closed-loop scientific reasoning. Building on this paradigm, NovelSeek~\citep{novelseek} proposes a unified multi-agent system that further integrates these stages into a closed-loop pipeline, improving efficiency and coordination. Despite these advances, existing systems still face several limitations. First, they often pursue fully autonomous scientific discovery, which can lead to uncontrolled exploration and reduced reliability. In practice, scientific discovery is inherently iterative and benefits from structured human guidance; however, current systems provide limited support for effective human-in-the-loop collaboration, such as incorporating domain expertise in hypothesis refinement or steering exploration.
+Second, while these systems emphasize end-to-end pipeline automation, they lack principled mechanisms for managing long-horizon exploration dynamics, including maintaining diversity, allocating computational resources, and adapting strategies over time. Third, they provide limited support for scalable and reproducible research infrastructure, particularly in large-scale experimentation and parallel training settings.
+
+Overall, prior work either focuses on enhancing agent-centric reasoning through benchmark-driven pipelines or building end-to-end discovery systems. However, they lack a unified framework that captures the long-horizon, trajectory-level nature of scientific discovery, while simultaneously supporting process-aware evaluation and system-level scalability.  To better contextualize these gaps, Table~\ref{tab:functions_selfai} provides a systematic comparison of SelfAI and existing frameworks across three key dimensions: human-AI collaboration, long-horizon reasoning, and system-level infrastructure. As shown in the table, prior approaches either emphasize autonomous pipelines with limited controllability or focus on isolated reasoning benchmarks without supporting real-world experimentation. In contrast, SelfAI uniquely integrates human-in-the-loop interaction, trajectory-level modeling of scientific processes, and scalable experimentation capabilities. This unified design enables more controllable, adaptive, and practically deployable scientific discovery workflows.
+
+% 
+
+% combines LLMs with Monte Carlo Tree Search (MCTS)~\cite{swiechowski2023monte} to design domain-specific heuristics, but focuses narrowly on search strategy construction without addressing end-to-end training pipelines. RAP~\citep{RAP} leverages structured prompting to induce goal-directed behaviors, though it is constrained by static designs and lacks adaptive feedback loops.
+
+% Overall, these limitations can be broadly categorized into three aspects: over-reliance on inherent LLM reasoning, rigid evaluation and feedback mechanisms, and persistent need for human-in-the-loop intervention.
+
+% Overall, these limitations fall into three categories: (1) over-reliance on intrinsic LLM reasoning, (2) rigid evaluation and feedback mechanisms, and (3) continued dependence on human intervention. Compared to these approaches, our SelfAI framework (Table~\ref{tab:functions_comparison}) addresses these gaps. First, prior systems often treat LLMs as central decision-makers, increasing risks of bias, misalignment, and security vulnerabilities~\citep{zeng2024autodefense,hu2024gradient,zhang2025jbshield,wei2023jailbroken}. Second, structured critique-based refinement, while improving logical consistency, is insufficient for optimizing large-scale training, automated tuning, or robust failure recovery. Third, the need for manual specification of agent roles, reasoning processes, and optimization strategies limits scalability and efficiency~\citep{park2023generative}.
+
+
+
+% \begin{table*}[bhtp]
+% \centering
+% \setlength{\tabcolsep}{4.5pt}
+% \renewcommand\arraystretch{1.2}
+% \caption{Comparison of SelfAI with related AI research frameworks and benchmarks across system-level, agent-specific, and task-specific capabilities.}
+% \resizebox{1.0\textwidth}{!}{
+% \begin{tabular}{l|cccccccc}
+% \toprule
+% Functions & Ours & Code LLaMA~\cite{kochnev2025optuna} & MLGym~\cite{MLgym} & AI Scientist~\cite{ai_co_scientist} & AIRA~\cite{aira} & MLAgentBench~\cite{mlagentbench} & Optuna~\cite{optuna} \\
+% \midrule
+% Interactive Research & \cmark & \xmark & \cmark & \xmark & \xmark & \cmark & \cmark \\ % Human-in-the-loop Collaboration
+% Flexible Artifacts & \cmark & \xmark & \cmark & \cmark & \xmark & \cmark & \xmark \\
+% Privacy and Security & \cmark & \xmark & \xmark & \xmark & \xmark & \xmark & \cmark \\
+% \midrule
+% Trajectory Analysis & \cmark & \xmark & \xmark & \xmark & \xmark & \xmark & \xmark \\
+% Hypothesis Generation & \cmark & \xmark & \cmark & \cmark & \cmark & \xmark & \xmark \\
+% Strategic Planning & \cmark & \xmark & \cmark & \xmark & \xmark & \xmark & \xmark \\
+% Causal Inference & \cmark & \xmark & \cmark & \xmark & \xmark & \xmark & \xmark \\
+% Adaptive Learning & \cmark & \cmark & \cmark & \xmark & \xmark & \xmark & \xmark \\
+% \midrule
+% Job Scheduling & \cmark & \xmark & \cmark & \xmark & \xmark & \xmark & \cmark \\
+% Checkpoint Management & \cmark & \xmark & \xmark & \xmark & \xmark & \xmark & \xmark \\
+% Experiment Tracking & \cmark & \xmark & \xmark & \xmark & \xmark & \xmark & \cmark(*) \\
+% Zero-Code Parallelization & \cmark & \xmark & \xmark & \xmark & \xmark & \xmark & \xmark \\
+% \midrule
+% Hypothesis Optimization& \cmark & \cmark(*) & \xmark & \xmark & \xmark & \xmark & \cmark \\
+% Self-Evaluation & \cmark & \xmark & \xmark & \xmark & \xmark & \xmark & \xmark \\
+% Benchmark Suite & \cmark & \xmark & \xmark & \xmark & \xmark & \cmark & \xmark \\
+% \bottomrule
+% \end{tabular}}
+% \begin{tablenotes}
+% \small
+% \item Note: The comparison is structured in four blocks: (1) System-level functions, (2) Cognitive functions primarily handled by the Cognitive Agent, (3) Execution functions managed by the Experiment Manager, and (4) Performance in optimization tasks. \cmark(*) denotes basic support.
+% \end{tablenotes}
+% \label{tab:functions_selfai}
+% \end{table*}
+
+
+% \begin{table*}[bhtp]
+% \centering
+% \setlength{\tabcolsep}{3.8pt}  % ↓ 比原来更紧凑
+% \renewcommand\arraystretch{1.15}
+% \caption{Comparison of SelfAI with representative AI research frameworks.}
+% \resizebox{0.98\textwidth}{!}{
+% \begin{tabular}{l|cccccccc}
+% \toprule
+% \textbf{Capabilities} & \textbf{Ours} & Code LLaMA & MLGym & AI Co-Scientist & AIRA & MLAgentBench & Optuna \\
+% \midrule
+% \multicolumn{9}{c}{\textit{Human--AI Collaboration}} \\
+% \midrule
+% Interactive Research & \cmark & \xmark & \cmark & \xmark & \xmark & \cmark & \cmark \\
+% Flexible Artifacts & \cmark & \xmark & \cmark & \cmark & \xmark & \cmark & \xmark \\
+% Privacy \& Security & \cmark & \xmark & \xmark & \xmark & \xmark & \xmark & \cmark \\
+% \midrule
+% \multicolumn{9}{c}{\textit{Long-Horizon Reasoning}} \\
+% \midrule
+% Trajectory Analysis & \cmark & \xmark & \xmark & \xmark & \xmark & \xmark & \xmark \\
+% Hypothesis Gen./Refine & \cmark & \xmark & \cmark & \cmark & \cmark & \xmark & \xmark \\
+% Strategic Planning & \cmark & \xmark & \cmark & \xmark & \xmark & \xmark & \xmark \\
+% Causal Reasoning & \cmark & \xmark & \cmark & \xmark & \xmark & \xmark & \xmark \\
+% Adaptive Learning & \cmark & \cmark & \cmark & \xmark & \xmark & \xmark & \xmark \\
+% Self-Evaluation & \cmark & \xmark & \xmark & \xmark & \xmark & \xmark & \xmark \\
+% \midrule
+% \multicolumn{9}{c}{\textit{Scalable Infrastructure}} \\
+% \midrule
+% Job Scheduling & \cmark & \xmark & \cmark & \xmark & \xmark & \xmark & \cmark \\
+% Checkpointing & \cmark & \xmark & \xmark & \xmark & \xmark & \xmark & \xmark \\
+% Experiment Tracking & \cmark & \xmark & \xmark & \xmark & \xmark & \xmark & \cmark(*) \\
+% Parallelization (No-Code) & \cmark & \xmark & \xmark & \xmark & \xmark & \xmark & \xmark \\
+% \midrule
+% \multicolumn{9}{c}{\textit{Optimization}} \\
+% \midrule
+% Hypothesis Optimization & \cmark & \cmark(*) & \xmark & \xmark & \xmark & \xmark & \cmark \\
+% Benchmark Suite & \cmark & \xmark & \xmark & \xmark & \xmark & \cmark & \xmark \\
+% \bottomrule
+% \end{tabular}}
+% \begin{tablenotes}
+% \small
+% \item \textbf{Note:} \cmark(*) denotes partial support.
+% \end{tablenotes}
+% \label{tab:functions_selfai}
+% \end{table*}
+
+
+
+\begin{table*}[bhtp]
+\centering
+\setlength{\tabcolsep}{4.5pt}
+\renewcommand\arraystretch{1.2}
+\caption{Comparison of SelfAI with related AI research frameworks and benchmarks across system-level, agent-specific, and task-specific capabilities.}
+\resizebox{0.98\textwidth}{!}{
+\begin{tabular}{l|cccccccc}
+\toprule
+\textbf{Capabilities} & \textbf{Ours} & Code LLaMA & MLGym & AI Scientist & AIRA & MLAgentBench & Optuna \\
+\midrule
+\multicolumn{8}{c}{\textit{Human-AI Collaboration}} \\
+\midrule
+Interactive Research & \cmark & \xmark & \cmark & \xmark & \xmark & \cmark & \cmark \\
+Flexible Artifacts & \cmark & \xmark & \cmark & \cmark & \xmark & \cmark & \xmark \\
+Privacy \& Security & \cmark & \xmark & \xmark & \xmark & \xmark & \xmark & \cmark \\
+\midrule
+\multicolumn{8}{c}{\textit{Long-Horizon Reasoning}} \\
+\midrule
+Trajectory Analysis & \cmark & \xmark & \xmark & \xmark & \xmark & \xmark & \xmark \\
+Hypothesis Generation & \cmark & \xmark & \cmark & \cmark & \cmark & \xmark & \xmark \\
+Strategic Planning & \cmark & \xmark & \cmark & \xmark & \xmark & \xmark & \xmark \\
+Causal Reasoning & \cmark & \xmark & \cmark & \xmark & \xmark & \xmark & \xmark \\
+In-context Learning & \cmark & \cmark & \cmark & \xmark & \xmark & \xmark & \xmark \\
+Self-Evaluation & \cmark & \xmark & \xmark & \xmark & \xmark & \xmark & \xmark \\
+\midrule
+\multicolumn{8}{c}{\textit{Scalable Infrastructure}} \\
+\midrule
+Job Scheduling & \cmark & \xmark & \cmark & \xmark & \xmark & \xmark & \cmark \\
+Checkpointing & \cmark & \xmark & \xmark & \xmark & \xmark & \xmark & \xmark \\
+Experiment Tracking & \cmark & \xmark & \xmark & \xmark & \xmark & \xmark & \cmark(*) \\
+Parallelization (No-Code) & \cmark & \xmark & \xmark & \xmark & \xmark & \xmark & \xmark \\
+\midrule
+\multicolumn{8}{c}{\textit{Optimization}} \\
+\midrule
+Hypothesis Optimization & \cmark & \cmark(*) & \xmark & \cmark & \xmark & \xmark & \cmark \\
+Benchmark Suite & \cmark & \xmark & \xmark & \xmark & \xmark & \cmark & \xmark \\
+\bottomrule
+\end{tabular}}
+\begin{tablenotes}
+\small
+\item \textbf{Note:} \cmark(*) denotes partial or basic support. Compared to prior work, SelfAI uniquely integrates human-in-the-loop collaboration, long-horizon trajectory modeling, and scalable infrastructure within a unified framework.
+\end{tablenotes}
+\label{tab:functions_selfai}
+\end{table*}

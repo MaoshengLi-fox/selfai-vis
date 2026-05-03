@@ -1,0 +1,437 @@
+\section{Supplementary Tables}
+\label{sec:supp_tables}
+\begin{table}[h]
+    \centering
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand\arraystretch{1.5}
+    \caption{Performance comparison of different solvers for the Boston housing prices based on the Random Forest Regressor.}
+    \begin{tabular}{l|cccccc}
+    \toprule
+    Solver           & Score$\uparrow$ & $\text{AUP}_D\downarrow$ & Best-Time$\downarrow$ & Stop-Time$\downarrow$ & Best Result$\uparrow$ & Rank \\
+    \midrule
+    GS & 0.4969 & 1.0000 & 0.0062 & 1.0000 & 0.841 & 9 \\
+    BS & 0.4654 & 0.9745 & 0.0755 & 0.9937 & 0.841 & 11 \\
+    Llama3.3-70b & 0.3831 & 0.1330 & 1.0000 & 0.1509 & 0.837 & 13 \\
+    Qwen2.5-7b & 0.7893 & 0.3463 & 0.0943 & 0.3270 & 0.841 & 5 \\
+    Qwen2.5-14b & 0.7013 & 0.6108 & 0.0063 & 0.5912 & 0.841 & 7 \\
+    Qwen2.5-32b & 0.6981 & 0.4081 & 0.2579 & 0.3459 & 0.841 & 8 \\
+    Qwen2.5-72b & 0.7862 & 0.5250 & 0.0126 & 0.4151 & 0.841 & 6 \\
+    DeepSeek-R1-7b & 0.9057 & 0.0910 & 0.0881 & 0.1006 & 0.841 & 3 \\
+    DeepSeek-R1-14b & 0.8522 & 0.3401 & 0.0063 & 0.2893 & 0.841 & 4 \\
+    DeepSeek-R1-32b & 0.9403 & 0.1618 & 0.0063 & 0.1132 & 0.841 & 2 \\
+    DeepSeek-R1-70b & 0.3948 & 0.0215 & 1.0000 & 0.0189 & 0.833 & 12 \\
+    GPT4-o3-mini & 0.9811 & 0.0062 & 0.0189 & 0.0189 & 0.841 & 1 \\
+    GPT4-o3 & 0.4694 & 0.0560 & 1.0000 & 0.0377 & 0.840 & 10 \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:Boston}
+\end{table}
+
+
+\begin{table}[h]
+    \centering
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand\arraystretch{1.5}
+    \caption{Performance comparison of different solvers for the sentiment analysis task based on the LSTM model.}
+    \begin{tabular}{l|cccccc}
+    \toprule
+    Solver           & Score$\uparrow$ & $\text{AUP}_D\downarrow$ & Best-Time$\downarrow$ & Stop-Time$\downarrow$ & Best Result$\uparrow$ & Rank \\
+    \midrule
+    GS & 0.4750 & 1.0000 & 0.0500 & 1.0000 & 0.96 & 2 \\
+    BS & 0.0294 & 0.8817 & 0.9412 & 1.0000 & 0.96 & 13 \\
+    Llama3.3-70b & 0.3824 & 0.8817 & 0.2353 & 1.0000 & 0.96 & 4 \\
+    Qwen2.5-7b & 0.1830 & 0.2857 & 1.0000 & 0.5294 & 0.94 & 12 \\
+    Qwen2.5-14b & 0.3529 & 0.8318 & 0.4118 & 0.8824 & 0.96 & 7 \\
+    Qwen2.5-32b & 0.3529 & 0.6383 & 0.5882 & 0.7059 & 0.96 & 8 \\
+    Qwen2.5-72b & 0.4412 & 0.8220 & 0.2353 & 0.8824 & 0.96 & 3 \\
+    DeepSeek-R1-7b & 0.2157 & 0.1419 & 1.0000 & 0.3529 & 0.93 & 11 \\
+    DeepSeek-R1-14b & 0.2353 & 0.8817 & 0.5294 & 1.0000 & 0.96 & 10 \\
+    DeepSeek-R1-32b & 0.3824 & 0.8817 & 0.2353 & 1.0000 & 0.96 & 4 \\
+    DeepSeek-R1-70b & 0.3824 & 0.8817 & 0.2353 & 1.0000 & 0.96 & 4 \\
+    GPT4-o3-mini & 0.8824 & 0.1494 & 0.0588 & 0.1765 & 0.96 & 1 \\
+    GPT4-o3 & 0.2745 & 0.0469 & 1.0000 & 0.1765 & 0.93 & 9 \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:LSTM}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand\arraystretch{1.5}
+    \caption{Performance comparison of different solvers for scientific computing fields, where we evaluate the tensor wheel decomposition method on the multi-spectral image completion dataset.}
+    \begin{tabular}{l|cccccc}
+    \toprule
+    Solver           & Score$\uparrow$ & $\text{AUP}_D\downarrow$ & Best-Time$\downarrow$ & Stop-Time$\downarrow$ & Best Result$\uparrow$ & Rank \\
+    \midrule
+    GS & 0.2656 & 1.0000 & 0.4688 & 1.0000 & 41.50 & 11 \\
+    BS & 0.1066 & 0.9638 & 0.7869 & 1.0000 & 41.50 & 13 \\
+    Llama3.3-70b & 0.4016 & 0.8979 & 0.2623 & 0.9344 & 41.50 & 8 \\
+    Qwen2.5-7b & 0.7377 & 0.2904 & 0.2295 & 0.2951 & 41.50 & 1 \\
+    Qwen2.5-14b & 0.5410 & 0.2779 & 0.4262 & 0.4918 & 41.50 & 2 \\
+    Qwen2.5-32b & 0.2869 & 0.9638 & 0.4262 & 1.0000 & 41.50 & 10 \\
+    Qwen2.5-72b & 0.1803 & 0.9638 & 0.6393 & 1.0000 & 41.50 & 12 \\
+    DeepSeek-R1-7b & 0.3216 & 0.3009 & 1.0000 & 0.3443 & 41.21 & 9 \\
+    DeepSeek-R1-14b & 0.4426 & 0.8687 & 0.2295 & 0.8852 & 41.50 & 4 \\
+    DeepSeek-R1-32b & 0.4426 & 0.6645 & 0.4426 & 0.6721 & 41.50 & 4 \\
+    DeepSeek-R1-70b & 0.4136 & 0.1477 & 1.0000 & 0.1639 & 41.34 & 7 \\
+    GPT4-o3-mini & 0.5410 & 0.2623 & 0.4590 & 0.4590 & 41.50 & 3 \\
+    GPT4-o3 & 0.4217 & 0.0539 & 1.0000 & 0.1475 & 41.34 & 6 \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:TW}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand\arraystretch{1.5} % TV
+    \caption{Performance comparison of different solvers for the image segmentation task based on the SIREN model.}
+    \begin{tabular}{l|cccccc}
+    \toprule
+    Solver           & Score$\uparrow$ & $\text{AUP}_D\downarrow$ & Best-Time$\downarrow$ & Stop-Time$\downarrow$ & Best Result$\uparrow$ & Rank \\
+    \midrule
+    GS & 0.1100 & 1.0000 & 0.7800 & 1.0000 & 16.63 & 13 \\
+    BS & 0.3295 & 0.7612 & 0.4773 & 0.8636 & 16.63 & 11 \\
+    Qwen2.5-7b & 0.6023 & 0.4876 & 0.3636 & 0.4318 & 16.63 & 2 \\
+    Qwen2.5-14b & 0.4545 & 0.7085 & 0.2727 & 0.8182 & 16.63 & 4 \\
+    Qwen2.5-32b & 0.3743 & 0.5382 & 0.6136 & 0.6364 & 16.60 & 9 \\
+    Qwen2.5-72b & 0.4088 & 0.5362 & 0.6364 & 0.5455 & 16.60 & 5 \\
+    DeepSeek-r1-7b & 0.6932 & 0.3187 & 0.2273 & 0.3864 & 16.63 & 1 \\
+    DeepSeek-r1-14b & 0.4085 & 0.4718 & 0.7045 & 0.4773 & 16.60 & 6 \\
+    DeepSeek-r1-32b & 0.3125 & 0.1984 & 1.0000 & 0.3409 & 15.77 & 12 \\
+    DeepSeek-r1-70b & 0.3746 & 0.5763 & 0.5909 & 0.6591 & 16.60 & 8 \\
+    Llama3.3-70b & 0.3803 & 0.2859 & 0.5909 & 0.2955 & 10.79 & 7 \\
+    GPT4-o3-mini & 0.4773 & 0.5177 & 0.4545 & 0.5909 & 16.63 & 3 \\
+    GPT4-o3 & 0.3636 & 0.6714 & 0.4773 & 0.7955 & 16.63 & 10 \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:siren_seg}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand\arraystretch{1.5}
+    \caption{Performance comparison of different solvers for the image denoising task based on the SIREN model.}
+    \begin{tabular}{l|cccccc}
+    \toprule
+    Solver & Score$\uparrow$ & $\text{AUP}_D\downarrow$ & Best-Time$\downarrow$ & Stop-Time$\downarrow$ & Best Result$\uparrow$ & Rank \\
+    \midrule
+    GS & 0.1500 & 1.0000 & 0.7000 & 1.0000 & 24.78 & 12 \\
+    BS & 0.1477 & 0.8819 & 0.7045 & 1.0000 & 24.78 & 13 \\
+    Qwen2.5-7b & 0.7045 & 0.1802 & 0.1364 & 0.4545 & 24.78 & 4 \\
+    Llama3.3-70b & 0.5706 & 0.1105 & 0.5455 & 0.2955 & 24.27 & 8 \\
+    Qwen2.5-14b & 0.4205 & 0.5205 & 0.5455 & 0.6136 & 24.78 & 10 \\
+    Qwen2.5-32b & 0.5795 & 0.4762 & 0.3182 & 0.5227 & 24.78 & 7 \\
+    Qwen2.5-72b & 0.7614 & 0.1543 & 0.1364 & 0.3409 & 24.78 & 1 \\
+    DeepSeek-R1-7b & 0.5341 & 0.4193 & 0.3864 & 0.5455 & 24.78 & 9 \\
+    DeepSeek-R1-14b & 0.7159 & 0.1639 & 0.0909 & 0.4773 & 24.78 & 2 \\
+    DeepSeek-R1-32b & 0.7159 & 0.1284 & 0.2045 & 0.3636 & 24.78 & 2 \\
+    DeepSeek-R1-70b & 0.6818 & 0.1359 & 0.2955 & 0.3409 & 24.78 & 5 \\
+    GPT4-o3-mini & 0.2703 & 0.4389 & 0.7955 & 0.6591 & 24.48 & 11 \\
+    GPT4-o3 & 0.6023 & 0.4786 & 0.2045 & 0.5909 & 24.78 & 6 \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:siren_denoising}
+\end{table}
+
+
+\begin{table}[h]
+    \centering
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand\arraystretch{1.5}
+    \caption{Performance comparison of different solvers for Mask AutoEncoders (MAE)~\cite{mae}.}
+    \begin{tabular}{l|cccccc}
+    \toprule
+    Solver           & Score$\uparrow$ & $\text{AUP}_D\downarrow$ & Best-Time$\downarrow$ & Stop-Time$\downarrow$ & Best Result$\uparrow$ & Rank \\
+    \midrule
+    GS & 0.1000 & 1.0000 & 0.8000 & 1.0000 & 85.0 & 12 \\
+    BS & 0.0294 & 0.8093 & 0.9412 & 1.0000 & 85.0 & 13 \\
+    Llama3.3-70b & 0.2941 & 0.8093 & 0.4118 & 1.0000 & 85.0 & 10 \\
+    Qwen2.5-7b & 0.7647 & 0.0112 & 0.2353 & 0.2353 & 85.0 & 2 \\
+    Qwen2.5-14b & 0.3471 & 0.1513 & 1.0000 & 0.2941 & 84.5 & 9 \\
+    Qwen2.5-32b & 0.2647 & 0.8093 & 0.4706 & 1.0000 & 85.0 & 11 \\
+    Qwen2.5-72b & 0.4412 & 0.8093 & 0.1176 & 1.0000 & 85.0 & 7 \\
+    DeepSeek-R1-7b & 0.4104 & 0.0080 & 1.0000 & 0.1765 & 84.9 & 8 \\
+    DeepSeek-R1-14b & 0.6176 & 0.3853 & 0.2941 & 0.4706 & 85.0 & 5 \\
+    DeepSeek-R1-32b & 0.6765 & 0.1108 & 0.2941 & 0.3529 & 85.0 & 3 \\
+    DeepSeek-R1-70b & 0.5588 & 0.2235 & 0.1765 & 0.7059 & 85.0 & 6 \\
+    GPT4-o3-mini & 0.8235 & 0.0088 & 0.1176 & 0.2353 & 85.0 & 1 \\
+    GPT4-o3 & 0.6471 & 0.1141 & 0.3529 & 0.3529 & 85.0 & 4 \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:MAE}
+\end{table}
+
+
+\begin{table}[h]
+    \centering
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand\arraystretch{1.5}
+    \caption{Performance comparison of different solvers for the image classification task on the ImageNet dataset reported from the ResNet benchmark.}
+    \begin{tabular}{l|cccccc}
+    \toprule
+    Solver           & Score$\uparrow$ & $\text{AUP}_D\downarrow$ & Best-Time$\downarrow$ & Stop-Time$\downarrow$ & Best Result$\uparrow$ & Rank \\
+    \midrule
+    GS & 0.0000 & 1.0000 & 1.0000 & 1.0000 & 21.43 \\
+    BS & 0.0833 & 0.6394 & 0.8333 & 1.0000 & 21.43 \\
+    Llama3.3-70b & 0.3333 & 0.6394 & 0.3333 & 1.0000 & 21.43 \\
+    Qwen2.5-7b & 0.6667 & 0.0865 & 0.3333 & 0.3333 & 21.43 \\
+    Qwen2.5-14b & 0.8333 & 0.0000 & 0.1667 & 0.1667 & 21.43 \\
+    Qwen2.5-32b & 0.5833 & 0.2192 & 0.3333 & 0.5000 & 21.43 \\
+    Qwen2.5-72b & 0.4167 & 0.2988 & 0.5000 & 0.6667 & 21.43 \\
+    DeepSeek-R1-7b & 0.4167 & 0.3322 & 0.5000 & 0.6667 & 21.43 \\
+    DeepSeek-R1-14b & 0.6667 & 0.0865 & 0.3333 & 0.3333 & 21.43 \\
+    DeepSeek-R1-32b & 0.7500 & 0.0865 & 0.1667 & 0.3333 & 21.43 \\
+    DeepSeek-R1-70b & 0.5000 & 0.2443 & 0.5000 & 0.5000 & 21.43 \\
+    GPT4-o3-mini & 0.5000 & 0.2192 & 0.5000 & 0.5000 & 21.43 \\
+    GPT4-o3 & 0.5833 & 0.2192 & 0.3333 & 0.5000 & 21.43 \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:ResNet}
+\end{table}
+
+
+
+% \begin{table}[h]
+%     \centering
+%     \setlength{\tabcolsep}{3pt}
+%     \renewcommand\arraystretch{1.5}
+%     \caption{Performance comparison of different solvers for the image classification task on the ImageNet dataset reported from the DINO benchmark.}
+%     \begin{tabular}{l|ccccc}
+%         \toprule
+%         Solver           & Score$\uparrow$   & $\text{AUP}_D \downarrow$ &  Best-Time$\downarrow$ & Stop-Time$\downarrow$ & Rank\\
+%         \midrule
+%         GS & 0.5000 & 0.0230 & 0.1000 & 0.9000 & 12 \\
+%         BS & 0.5000 & 1.0166 & 0.4000 & 0.6000 & 12 \\
+%         Llama3.3-70b & 0.8000 & 0.0033 & 0.2000 & 0.2000 & 7 \\
+%         Qwen2.5-7b & 0.9500 & 0.0005 & 0.0000 & 0.1000 & 1 \\
+%         Qwen2.5-14b & 0.9500 & 0.0005 & 0.0000 & 0.1000 & 1 \\
+%         Qwen2.5-32b & 0.9500 & 0.0005 & 0.0000 & 0.1000 & 1 \\
+%         Qwen2.5-72b & 0.8000 & 0.0111 & 0.0000 & 0.4000 & 7 \\
+%         DeepSeek-R1-7b & 0.8500 & 0.0007 & 0.1000 & 0.2000 & 6 \\
+%         DeepSeek-R1-14b & 0.6000 & 0.0053 & 0.4000 & 0.4000 & 11 \\
+%         DeepSeek-R1-32b & 0.9000 & 0.0005 & 0.1000 & 0.1000 & 4 \\
+%         DeepSeek-R1-70b & 0.9000 & 0.0033 & 0.0000 & 0.2000 & 4 \\
+%         GPT4-o3-mini & 0.8000 & 0.0111 & 0.0000 & 0.4000 & 7 \\
+%         GPT4-o3 & 0.8000 & 0.0111 & 0.0000 & 0.4000 & 7 \\
+%         \bottomrule
+%     \end{tabular}
+%     \label{tab:DINO}
+% \end{table}
+
+\begin{table}[h]
+    \centering
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand\arraystretch{1.5}
+    \caption{Performance comparison of different solvers for the image classification task on the LCBench dataset reported from~\cite{zimmer2021auto}.}
+        \begin{tabular}{l|cccccc}
+        \toprule
+        Solver           & Score$\uparrow$ & $\text{AUP}_D\downarrow$ & Best-Time$\downarrow$ & Stop-Time$\downarrow$ & Best Result$\uparrow$ & Rank \\
+        \midrule
+        GS & 0.1750 & 1.0000 & 0.6500 & 1.0000 & 88.29 \\
+        BS & 0.4189 & 0.9985 & 0.1622 & 1.0000 & 88.29 \\
+        Llama3.3-70b & 0.4738 & 0.0052 & 1.0000 & 0.0486 & 87.98 \\
+        Qwen2.5-7b & 0.4619 & 0.0047 & 1.0000 & 0.0451 & 85.78 \\
+        Qwen2.5-14b & 0.4739 & 0.0017 & 1.0000 & 0.0180 & 85.62 \\
+        Qwen2.5-32b & 0.4718 & 0.0022 & 1.0000 & 0.0225 & 85.62 \\
+        Qwen2.5-72b & 0.4599 & 0.0081 & 1.0000 & 0.0766 & 87.98 \\
+        DeepSeek-R1-7b & 0.4691 & 0.0027 & 1.0000 & 0.0280 & 85.62 \\
+        DeepSeek-R1-14b & 0.4579 & 0.0086 & 1.0000 & 0.0806 & 87.98 \\
+        DeepSeek-R1-32b & 0.4677 & 0.0035 & 1.0000 & 0.0331 & 85.78 \\
+        DeepSeek-R1-70b & 0.4739 & 0.0014 & 1.0000 & 0.0180 & 85.62 \\
+        GPT4-o3-mini & - & - & - & - & - & - \\
+        GPT4-o3 & - & - & - & - & - & - \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:LCBenchmark}
+\end{table}
+
+
+
+
+
+\begin{table}[h]
+    \centering
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand\arraystretch{1.5}
+    \caption{Performance comparison of different solvers for the medical image segmentation task on the BTCV dataset reported from the nnUnet benchmark~\cite{nnunet_revisit}.}
+    \begin{tabular}{l|cccccc}
+    \toprule
+    Solver           & Score$\uparrow$ & $\text{AUP}_D\downarrow$ & Best-Time$\downarrow$ & Stop-Time$\downarrow$ & Best Result$\uparrow$ & Rank \\
+    \midrule
+    GS & 0.4211 & 1.0000 & 0.1579 & 1.0000 & 85.04 & 3 \\
+    BS & 0.0625 & 0.6453 & 0.8750 & 1.0000 & 85.04 & 13 \\
+    Llama3.3-70b & 0.3750 & 0.6453 & 0.2500 & 1.0000 & 85.04 & 5 \\
+    Qwen2.5-7b & 0.4688 & 0.3441 & 0.5000 & 0.5625 & 85.04 & 2 \\
+    Qwen2.5-14b & 0.2813 & 0.6453 & 0.4375 & 1.0000 & 85.04 & 7 \\
+    Qwen2.5-32b & 0.2813 & 0.4742 & 0.6875 & 0.7500 & 85.04 & 7 \\
+    Qwen2.5-72b & 0.1875 & 0.6453 & 0.6250 & 1.0000 & 85.04 & 11 \\
+    DeepSeek-R1-7b & 0.3680 & 0.0813 & 1.0000 & 0.1250 & 83.69 & 6 \\
+    DeepSeek-R1-14b & 0.1983 & 0.0505 & 1.0000 & 0.1875 & 80.69 & 10 \\
+    DeepSeek-R1-32b & 0.1875 & 0.6453 & 0.6250 & 1.0000 & 85.04 & 11 \\
+    DeepSeek-R1-70b & 0.2813 & 0.6453 & 0.4375 & 1.0000 & 85.04 & 7 \\
+    GPT4-o3-mini & 0.6875 & 0.1466 & 0.2500 & 0.3750 & 85.04 & 1 \\
+    GPT4-o3 & 0.4063 & 0.5081 & 0.4375 & 0.7500 & 85.04 & 4 \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:MIABench}
+\end{table}
+
+
+
+\begin{table}[h]
+    \centering
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand\arraystretch{1.5}
+    \caption{Performance comparison of different solvers for the nnUnet model on the BraTS dataset~\cite{brats}.}
+    \begin{tabular}{l|cccccc}
+    \toprule
+    Solver           & Score$\uparrow$ & $\text{AUP}_D\downarrow$ & Best-Time$\downarrow$ & Stop-Time$\downarrow$ & Best Result$\uparrow$ & Rank \\
+    \midrule
+    GS & 0.1667 & 1.0000 & 0.6667 & 1.0000 & 82.45 & 10 \\
+    BS & 0.0333 & 0.3786 & 0.9333 & 1.0000 & 82.45 & 13 \\
+    Llama3.3-70b & 0.1333 & 0.3786 & 0.7333 & 1.0000 & 82.45 & 11 \\
+    Qwen2.5-7b & 0.1000 & 0.3786 & 0.8000 & 1.0000 & 82.45 & 12 \\
+    Qwen2.5-14b & 0.4333 & 0.0698 & 0.5333 & 0.6000 & 82.45 & 1 \\
+    Qwen2.5-32b & 0.3333 & 0.3118 & 0.5333 & 0.8000 & 82.45 & 3 \\
+    Qwen2.5-72b & 0.2333 & 0.0883 & 0.7333 & 0.8000 & 82.45 & 9 \\
+    DeepSeek-R1-7b & 0.2995 & 0.0481 & 1.0000 & 0.4000 & 82.41 & 5 \\
+    DeepSeek-R1-14b & 0.2940 & 0.0406 & 1.0000 & 0.4000 & 82.00 & 7 \\
+    DeepSeek-R1-32b & 0.2667 & 0.0839 & 0.6667 & 0.8000 & 82.45 & 8 \\
+    DeepSeek-R1-70b & 0.3333 & 0.3126 & 0.5333 & 0.8000 & 82.45 & 3 \\
+    GPT4-o3-mini & 0.4000 & 0.2347 & 0.6000 & 0.6000 & 82.45 & 2 \\
+    GPT4-o3 & 0.2984 & 0.0484 & 1.0000 & 0.4000 & 82.33 & 6 \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:nnUnet}
+\end{table}
+
+
+
+\begin{table}[h]
+    \centering
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand\arraystretch{1.5}
+    \caption{Performance comparison of different solvers for the GraphSAGE model on the imbalanced node classification task.}
+    \begin{tabular}{l|cccccc}
+    \toprule
+    Solver           & Score$\uparrow$ & $\text{AUP}_D\downarrow$ & Best-Time$\downarrow$ & Stop-Time$\downarrow$ & Best Result$\uparrow$ & Rank \\
+    \midrule
+    GS & 0.1000 & 1.0000 & 0.8000 & 1.0000 & 89.28 & 13 \\
+    BS & 0.2727 & 0.8982 & 0.4545 & 1.0000 & 89.28 & 8 \\
+    Llama3.3-70b & 0.1591 & 0.8982 & 0.6818 & 1.0000 & 89.28 & 9 \\
+    Qwen2.5-7b & 0.2880 & 0.0928 & 1.0000 & 0.4091 & 89.12 & 6 \\
+    Qwen2.5-14b & 0.2894 & 0.0890 & 1.0000 & 0.4091 & 89.15 & 5 \\
+    Qwen2.5-32b & 0.2880 & 0.3564 & 1.0000 & 0.4091 & 89.12 & 6 \\
+    Qwen2.5-72b & 0.1364 & 0.8982 & 0.7273 & 1.0000 & 89.28 & 12 \\
+    DeepSeek-R1-7b & 0.3116 & 0.3083 & 1.0000 & 0.3636 & 89.15 & 3 \\
+    DeepSeek-R1-14b & 0.1591 & 0.8982 & 0.6818 & 1.0000 & 89.28 & 9 \\
+    DeepSeek-R1-32b & 0.1591 & 0.8657 & 0.7273 & 0.9545 & 89.28 & 11 \\
+    DeepSeek-R1-70b & 0.2955 & 0.7096 & 0.5909 & 0.8182 & 89.28 & 4 \\
+    GPT4-o3-mini & 0.7727 & 0.1463 & 0.0455 & 0.4091 & 89.282 & 1 \\
+    GPT4-o3 & 0.7727 & 0.2540 & 0.1818 & 0.2727 & 89.282 & 1 \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:GraphSAGE}
+\end{table}
+
+
+
+
+
+% \begin{table*}[]
+% \centering
+% \setlength{\tabcolsep}{3pt}
+% \renewcommand\arraystretch{1.5}
+% \begin{tabular}{lccccc}
+% \toprule
+%                 & Prediction & Classfication & Segmentation & Denoising & Completion \\
+% \midrule
+% Llama3.3-70B    &            &               &              &           &            \\
+% Qwen2.5-7B      &            &               &              &           &            \\
+% Qwen2.5-14B     &            &               &              &           &            \\
+% Qwen2.5-32B     &            &               &              &           &            \\
+% Qwen2.5-72B     &            &               &              &           &            \\
+% DeepSeek-R1-7B  &            &               &              &           &            \\
+% DeepSeek-R1-14B &            &               &              &           &            \\
+% DeepSeek-R1-32B &            &               &              &           &            \\
+% DeepSeek-R1-70B &            &               &              &           &            \\
+% GPT4-o3-mini    &            &               &              &           &            \\
+% GPT4-o3         &            &               &              &           &             \\ 
+% \bottomrule
+% \end{tabular}
+% \end{table*}
+
+
+\begin{table}[h]
+    \centering
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand\arraystretch{1.5}
+    \caption{Performance comparison of different solvers for bioactivity prediction on Chagas EP20 dataset~\cite{Chagas}}
+    \begin{tabular}{l|cccccc}
+    \toprule
+    Solver           & Score$\uparrow$ & $\text{AUP}_D\downarrow$ & Best-Time$\downarrow$ & Stop-Time$\downarrow$ & Best Result$\uparrow$ & Rank \\
+    \midrule
+    GS & 0.4833 & 1.0000 & 0.0333 & 1.0000 & 0.754 & 11 \\
+    BS & 0.3333 & 0.8941 & 0.3333 & 1.0000 & 0.754 & 13 \\
+    Llama3.3-70b & 0.4630 & 0.8941 & 0.0741 & 1.0000 & 0.754 & 12 \\
+    Qwen2.5-7b & 0.9074 & 0.0772 & 0.0741 & 0.1111 & 0.754 & 1 \\
+    Qwen2.5-14b & 0.8889 & 0.0649 & 0.1111 & 0.1111 & 0.754 & 2 \\
+    Qwen2.5-32b & 0.6296 & 0.4231 & 0.0741 & 0.6667 & 0.754 & 9 \\
+    Qwen2.5-72b & 0.5741 & 0.6799 & 0.0741 & 0.7778 & 0.754 & 10 \\
+    DeepSeek-R1-7b & 0.7778 & 0.1104 & 0.2222 & 0.2222 & 0.754 & 4 \\
+    DeepSeek-R1-14b & 0.7037 & 0.5510 & 0.0741 & 0.5185 & 0.754 & 7 \\
+    DeepSeek-R1-32b & 0.6852 & 0.3405 & 0.0741 & 0.5556 & 0.754 & 8 \\
+    DeepSeek-R1-70b & 0.7778 & 0.3160 & 0.1111 & 0.3333 & 0.754 & 4 \\
+    GPT4-o3-mini & 0.7407 & 0.3546 & 0.1852 & 0.3333 & 0.754 & 6 \\
+    GPT4-o3 & 0.8148 & 0.0622 & 0.0370 & 0.3333 & 0.754 & 3 \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:chagas}
+\end{table}
+
+
+\section{Prompts of Compared Methods}
+\label{sec:supp_prompt}
+
+\begin{tcolorbox}[breakable,colback=orange!5!white, colframe=black, title={Search Prompt of LLM solver}]
+Instructions:7
+
+**Search Space** (Numbering starts from 0, excluding Completed Trials):
+\pkd{trials}
+    
+Task 1: Optimization Recommendation
+Recommend exactly \pkd{n\_jobs} promising trials from the provided **Search Space** (include both number and params).
+
+\textbf{Rules:}
+
+1. ``params'' MUST include:
+
+\,\,\pkd{HyperName}
+
+2. All selected `params` must match exactly with the provided **Search Space**. Do NOT leave out any key.
+
+3. Use the analysis in **Task 1** (trial analysis, performance trends, highlights, and other insights) to guide selection.
+
+4. Based on the above analysis, explore under-explored regions only when there is clear evidence of potential performance gain.
+
+5. Do not mix, modify, or create new values.
+
+6. You MUST not output any JSON blocks in this part.
+
+7. You MUST provide reasoning for each recommendation.
+\end{tcolorbox}
+
+\begin{tcolorbox}[breakable,colback=orange!5!white, colframe=black, title={Early-Stopping Prompt of LLM-ES solver}]
+Completed trials:
+\pkd{completed\_trials}
+
+The following **Search Space** contains **unexplored** trials.
+\pkd{trials}
+
+If the optimization process should be stopped, Answer: Yes with confidence score: \pkd{confidence\_socre}. Otherwise, Answer: No with confidence score: \pkd{confidence\_socre}.
+
+Finally, you MUST output 'Answer: No/Yes' with confidence score: \pkd{confidence\_socre}.
+\end{tcolorbox}

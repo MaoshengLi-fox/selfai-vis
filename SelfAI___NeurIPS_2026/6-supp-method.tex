@@ -1,0 +1,191 @@
+\section{Prompts of SelfAI System}
+\label{sec:supp_method}
+
+The SelfAI framework supports the complete lifecycle of AI systems, covering design, training, evaluation, and deployment. It integrates three core agents: the User Agent, the Cognitive Agent, and the Experiment Manager, and provides an integrated toolkit for autonomous model training, experiment orchestration, and advanced reasoning, enabling a scalable and adaptive workflow.
+
+\subsection{Prompt of User Agent: Idea Interaction and Experiment Configuration}
+\label{sec:supp_user_agent}
+
+\begin{tcolorbox}[breakable,colback=orange!5!white, colframe=black, title=User Agent Prompt for Configuration Interaction]
+
+\textbf{System:} ...
+
+\textbf{User:}
+
+\pkd{SUMMARIZED\_CONTENT}
+
+Please fill out the content following the YAML format:
+
+\begin{bg_yaml}
+\begin{minipage}{1.0\linewidth}
+\begin{lstlisting}[style=yamlstyle, language=Yaml]
+# Template for Configuration Interaction 
+# to convert Idea Interaction into YAML format
+- role: system
+  content:
+    model: $modelName
+    description: You are a $role specializing in 
+                studying $taskName. Please provide 
+                professional and detailed answers.
+    task: $taskName
+    basic_idea: $basic_idea
+    search_space:
+      $hyper_name1: []
+      $hyper_name2: []
+      ...
+    link: $paperLink
+    instrustion: Complete instructions under limited trials.
+- role: user
+  content:
+    max_trials: $maxTrials
+    trials: []
+\end{lstlisting}
+\end{minipage}
+\end{bg_yaml}
+\label{selfai_yaml}
+
+% \begin{bg_yaml}
+% \begin{minipage}{1.0\linewidth}
+% \begin{minted}{yaml}
+% # Template for Configuration Interaction 
+% # to convert Idea Interaction into YAML format
+% - role: system
+%   content:
+%     model: $modelName
+%     description: You are a $role specializing in 
+%                 studying $taskName. Please provide 
+%                 professional and detailed answers.
+%     task: $taskName
+%     basic_idea: $basic_idea
+%     search_space:
+%       $hyper_name1: []
+%       $hyper_name2: []
+%       ...
+%     link: $paperLink
+%     instrustion: Complete instructions under limited trials.
+% - role: user
+%   content:
+%     max_trials: $maxTrials
+%     trials: []
+% \end{minted}
+% \end{minipage}
+% \end{bg_yaml}
+
+\end{tcolorbox}
+
+
+\subsection{Reasoning Prompt for Scientific Discovery}
+\label{sec:supp_cognitive}
+
+\subsubsection{Trajectory Analysis and Hypothesis Generation}
+Cognitive agent begins with \textbf{Task 1: Analyze the Current Task}, where it meticulously interprets the prompt to establish the task's core objectives, constraints, and hyperparameters. This initial analysis is used to perform a structured trajectory evaluation, creating a coherent chain of thought that guides all subsequent strategy and exploration.
+
+Next, in \textbf{Task 2: Analysis of Completed Trials}, the agent systematically evaluates previous outcomes to generate new hypotheses. It specifically analyzes the performance trends of individual parameters and their combinations to identify promising directions in the broader hyperparameter space and propose novel configurations. This deep trend analysis allows the agent to anticipate promising regions of the search space and detect valuable reasoning trajectories that might otherwise be overlooked.
+
+\begin{tcolorbox}[breakable, colback=orange!5!white, colframe=black, title={Cognitive Prompt for Trajectory Analysis and Hypothesis Generation}]
+\textbf{System:} 
+
+\pkd{System\_part\_of\_configuration}
+
+
+
+\textbf{User:}
+Completed trials:
+
+\pkd{completed\_trials}
+
+Task 1: Analyze the current task
+
+Understand current tasks, basic ideas, objectives, and hyperparameters.
+
+Task 2: Analysis of Completed Trials
+
+Step 1: Summarize performance metrics for completed trials.
+
+Step 2: Evaluate performance trends for hyperparameters.
+
+Step 3: Highlight promising hyperparameter combinations.
+\end{tcolorbox}
+
+\subsubsection{Stopping Judgement}
+\label{sec:supp_stop_criterion}
+We introduce an optimal stopping criterion to guide prompt designs that balance exploration and exploitation. During the optimal stopping judgment, Cognitive agent first determines whether the current performance metrics surpass those of the initial configuration and conducts an optimal stopping judgment. Building on the prior analysis of completed trials, the agent systematically evaluates stopping conditions to avoid testing all configurations. 
+
+By using prompt instructions, the optimal stopping judgment evaluates all completed trials by leveraging insights from trial analysis, observed performance trends, and identified key findings. In practice, we implement this judgment process via a structured prompt template comprising two main tasks and explicit stopping criteria. The language model then analyzes the relationship between completed trials and unexplored areas. The prompt is organized as follows:
+
+
+\begin{tcolorbox}[breakable,colback=orange!5!white, colframe=black, title={Cognitive Prompt for Best Stopping Judgement}]
+
+\textbf{User:}
+Completed trials:
+    
+\pkd{completed\_trials}
+    
+The following **Search Space** contains **unexplored** trials.
+\pkd{trials}
+
+Instructions:
+Task 1: Review Analysis of Completed Trials (trial analysis, performance trends, highlights, and other insights)
+
+Task 2: Decide Whether to Stop Optimization
+
+Based on the above analysis and **Completed Trials**, determine whether the optimization process should be stopped.
+
+Carefully analyze each of the following stop rules and provide a short (1-2 sentences) justification for whether it is met:
+
+1. Have all promising configurations identified based on performance trends been tested?
+
+2. Is it unlikely that unexplored configurations will perform better based on the observed trends and the law of diminishing returns?
+
+3. Has the best metric improved significantly?
+
+Step 2: Decide whether **all** conditions are met.
+
+If **all** criteria in Step 1 are met, Answer: Yes, with confidence score: \pkd{confidence\_socre}. Otherwise, Answer: No with confidence score: \pkd{confidence\_socre}.
+\end{tcolorbox}
+
+
+\subsubsection{Strategic Planning}
+\label{sec:supp_planning}
+This prompt implements the strategic planning stage of Cognitive Agent. Its objective is to generate candidate experimental configurations for the next iteration based on accumulated experimental evidence, while balancing refinement of high-performing configurations and exploration of under-sampled regions.
+
+
+\begin{tcolorbox}[breakable,colback=orange!5!white, colframe=black, title={Cognitive Prompt for Strategic Planning}]
+
+\textbf{User:}
+Instructions:
+
+Task 1: Review Analysis of All Completed Trials
+
+Completed trials:
+
+\pkd{completed\_trials}
+
+The following **Search Space** contains **unexplored** trials:
+
+\, \pkd{trials}
+
+Instructions:
+
+Task 2: Optimization Recommendation
+
+Recommend exactly \pkd{n\_jobs} promising trials from the provided **Search Space** (include both number and params).
+
+\textbf{Rules:}
+
+1. ``params'' MUST include:
+
+\,\,\pkd{HyperName}
+
+2. All selected `params` must match exactly with the provided **Search Space**. Do NOT leave out any key.
+
+3. Use the analysis in **Task 1** (trial analysis, performance trends, highlights, and other insights) to guide selection.
+
+4. Based on the above analysis, explore under-explored regions only when there is clear evidence of potential performance gain.
+
+5. Do not mix, modify, or create new values.
+
+6. You MUST not output any JSON blocks in this part.
+
+7. You MUST provide reasoning for each recommendation.
+\end{tcolorbox}

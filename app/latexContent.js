@@ -213,7 +213,8 @@ export const TEX_SOURCES = {
 \input{4-exps}
 
 \section{Conclusion}
-
+In this paper, we present SelfAI, a unified framework for long-horizon scientific discovery that integrates human--AI collaboration, trajectory-level reasoning, and scalable experimentation infrastructure. Unlike prior approaches that either emphasize fully autonomous pipelines or focus on isolated reasoning benchmarks, SelfAI supports interactive and controllable discovery processes, reflecting the inherently iterative and expert-driven nature of scientific research.
+In addition to system design, SelfAI introduces a process-aware evaluation perspective that moves beyond outcome-based metrics toward trajectory-level analysis. This enables a more comprehensive assessment of scientific discovery by capturing not only final results but also intermediate exploration behaviors, including diversity, efficiency, and adaptation over time. By jointly unifying collaboration, reasoning, evaluation, and infrastructure, SelfAI bridges the gap between controlled benchmarking environments and real-world scientific workflows, providing a practical and extensible foundation for reliable and adaptive scientific discovery.
 
 
 
@@ -423,6 +424,8 @@ Benchmark Suite & \cmark & \xmark & \xmark & \xmark & \xmark & \cmark & \xmark \
 \end{table*}`,
   "3-methods.tex": String.raw`
 \section{Methods}
+% I will update the following content with NeurIPS style. 
+% use mathematical description to convert agentic process
 
 \subsection{SelfAI system}
 \label{sec:method}
@@ -454,11 +457,17 @@ Evaluation for reasoning trajectories}
 While the reasoning process of LLMs in problem-solving often generates a diverse range of discrete insights and multiple potential chains of thought, this diversity, though valuable for exploration and exploitation, can pose a challenge to coherent reasoning evaluation across various experimentation and discovery phases. We propose a systematic evaluation metric that captures both the diversity of reasoning perspectives and the overall coherence of the reasoning process, ensuring a more robust and comprehensive assessment of reasoning capabilities.
 
 
-\noindent\textbf{Optimal Stopping Criteria}
+\noindent\textbf{.}
+We formalize a reasoning trajectory for task i as a finite sequence of evaluations
+\begin{equation}
+    \mathcal{T} = \{v_{i,t}\}
+\end{equation}
+
+\noindent\textbf{Optimal Stopping Criteria.}
 In this work, we collected the best value point and the stop point from trials. Based on Optimal Stopping Criteria~\cite{hill2009knowing}, we can define the following measure formulas,
 \begin{align}
     % & \text{SUCC} = \frac{1}{N} \sum^{N-1}_{i=0} S_{i} \\
-    & \text{Gain} = \frac{1}{N} \sum^{N-1}_{i=0} \frac{v^*_i - v_{i,\min}}{v_{i,\max} - v_{i, \min}}
+    & \text{Gain} = \frac{1}{N} \sum^{N-1}_{i=0} \frac{v^*_{i,t} - v_{i,\min}}{v_{i,\max} - v_{i, \min}}
      \\
     & t_{\text{best}} = \frac{1}{N} \sum^{N-1}_{i=0}t^{\text{best}}_i = \frac{1}{N} \sum^{N-1}_{i=0} \frac{m_i}{M_i} \\
     & t_{\text{stop}} = \frac{1}{N} \sum^{N-1}_{i=0}t^{\text{stop}}_i = \frac{1}{N} \sum^{N-1}_{i=0} \frac{n_i}{M_i}

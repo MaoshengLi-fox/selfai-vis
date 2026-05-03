@@ -1,0 +1,119 @@
+
+\section{Methods}
+% I will update the following content with NeurIPS style. 
+% use mathematical description to convert agentic process
+
+\subsection{SelfAI system}
+\label{sec:method}
+The SelfAI system operates in an integrated loop, comprising three core agents: User Agent, Cognitive Agent, and Experiment manager, which together constitute the overall experimental pipeline in Fig.~\ref{fig:flowchart}. It consists of three components: a User Agent for intent formalization, a Cognitive Agent for iterative decision-making, and an Experiment Manager for experiment orchestration and management. Before illustrating the details of SelfAI, we first situate SelfAI within the landscape of existing AI-assisted research frameworks by examining their functional coverage (Table~\ref{tab:functions_selfai}).
+
+\paragraph{User Agent}
+As illustrated in Fig.~\ref{fig:flowchart}b, User Agent serves as the user interface through which high-level research intent is translated into structured, machine-readable experimental specifications. Its primary function is to formalize natural-language objectives provided by users into a standardized configuration that defines the experimental task for the SelfAI system. For example, user requests such as “Design high-performance deep learning for image classification task on the ImageNet dataset” or “Identify the most influential method for image classification” are reformulated into precise experimental specifications. Specifically, User Agent maps user-provided descriptions of research goals, constraints, and preferences into a task-specific YAML configuration. This configuration explicitly specifies basic ideas, optimization objectives, the experimental search space, trial budget, and historical trial data (as shown in Supplementary Sect.~\ref{sec:supp_user_agent}). The resulting YAML file serves as the sole interface between user intent and downstream system components, including Cognitive Agent and Experiment Manager. Consequently, User Agent encodes the user’s research intent into a fixed configuration schema, which is implemented via a predefined prompt template. All interactions are restricted to the generation and refinement of the structured configuration, and users do not directly manipulate experimental parameters or outcomes once the configuration is finalized. 
+
+
+\paragraph{Cognitive agent}
+\label{sec:cognitive}
+Cognitive Agent performs iterative decision-making within the SelfAI framework by operating on structured experimental inputs and conducting trajectory-level analysis across multiple iterations. To support long-horizon optimization, Cognitive Agent operates in three functional stages: hypothesis generation, strategic planning, and stopping judgment. Hypothesis generation identifies promising regions of the search space based on accumulated experimental outcomes. Strategic planning translates these hypotheses into concrete experimental proposals that balance refinement of high-performing configurations with exploration of under-sampled or uncertain regions. Stopping judgment evaluates accumulated experimental evidence to determine whether continued experimentation is warranted under the current exploration strategy. At each iteration, Cognitive Agent receives a task-specific experimental configuration from User Agent, along with accumulated experimental histories and performance metrics from Experiment Manager. These inputs are provided in a structured format and define the current state of the search process. Using the accumulated evidence, Cognitive Agent evaluates experimental trajectories, assesses observed performance trends, and estimates coverage of the explored search space. Based on this analysis, it generates candidate experimental configurations for subsequent exploration. In addition to proposing new experiments, the Cognitive Agent produces a stopping decision based on trajectory-level evaluation of completed trials, including comparison with the initial configuration, assessment of diminishing returns in recent performance improvements, and estimation of the potential value of remaining unexplored regions. The outputs of Cognitive Agent consist of candidate experimental configurations for the next iteration and a stopping signal indicating whether the current exploration process should be terminated. Detailed implementation, including the prompt templates used for hypothesis generation, strategic planning, and stopping judgment, is provided in the Supplementary Materials~\ref{sec:supp_cognitive}.
+
+
+\paragraph{Experiment manager}
+\label{sec:exp_management}
+Experiment Manager is responsible for experiment orchestration and recovery, including resource management, task allocation, and progress tracking (Fig.~\ref{fig:flowchart}b). These capabilities enable efficient coordination of multi-instance parallel optimization, maximize resource utilization, and enhance training robustness.
+
+1) {\bf Resource Management}. Experiment Manager monitors resource consumption and dynamically allocates available GPU, TPU, and memory resources. This granular allocation optimizes workload distribution across computing units and ensures stable execution of all trials.
+
+2) {\bf Fault recovery and Checkpoint Reconnection}. In case of system interruptions or suboptimal model performance, Experiment Manager reports failures to Cognitive agent. Experiment Manager performs preliminary diagnostics, identifies potential issues, adjusts training parameters, and resumes training from the latest checkpoint.
+
+3) {\bf Multi-Instance Parallel Optimization}. SelfAI instantiates each user program to run across diverse physical environments, independent of the target program framework. Experiment Manager coordinates multi-instance parallel training, synchronizes execution, and concurrently tests various configurations, thereby shortening overall training time and improving generalization across datasets and model parameters. For each parallel experiment, Experiment Manager identifies and supplies the necessary runtime parameters, ensuring experiments are conducted under the same environment optimized by Cognitive agent.
+
+
+\subsection{
+Evaluation for reasoning trajectories}
+\label{sec:evaluation_reasoning}
+While the reasoning process of LLMs in problem-solving often generates a diverse range of discrete insights and multiple potential chains of thought, this diversity, though valuable for exploration and exploitation, can pose a challenge to coherent reasoning evaluation across various experimentation and discovery phases. We propose a systematic evaluation metric that captures both the diversity of reasoning perspectives and the overall coherence of the reasoning process, ensuring a more robust and comprehensive assessment of reasoning capabilities.
+
+
+\noindent\textbf{.}
+We formalize a reasoning trajectory for task i as a finite sequence of evaluations
+\begin{equation}
+    \mathcal{T} = \{v_{i,t}\}
+\end{equation}
+
+\noindent\textbf{Optimal Stopping Criteria.}
+In this work, we collected the best value point and the stop point from trials. Based on Optimal Stopping Criteria~\cite{hill2009knowing}, we can define the following measure formulas,
+\begin{align}
+    % & \text{SUCC} = \frac{1}{N} \sum^{N-1}_{i=0} S_{i} \\
+    & \text{Gain} = \frac{1}{N} \sum^{N-1}_{i=0} \frac{v^*_{i,t} - v_{i,\min}}{v_{i,\max} - v_{i, \min}}
+     \\
+    & t_{\text{best}} = \frac{1}{N} \sum^{N-1}_{i=0}t^{\text{best}}_i = \frac{1}{N} \sum^{N-1}_{i=0} \frac{m_i}{M_i} \\
+    & t_{\text{stop}} = \frac{1}{N} \sum^{N-1}_{i=0}t^{\text{stop}}_i = \frac{1}{N} \sum^{N-1}_{i=0} \frac{n_i}{M_i}
+\end{align}
+and
+% \begin{equation}
+%     S_{i} =
+%     \begin{cases}
+%         1, & \text{if } v_i^* == v_{\max} \\
+%         0, & \text{otherwise}
+%     \end{cases}
+% \end{equation}
+% $\text{SUCC}$ denotes that the obtained result is the best value. Then, f
+where $N$ is the number of tasks. For the $i$-th task, $M_i$ is the number of completed trials. $m_i$ is the best value point index. $t_i^{\text{best}}$ is the cost of the best value. In addition, we set the stop point index, $n_i$, and $t_i^{\text{stop}}$ is better when $n_i$ is closer to the best value point index. $S_i$ means the binarized value.
+
+To obtain a comprehensive measure, we combine the last three measures, i.e., $\text{Rel}$, $t_{\text{best}}$, and $t_{\text{stop}}$, where we utilize  $\text{Rel}$ in underestimated penalty, then $t_{\text{best}}$ and $t_{\text{stop}}$ are the time penalty ($P_\text{best}$ and $P_\text{stop}$). Thus, the total penalty is
+\begin{align}
+    % P_{\text{best}} &= w_{\text{best}} \cdot t^{\text{best}}_i \notag\\
+    % P_{\text{stop}} &= w_{\text{stop}} \cdot t^{\text{stop}}_i \\
+    P_{\text{total}} &= \frac{t_i^{\text{stop}} + t_i^{\text{best}}}{2}
+\end{align}
+
+Finally, the score is denoted as
+\begin{align}
+    & \text{Score} = \frac{1}{N}\sum^{N-1}_{i=0} \text{Gain} \cdot (1-P_{total})
+\end{align}
+\noindent \textbf{Best Approximation/Candidate} In \cite{MLgym}, performance profiles and the AUP aim to measure available rates across $\texttt{m}$ tasks, where all performance metrics are threshold $\tau$, performance profiles ($ \rho_\texttt{m}(\tau)$) are computed as thresholds in all metrics (sorted by ascending) in the current task.
+\begin{equation}
+    \text{AUP}_\texttt{m} = \int^{\tau_{\max}}_1 \rho_\texttt{m}(\tau) d\tau
+\end{equation}
+It is noted that the above performance profile and $\text{AUP}_\texttt{m}$ score cannot measure the diversity of reasoning. Therefore, we rewrite the performance profile and AUP score:
+
+First, the performance profile is defined in all completed trials $M_i$ in $i$-th task and the overall search space $\mathcal{H}$, as follows 
+\begin{equation}
+    r_i =
+    \begin{cases}
+         \frac{\max{\{v_k:\, k \in \mathcal{H}\}}}{v_i},\, \text{ascend}  
+         \\
+         \\
+         \frac{v_i}{\min{\{v_k:\, k \in \mathcal{H}\}}},\, \text{descend}
+    \end{cases}
+\end{equation}
+where ascend/descend denotes that the value is larger/smaller and the performance is better. For all trials, $\tau$ is the set of all obtained $r_i$ values. Then, we consider all completed trials $M_i$ in $i$-th task, 
+\begin{align}
+    & \rho_i(\tau) = \begin{cases}
+         |\{k \in M_i: r_k >= \tau \}|, &\text{ascend} \\
+        |\{k \in M_i: r_k <= \tau \}|, & \text{descend}
+    \end{cases}
+\end{align}
+which captures how many evaluated configurations exceed a given performance threshold $\tau$. $\rho_i(\tau)$ is the cumulative distribution curve of the trajectory. 
+
+The area term aggregates the overall concentration of strong configurations along the performance axis:
+\begin{equation}
+    A = \frac{1}{N} \sum^{N-1}_{i=0} \int_{\tau_{\min}}^{\tau_{\max}} \rho_{i}(\tau)d\tau.
+\end{equation}
+To capture the temporal asymmetry of discovery, we compute the centroid
+\begin{equation}
+    G = \frac{1}{A} \int_{\tau_{\min}}^{\tau_{\max}} x \cdot \rho_i(\tau) \, d\tau,
+\end{equation}
+and define the skewness
+\begin{equation}
+    S = \int_{\tau_{\min}}^{\tau_{\max}} \left( \frac{x}{G} \right)^3 \rho(x) \, d\tau.
+\end{equation}
+Since $S$ may be unbounded and may take both positive (left-skewed) and negative (right-skewed) values, we normalize it via a reference skewness value $S_\text{base}$ from the GS method and a smooth monotonic mapping:
+\begin{align}
+    & S’ = 1-\frac{S-S_\text{base}}{S_\text{base}}, \\
+    & S' = \frac{\tanh(S) + 1}{2}, S' \in (0, 1).
+\end{align}
+Finally, the Area Under the Performance-Diversity curve ($\text{AUP}_D$) is defined as
+\begin{equation}
+    \text{AUP}_D = A / S',
+\end{equation}
+where trajectories that exhibit earlier concentration of high-performing configurations obtain larger and thus smaller $\text{AUP}_D$ values, whereas trajectories that concentrate improvements later yield smaller and therefore larger values.

@@ -2,8 +2,8 @@ import './globals.css';
 import 'katex/dist/katex.min.css';
 
 export const metadata = {
-  title: 'Paper Viewer | 2512.00403v2',
-  description: 'A focused interface for reading the paper 2512.00403v2.pdf'
+  title: 'SelfAI | NeurIPS 2026 Project Page',
+  description: 'SelfAI project page reconstructed from NeurIPS 2026 LaTeX source files.'
 };
 
 export default function RootLayout({ children }) {

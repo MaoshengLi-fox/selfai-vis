@@ -1,0 +1,236 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2026
+
+% The authors should use one of these tracks.
+% Before accepting by the NeurIPS conference, select one of the options below.
+% 0. "default" for submission
+\usepackage{neurips_2026}
+% the "default" option is equal to the "main" option, which is used for the Main Track with double-blind reviewing.
+% 1. "main" option is used for the Main Track
+%  \usepackage[main]{neurips_2026}
+% 2. "position" option is used for the Position Paper Track
+%  \usepackage[position]{neurips_2026}
+% 3. "eandd" option is used for the Evaluations & Datasets Track
+ % \usepackage[eandd]{neurips_2026}
+% 4. "creativeai" option is used for the Creative AI Track
+%  \usepackage[creativeai]{neurips_2026}
+% 5. "sglblindworkshop" option is used for the Workshop with single-blind reviewing
+ % \usepackage[sglblindworkshop]{neurips_2026}
+% 6. "dblblindworkshop" option is used for the Workshop with double-blind reviewing
+%  \usepackage[dblblindworkshop]{neurips_2026}
+
+% After being accepted, the authors should add "final" behind the track to compile a camera-ready version.
+% 1. Main Track
+ % \usepackage[main, final]{neurips_2026}
+% 2. Position Paper Track
+%  \usepackage[position, final]{neurips_2026}
+% 3. Evaluations & Datasets Track
+ % \usepackage[eandd, final]{neurips_2026}
+% 4. Creative AI Track
+%  \usepackage[creativeai, final]{neurips_2026}
+% 5. Workshop with single-blind reviewing
+%  \usepackage[sglblindworkshop, final]{neurips_2026}
+% 6. Workshop with double-blind reviewing
+%  \usepackage[dblblindworkshop, final]{neurips_2026}
+% Note. For the workshop paper template, both \title{} and \workshoptitle{} are required, with the former indicating the paper title shown in the title and the latter indicating the workshop title displayed in the footnote.
+% For workshops (5., 6.), the authors should add the name of the workshop, "\workshoptitle" command is used to set the workshop title.
+% \workshoptitle{WORKSHOP TITLE}
+
+% "preprint" option is used for arXiv or other preprint submissions
+ % \usepackage[preprint]{neurips_2026}
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2026}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+\usepackage{pifont}
+
+\linenumbers
+\newcommand{\cmark}{\textcolor{green}{\ding{51}}} % 勾选符号
+\newcommand{\xmark}{\textcolor{red}{\ding{55}}}   % 叉号
+\newcommand{\greencheck}{\textcolor{green}{\checkmark}}
+\newcommand{\crosscheck}{\textcolor{red}{\XSolid}}
+
+\newcommand{\tabincell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
+\newcommand{\blank}[1]{\hspace*{#1}\linebreak[0]}
+
+\newcommand{\pkd}[1]{\texttt{{\{\{\MakeUppercase{#1}\}\}}}}
+
+\usepackage{adjustbox}
+\usepackage{multicol}
+\usepackage{multirow}%
+\usepackage{array}
+\usepackage{minted}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\definecolor{softblue}{RGB}{100, 149, 237}
+\definecolor{darkpurple}{RGB}{160, 0, 160}
+\definecolor{darkred}{RGB}{160, 0, 0}
+\definecolor{darkblue}{RGB}{0, 0, 160}
+\definecolor{softgreen}{RGB}{120, 180, 100}
+\usepackage{graphicx}
+\usepackage{threeparttable}
+\usepackage{amssymb} 
+% \usepackage[colorlinks,linkcolor=black,anchorcolor=blue,citecolor=softblue]{hyperref}
+% \tcbuselibrary{breakable}
+
+\definecolor{darkgreen}{rgb}{0.0, 0.5, 0.0}
+\definecolor{darkred}{rgb}{0.5, 0.0, 0.0}
+% 定义颜色
+\definecolor{bg}{rgb}{0.97,0.97,0.97}   % 背景色
+\definecolor{codegray}{rgb}{0.3,0.3,0.3} % 代码灰色
+\definecolor{codegreen}{rgb}{0,0.6,0}    % 代码绿色
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92} % 背景色
+
+\def\xie{\textcolor{red}}
+\def\xiao{\textcolor{orange}}
+\def\deng{\textcolor{softgreen}}
+
+
+% 定义 YAML 样式
+\tcbuselibrary{listingsutf8}
+\newtcolorbox{bg_yaml}{
+  enhanced, % Enable advanced features
+  sharp corners=southwest,
+  colback=lightgray!20, % Background color
+  colframe=black,       % Frame color
+  boxrule=0.5mm,       % Frame thickness
+  before=\vspace{1mm}, % Space before the box
+  after=\vspace{1mm}   % Space after the box
+}
+
+% 定义 Python 样式
+\lstdefinestyle{pythonstyle}{
+    language=Python, 
+    basicstyle=\ttfamily,  
+    keywordstyle=\color{blue}, 
+    commentstyle=\color{gray},   
+    stringstyle=\color{red}, 
+    showstringspaces=false,        
+    numbers=left,                 
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,                
+    numbersep=5pt,               
+    frame=single,                
+    tabsize=4                     
+}
+
+\lstdefinestyle{yamlstyle}{
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{red!60!black},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    breaklines=true,
+}
+
+\lstdefinelanguage{YAML}{
+  keywords={true,false,null,y,n},
+  keywordstyle=\color{blue}\bfseries,
+  basicstyle=\ttfamily\small,
+  commentstyle=\color{green!50!black},
+  stringstyle=\color{red!60!black},
+  identifierstyle=\color{black},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  breaklines=true,
+  literate=
+   *{:}{{{\color{blue}:}}}{1}
+    {-}{{{\color{red}-}}}{1}
+}
+
+
+% Note. For the workshop paper template, both \title{} and \workshoptitle{} are required, with the former indicating the paper title shown in the title and the latter indicating the workshop title displayed in the footnote. 
+\title{SelfAI: A self-directed framework for long-horizon scientific discovery}
+
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+
+% \author{%
+%   David S.~Hippocampus\thanks{Use footnote for providing further information
+%     about author (webpage, alternative address)---\emph{not} for acknowledging
+%     funding agencies.} \\
+%   Department of Computer Science\\
+%   Cranberry-Lemon University\\
+%   Pittsburgh, PA 15213 \\
+%   \texttt{hippo@cs.cranberry-lemon.edu} \\
+%   % examples of more authors
+%   % \And
+%   % Coauthor \\
+%   % Affiliation \\
+%   % Address \\
+%   % \texttt{email} \\
+%   % \AND
+%   % Coauthor \\
+%   % Affiliation \\
+%   % Address \\
+%   % \texttt{email} \\
+%   % \And
+%   % Coauthor \\
+%   % Affiliation \\
+%   % Address \\
+%   % \texttt{email} \\
+%   % \And
+%   % Coauthor \\
+%   % Affiliation \\
+%   % Address \\
+%   % \texttt{email} \\
+% }
+
+
+\begin{document}
+
+
+\maketitle
+
+\begin{abstract}
+    Scientific discovery increasingly entails long-horizon exploration of complex hypothesis spaces, yet most existing large language model (LLM) approaches emphasize final performance while offering limited insight into how scientific exploration unfolds over time, particularly balancing efficiency-diversity trade-offs and supporting reproducible, human-in-the-loop discovery workflows. We introduce SelfAI, a self-directed, multi-agent-enabled discovery system that automates scientific exploration as a strategic, trajectory-driven decision-making process. SelfAI translates high-level research intent into executable experiments, reasons over accumulated experimental trajectories to guide subsequent exploration, and applies adaptive stopping decisions to terminate unproductive search paths within a closed-loop workflow governed by explicit efficiency-diversity trade-offs. Evaluated using real-world experiments spanning domains from machine learning to drug discovery, SelfAI consistently discovers high-quality solutions with substantially fewer redundant trials than classical optimization methods and LLM baselines. Our work includes a project page and a VSCode extension~\url{}.
+\end{abstract}
+
+\input{1-intro}
+\input{2-related}
+\input{3-methods}
+\input{4-exps}
+
+\section{Conclusion}
+In this paper, we present SelfAI, a unified framework for long-horizon scientific discovery that integrates human--AI collaboration, trajectory-level reasoning, and scalable experimentation infrastructure. Unlike prior approaches that either emphasize fully autonomous pipelines or focus on isolated reasoning benchmarks, SelfAI supports interactive and controllable discovery processes, reflecting the inherently iterative and expert-driven nature of scientific research.
+In addition to system design, SelfAI introduces a process-aware evaluation perspective that moves beyond outcome-based metrics toward trajectory-level analysis. This enables a more comprehensive assessment of scientific discovery by capturing not only final results but also intermediate exploration behaviors, including diversity, efficiency, and adaptation over time. By jointly unifying collaboration, reasoning, evaluation, and infrastructure, SelfAI bridges the gap between controlled benchmarking environments and real-world scientific workflows, providing a practical and extensible foundation for reliable and adaptive scientific discovery.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{plain}
+\bibliography{reference}
+
+
+\appendix
+\input{5-appendix}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\input{checklist.tex}
+
+
+\end{document}
