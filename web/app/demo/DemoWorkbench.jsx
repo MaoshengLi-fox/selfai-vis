@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './demo.module.css';
 
-const API_BASE = process.env.NEXT_PUBLIC_SELFAI_API_BASE || 'http://127.0.0.1:8000';
+const RAW_API_BASE = process.env.NEXT_PUBLIC_SELFAI_API_BASE || 'http://127.0.0.1:8000';
+const API_BASE = RAW_API_BASE.replace(/\/+$/, '');
 
 const FALLBACK_EXPERIMENTS = [
   {
