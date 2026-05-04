@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 
-export default function TocAside({ items }) {
+export default function TocAside({ items = [] }) {
   const [progress, setProgress] = useState(0);
   const [visible, setVisible] = useState(false);
   const [activeId, setActiveId] = useState(items[0]?.id || '');
