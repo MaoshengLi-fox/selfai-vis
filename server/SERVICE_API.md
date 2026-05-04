@@ -27,7 +27,30 @@ uvicorn service_backend.app:app --host 0.0.0.0 --port 8000 --reload
 Swagger:
 - `http://127.0.0.1:8000/docs`
 
-## 4. Example
+## 4. Vercel Deploy (Serverless)
+
+Use `server/` as the Vercel **Root Directory**.
+
+- Entry: `api/index.py`
+- Runtime config: `vercel.json`
+- Python dependencies: `requirements.txt`
+
+In serverless mode, only lightweight endpoints are enabled:
+
+- `GET /api/v1/health`
+- `GET /api/v1/meta/metrics`
+- `GET /api/v1/demo/experiments`
+
+The following endpoints are disabled and return `501`:
+
+- `POST /api/v1/jobs/optimize`
+- `GET /api/v1/jobs`
+- `GET /api/v1/jobs/{job_id}`
+- `DELETE /api/v1/jobs/{job_id}`
+- `POST /api/v1/optimize/run`
+- `POST /api/v1/jobs/optimize-legacy`
+
+## 5. Example
 
 ```bash
 curl -X POST "http://127.0.0.1:8000/api/v1/jobs/optimize" \
