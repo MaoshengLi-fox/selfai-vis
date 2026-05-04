@@ -279,14 +279,16 @@ export default function DemoWorkbench() {
               ))}
             </div>
             <form onSubmit={handleCommandSubmit} className={styles.commandForm}>
-              <textarea
-                ref={inputRef}
-                value={command}
-                onChange={(event) => setCommand(event.target.value)}
-                placeholder={DEFAULT_PROMPT}
-                rows={3}
-              />
-              <button type="submit">Send</button>
+              <div className={styles.commandInputWrap}>
+                <textarea
+                  ref={inputRef}
+                  value={command}
+                  onChange={(event) => setCommand(event.target.value)}
+                  placeholder={DEFAULT_PROMPT}
+                  rows={3}
+                />
+                <button type="submit">Send</button>
+              </div>
             </form>
           </article>
 
