@@ -1,11 +1,31 @@
+:global(html),
+:global(body) {
+  scrollbar-gutter: stable both-edges;
+  overflow-y: scroll;
+}
+
+:global(.demo-page),
+:global(.demo-page) *,
+:global(.demo-page) *::before,
+:global(.demo-page) *::after {
+  box-sizing: border-box;
+}
+
 :global(.demo-page).page {
+  --console-content-width: 1292px;
+  --layout-gap: 12px;
+  --surface-border: #b7c6dd;
+  --surface-bg: rgba(251, 253, 255, 0.94);
+  --surface-shadow: 0 10px 26px rgba(22, 40, 71, 0.08);
   min-height: 100vh;
   background:
     radial-gradient(circle at 12% 8%, rgba(131, 165, 228, 0.25), transparent 28%),
     radial-gradient(circle at 88% 20%, rgba(233, 183, 124, 0.22), transparent 25%),
     linear-gradient(180deg, #edf2fb 0%, #e7edf8 100%);
   color: #1b2638;
-  padding: 20px 22px 20px;
+  padding: 22px 18px 20px;
+  overflow-x: clip;
+  scrollbar-gutter: stable both-edges;
 }
 
 :global(.demo-page) .backButton {
@@ -26,45 +46,74 @@
 }
 
 :global(.demo-page) .shell {
-  max-width: 1380px;
+  width: min(100%, var(--console-content-width));
+  max-width: var(--console-content-width);
+  min-width: 0;
   margin: 0 auto;
   display: grid;
-  gap: 8px;
+  gap: var(--layout-gap);
+  overflow-x: hidden;
+}
+
+:global(.demo-page) .switcherWrap {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 4px;
 }
 
 :global(.demo-page) .topHeader {
-  border: 1px solid #b7c6dd;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--surface-border);
   border-radius: 12px;
-  background: rgba(251, 253, 255, 0.92);
-  box-shadow: 0 8px 24px rgba(22, 40, 71, 0.08);
-  padding: 10px 14px;
+  background: var(--surface-bg);
+  box-shadow: var(--surface-shadow);
+  padding: 12px 14px;
 }
 
 :global(.demo-page) .topHeader h1 {
   font-size: 1.18rem;
   color: #1a2c46;
+  margin: 0;
 }
 
 :global(.demo-page) .headerStatus {
   margin-top: 6px;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
   color: #3b4a60;
   font-size: 0.86rem;
+  min-width: 0;
+  max-width: 100%;
 }
 
 :global(.demo-page) .headerStatus span {
   background: #e9f0fc;
   border: 1px solid #c5d4ea;
   border-radius: 999px;
-  padding: 4px 10px;
+  padding: 4px 11px;
+  line-height: 1.25;
+  min-width: 0;
+  max-width: min(100%, 620px);
+  white-space: nowrap;
+  word-break: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 :global(.demo-page) .switcher {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
+  grid-auto-rows: minmax(102px, auto);
+  gap: var(--layout-gap);
+  width: 100%;
+  min-width: 0;
 }
 
 :global(.demo-page) .switcherTitle {
@@ -75,15 +124,19 @@
 
 :global(.demo-page) .experimentCard {
   text-align: left;
-  border: 1px solid #b7c6dd;
-  border-radius: 10px;
-  padding: 10px;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  border: 1px solid var(--surface-border);
+  border-radius: 12px;
+  padding: 11px 12px;
   background: rgba(247, 251, 255, 0.98);
   color: #22344e;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
   display: grid;
-  gap: 5px;
+  gap: 6px;
 }
 
 :global(.demo-page) .experimentCard:hover {
@@ -103,6 +156,40 @@
   font-style: normal;
 }
 
+:global(.demo-page) .experimentCard strong,
+:global(.demo-page) .experimentCard span,
+:global(.demo-page) .experimentCard em {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:global(.demo-page) .modelPickerLabel {
+  display: grid;
+  gap: 4px;
+  font-size: 0.74rem;
+  color: #5c6f8b;
+}
+
+:global(.demo-page) .pickerRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+  min-width: 0;
+}
+
+:global(.demo-page) .modelPicker {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #bfd0e8;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #22344e;
+  padding: 5px 8px;
+  font-size: 0.8rem;
+}
+
 :global(.demo-page) .experimentCardActive {
   border-color: #4d74a9;
   background: #deebfb;
@@ -115,35 +202,49 @@
 }
 
 :global(.demo-page) .mainGrid {
+  width: 100%;
   display: grid;
-  gap: 10px;
-  grid-template-columns: minmax(0, 1.28fr) minmax(0, 1fr);
+  column-gap: var(--layout-gap);
+  row-gap: var(--layout-gap);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: stretch;
 }
 
 :global(.demo-page) .panel {
-  border: 1px solid #b7c6dd;
+  border: 1px solid var(--surface-border);
   border-radius: 14px;
-  background: rgba(251, 253, 255, 0.93);
-  box-shadow: 0 8px 24px rgba(22, 40, 71, 0.08);
-  padding: 12px;
+  background: var(--surface-bg);
+  box-shadow: var(--surface-shadow);
+  padding: 12px 13px;
   backdrop-filter: blur(1.5px);
 }
 
 :global(.demo-page) .workspacePanel {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  min-height: 730px;
+  min-width: 0;
+  max-width: none;
+  overflow: hidden;
 }
 
 :global(.demo-page) .experimentPanel {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  min-height: 730px;
+  min-width: 0;
+  max-width: none;
+  overflow: hidden;
 }
 
 :global(.demo-page) .experimentScroll {
   margin-top: 2px;
-  padding-right: 4px;
-  overflow: visible;
+  padding-right: 2px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1 1 auto;
 }
 
 :global(.demo-page) .panel h2 {
@@ -159,9 +260,13 @@
   border-radius: 11px;
   padding: 10px;
   background: linear-gradient(180deg, #f7faff 0%, #f2f7ff 100%);
-  flex: 1;
-  min-height: 0;
-  overflow: auto;
+  flex: 1 1 auto;
+  min-height: 520px;
+  height: clamp(520px, 56vh, 680px);
+  min-width: 0;
+  max-width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 :global(.demo-page) .message {
@@ -171,6 +276,8 @@
   background: linear-gradient(180deg, #ffffff 0%, #f9fcff 100%);
   border: 1px solid #d6e2f1;
   box-shadow: 0 2px 8px rgba(52, 78, 116, 0.06);
+  min-width: 0;
+  max-width: 100%;
 }
 
 :global(.demo-page) .message label {
@@ -186,6 +293,8 @@
   font-size: 0.9rem;
   color: #22344e;
   white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
   line-height: 1.45;
 }
 
@@ -244,7 +353,7 @@
   background: linear-gradient(180deg, #f7faff 0%, #f2f7ff 100%);
 }
 
-:global(.demo-page) .card + .card {
+:global(.demo-page) .card+.card {
   margin-top: 8px;
 }
 
@@ -286,6 +395,13 @@
 :global(.demo-page) .statusList dt {
   color: #587196;
   font-size: 0.78rem;
+}
+
+:global(.demo-page) .statusList dd {
+  margin: 0;
+  min-width: 0;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 :global(.demo-page) .chart {
@@ -334,6 +450,7 @@
   line-height: 1.25;
   text-align: left;
   color: #293a56;
+  white-space: normal;
   word-break: break-word;
   overflow-wrap: anywhere;
 }
@@ -372,6 +489,7 @@
 }
 
 :global(.demo-page) .conversation::-webkit-scrollbar,
+:global(.demo-page) .switcherWrap::-webkit-scrollbar,
 :global(.demo-page) .experimentScroll::-webkit-scrollbar,
 :global(.demo-page) .tableWrap::-webkit-scrollbar {
   width: 8px;
@@ -379,34 +497,40 @@
 }
 
 :global(.demo-page) .conversation::-webkit-scrollbar-thumb,
+:global(.demo-page) .switcherWrap::-webkit-scrollbar-thumb,
 :global(.demo-page) .experimentScroll::-webkit-scrollbar-thumb,
 :global(.demo-page) .tableWrap::-webkit-scrollbar-thumb {
   background: rgba(124, 148, 183, 0.65);
   border-radius: 999px;
 }
 
-@media (max-width: 1120px) {
-  :global(.demo-page) .switcher {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
+@media (max-width: 1330px) {
   :global(.demo-page) .mainGrid {
     grid-template-columns: minmax(0, 1fr);
   }
 
+  :global(.demo-page) .workspacePanel,
+  :global(.demo-page) .experimentPanel {
+    width: 100%;
+    max-width: 100%;
+    min-height: 0;
+  }
+
   :global(.demo-page) .experimentScroll {
-    overflow: visible;
+    overflow-y: auto;
+    overflow-x: hidden;
     padding-right: 0;
   }
 }
 
 @media (max-width: 680px) {
-  :global(.demo-page).page {
-    padding: 16px 12px 14px;
+  :global(.demo-page) .switcher {
+    grid-template-columns: repeat(4, minmax(220px, 1fr));
+    min-width: calc(4 * 220px + 3 * var(--layout-gap));
   }
 
-  :global(.demo-page) .switcher {
-    grid-template-columns: minmax(0, 1fr);
+  :global(.demo-page).page {
+    padding: 16px 12px 14px;
   }
 
   :global(.demo-page) .conversation {
@@ -428,8 +552,66 @@
     gap: 3px;
   }
 
+  :global(.demo-page) .pickerRow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   :global(.demo-page) .cardHint {
     text-align: left;
     white-space: normal;
   }
+}
+
+:global(.demo-page) .shell {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: stretch;
+}
+
+:global(.demo-page) .shell>* {
+  min-width: 0;
+  max-width: 100%;
+}
+
+:global(.demo-page) .topHeader,
+:global(.demo-page) .switcherWrap,
+:global(.demo-page) .mainGrid,
+:global(.demo-page) .logPanel {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+:global(.demo-page) .workspacePanel,
+:global(.demo-page) .experimentPanel {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+:global(.demo-page) .experimentScroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+}
+
+:global(.demo-page) .conversation {
+  min-height: 0;
+  min-width: 0;
+  scrollbar-gutter: stable;
+}
+
+:global(.demo-page) .card,
+:global(.demo-page) .tableWrap,
+:global(.demo-page) .tableWrap table {
+  min-width: 0;
+  max-width: 100%;
+}
+
+:global(.demo-page) .experimentCard {
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
 }

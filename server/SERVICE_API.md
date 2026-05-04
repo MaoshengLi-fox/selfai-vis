@@ -16,6 +16,7 @@ uvicorn service_backend.app:app --host 0.0.0.0 --port 8000 --reload
 
 - `GET /api/v1/health`
 - `GET /api/v1/meta/metrics`
+- `GET /api/v1/demo/experiments` (demo view data aggregated from `server/data_and_results`)
 - `POST /api/v1/jobs/optimize` (async, strict `main_selfai` mode with Optuna)
 - `GET /api/v1/jobs`
 - `GET /api/v1/jobs/{job_id}`

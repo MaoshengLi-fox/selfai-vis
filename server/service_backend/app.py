@@ -5,9 +5,11 @@ from datetime import datetime
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
+from .demo_loader import load_demo_experiments
 from .job_manager import JobManager, JobRecord
 from .runner import METRIC_DICT, run_main_selfai_job, run_optimization_job
 from .schemas import (
+    DemoExperimentResponse,
     HealthResponse,
     JobCreateResponse,
     JobStatusResponse,
@@ -48,6 +50,11 @@ def health() -> HealthResponse:
 @app.get("/api/v1/meta/metrics", response_model=MetricsResponse)
 def metrics() -> MetricsResponse:
     return MetricsResponse(metric_dicts=METRIC_DICT)
+
+
+@app.get("/api/v1/demo/experiments", response_model=list[DemoExperimentResponse])
+def demo_experiments() -> list[DemoExperimentResponse]:
+    return [DemoExperimentResponse(**item) for item in load_demo_experiments()]
 
 
 @app.post("/api/v1/jobs/optimize", response_model=JobCreateResponse)

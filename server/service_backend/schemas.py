@@ -100,3 +100,39 @@ class HealthResponse(BaseModel):
 
 class MetricsResponse(BaseModel):
     metric_dicts: dict[str, str]
+
+
+class DemoProgress(BaseModel):
+    done: int
+    total: int
+
+
+class DemoTrial(BaseModel):
+    id: int | str
+    proposal: str
+    metric: float | None = None
+    status: str
+
+
+class DemoMessage(BaseModel):
+    role: Literal["user", "agent"]
+    content: str
+
+
+class DemoExperimentResponse(BaseModel):
+    id: str
+    category: str
+    taskKey: str
+    taskName: str
+    modelName: str
+    shortName: str
+    name: str
+    objective: str
+    status: str
+    progress: DemoProgress
+    metricName: str
+    bestMetric: float | None = None
+    curve: list[float] = Field(default_factory=list)
+    trials: list[DemoTrial] = Field(default_factory=list)
+    logs: list[str] = Field(default_factory=list)
+    conversation: list[DemoMessage] = Field(default_factory=list)

@@ -38,6 +38,7 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--nav-h) + 24px);
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -46,6 +47,7 @@ body {
   color: var(--t2);
   font-size: 17px;
   line-height: 1.75;
+  overflow-y: scroll;
   -webkit-font-smoothing: antialiased;
 }
 
