@@ -1,0 +1,225 @@
+[
+    {
+        "role": "system",
+        "content": {
+            "description": "You are a Senior Computer Vision Researcher specializing in ablation study (with grid)",
+            "model": "Masked Autoencoder inspired by BERT and GPT",
+            "task": "Image Classification",
+            "basic_idea": "Masked Autoencoders (MAE) are a self-supervised learning method for vision tasks where a large portion of image patches are randomly masked, and the model learns to reconstruct the missing patches. The encoder processes only visible patches, making it efficient, while a lightweight decoder reconstructs the full image. This approach enables the model to learn rich visual representations without labeled data.",
+            "straregy":
+            {
+                "linear probing": "the pretrained MAE encoder is frozen and only a linear classifier is trained on top of its features. This tests how well the encoder's learned representations transfer to downstream tasks without further tuning.",
+                "fine-tuning": "the entire MAE model, including the encoder, is updated during training on the target task. "
+            },
+            "instruction": "Complete instructions under limited trials",
+            "link": "https://openaccess.thecvf.com/content/CVPR2022/papers/He_Masked_Autoencoders_Are_Scalable_Vision_Learners_CVPR_2022_paper.pdf"
+        }
+    },
+    {
+        "role": "user",
+        "content": {
+            "max_trials": 20,
+            "completed_trials": 20,
+            "search_space": [
+                {
+                    "masking_ratio": [
+                        10,
+                        20,
+                        30,
+                        40,
+                        50,
+                        60,
+                        70,
+                        75,
+                        80,
+                        90
+                    ],
+                    "strategy": [
+                        "linear probing",
+                        "fine-tuning"
+                    ]
+                }
+            ],
+        "trials": [
+                {
+                    "number": 0,
+                    "params": {
+                        "masking_ratio": 10,
+                        "strategy": "linear probing"
+                    },
+                    "validation accuracy": 54.6
+                },
+                {
+                    "number": 1,
+                    "params": {
+                        "masking_ratio": 20,
+                        "strategy": "linear probing"
+                    },
+                    "validation accuracy": 58.9
+                },
+                {
+                    "number": 2,
+                    "params": {
+                        "masking_ratio": 30,
+                        "strategy": "linear probing"
+                    },
+                    "validation accuracy": 61.7
+                },
+                {
+                    "number": 3,
+                    "params": {
+                        "masking_ratio": 40,
+                        "strategy": "linear probing"
+                    },
+                    "validation accuracy": 67.0
+                },
+                {
+                    "number": 4,
+                    "params": {
+                        "masking_ratio": 50,
+                        "strategy": "linear probing"
+                    },
+                    "validation accuracy": 69.9
+                },
+                {
+                    "number": 5,
+                    "params": {
+                        "masking_ratio": 60,
+                        "strategy": "linear probing"
+                    },
+                    "validation accuracy": 71.8
+                },
+                {
+                    "number": 6,
+                    "params": {
+                        "masking_ratio": 70,
+                        "strategy": "linear probing"
+                    },
+                    "validation accuracy": 73.2
+                },
+                {
+                    "number": 7,
+                    "params": {
+                        "masking_ratio": 75,
+                        "strategy": "linear probing"
+                    },
+                    "validation accuracy": 73.5
+                },
+                {
+                    "number": 8,
+                    "params": {
+                        "masking_ratio": 80,
+                        "strategy": "linear probing"
+                    },
+                    "validation accuracy": 71.8
+                },
+                {
+                    "number": 9,
+                    "params": {
+                        "masking_ratio": 90,
+                        "strategy": "linear probing"
+                    },
+                    "validation accuracy": 66.1
+                },
+                {
+                    "number": 10,
+                    "params": {
+                        "masking_ratio": 10,
+                        "strategy": "fine-tuning"
+                    },
+                    "validation accuracy": 83.2
+                },
+                {
+                    "number": 11,
+                    "params": {
+                        "masking_ratio": 20,
+                        "strategy": "fine-tuning"
+                    },
+                    "validation accuracy": 83.4
+                },
+                {
+                    "number": 12,
+                    "params": {
+                        "masking_ratio": 30,
+                        "strategy": "fine-tuning"
+                    },
+                    "validation accuracy": 83.4
+                },
+                {
+                    "number": 13,
+                    "params": {
+                        "masking_ratio": 40,
+                        "strategy": "fine-tuning"
+                    },
+                    "validation accuracy": 84.7
+                },
+                {
+                    "number": 14,
+                    "params": {
+                        "masking_ratio": 50,
+                        "strategy": "fine-tuning"
+                    },
+                    "validation accuracy": 84.9
+                },
+                {
+                    "number": 15,
+                    "params": {
+                        "masking_ratio": 60,
+                        "strategy": "fine-tuning"
+                    },
+                    "validation accuracy": 85.0
+                },
+                {
+                    "number": 16,
+                    "params": {
+                        "masking_ratio": 70,
+                        "strategy": "fine-tuning"
+                    },
+                    "validation accuracy": 84.9
+                },
+                {
+                    "number": 17,
+                    "params": {
+                        "masking_ratio": 75,
+                        "strategy": "fine-tuning"
+                    },
+                    "validation accuracy": 84.9
+                },
+                {
+                    "number": 18,
+                    "params": {
+                        "masking_ratio": 80,
+                        "strategy": "fine-tuning"
+                    },
+                    "validation accuracy": 84.5
+                },
+                {
+                    "number": 19,
+                    "params": {
+                        "masking_ratio": 90,
+                        "strategy": "fine-tuning"
+                    },
+                    "validation accuracy": 83.0
+                }
+            ],
+            "instructions": [
+                {
+                    "task": "Analysis of Current Trials",
+                    "description": "1. Summarize performance metrics\n2. Evaluate performance trends for hyper-parameters.\n3. Highlight promising hyper-parameter combinations."
+                },
+                {
+                    "task": "Optimization Recommendation",
+                    "description": "Based on the hyper-parameter analysis, recommend hyper-parameters for next $n_jobs trials based on the provided search space, along with reasons for each choice. Your suggestion must be satisfied below requirements:\n1) Suggested trials can't be in the completed trials \n 2) Suggested trials can't re-test the same hyper-parameters. \n 3) Suggested hyper-parameters should be from the given search space."
+                },
+                {
+                    "task": "Experiment Planning",
+                    "description": "Convert Optimization Recommendation to be below YAML format with ```yaml```: $trial_fmt, and 1) No markdown code blocks.\n 2) Output ONLY raw YAML without explanations."
+                },
+                {
+                    "task": "Stop Optimization",
+                    "description": "Evaluate whether optimization should stop. Only output 'Answer: Yes' if ALL the following conditions are true:\n- The best achieved result is at least 10% better than the initial baseline.\n- The confidence that additional trials will not yield meaningful improvements is high.\nOtherwise, output 'Answer: No with confidence score: <float between 0 and 1>'.\n\nIn either case, provide a short reason (1-2 sentences max) to justify the decision."
+                }
+            ]
+        }
+    }
+]

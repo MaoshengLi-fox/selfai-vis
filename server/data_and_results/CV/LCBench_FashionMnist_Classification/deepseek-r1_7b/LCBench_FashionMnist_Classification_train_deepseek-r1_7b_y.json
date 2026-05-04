@@ -1,0 +1,816 @@
+[
+    {
+        "role": "system",
+        "content": {
+            "description": "You are a Senior Computer Vision Researcher specializing in neural networks. 'nan' denotes unknown data. Provide professional and detailed answers for Fashion-MNIST classification.",
+            "model": "neural network",
+            "task": "Image Classification on Fashion-MNIST",
+            "basic_idea": "Leverage neural networks to extract spatial features from Fashion-MNIST images (28x28x1) and classify them into 10 categories.",
+            "instruction": "Design, implement, and optimize the model for Fashion-MNIST classification under limited computational trials."
+        }
+    },
+    {
+        "role": "user",
+        "content": {
+            "max_trials": 2000,
+            "completed_trials": 59,
+            "type": "trial",
+            "search_space": {
+                "batch_size": "range(16, 512)",
+                "learning_rate": "range(0.0001, 0.1)",
+                "momentum": "range(0.1, 0.99)",
+                "weight_decay": "range(1e-5, 0.1)",
+                "num_layers": "range(1, 4)",
+                "max_units": "range(64, 1024)",
+                "dropout": "range(0.0, 1.0)"
+            },
+            "trials": [
+                {
+                    "number": 820,
+                    "params": {
+                        "batch_size": "494",
+                        "learning_rate": "0.0009728868244350338",
+                        "momentum": "0.5242654373897977",
+                        "weight_decay": "0.006555437986605685",
+                        "num_layers": "3",
+                        "max_units": "213",
+                        "dropout": "0.19608926533204352"
+                    },
+                    "validation accuracy": 63.19292068481445
+                },
+                {
+                    "number": 1444,
+                    "params": {
+                        "batch_size": "277",
+                        "learning_rate": "0.006022407145923392",
+                        "momentum": "0.15654493893785848",
+                        "weight_decay": "0.08602307385353301",
+                        "num_layers": "2",
+                        "max_units": "761",
+                        "dropout": "0.9846267585408929"
+                    },
+                    "validation accuracy": 74.97738647460938
+                },
+                {
+                    "number": 1535,
+                    "params": {
+                        "batch_size": "34",
+                        "learning_rate": "0.027694513611783437",
+                        "momentum": "0.44739995454169945",
+                        "weight_decay": "0.04398464850332192",
+                        "num_layers": "True",
+                        "max_units": "66",
+                        "dropout": "0.585104284168454"
+                    },
+                    "validation accuracy": 81.61260986328125
+                },
+                {
+                    "number": 1990,
+                    "params": {
+                        "batch_size": 368,
+                        "learning_rate": 0.0007619522238776456,
+                        "momentum": 0.15251754393468603,
+                        "weight_decay": 0.0014932534536087187,
+                        "num_layers": 3,
+                        "max_units": 296,
+                        "dropout": 0.05656887935870625
+                    },
+                    "validation accuracy": 60.42770385742188
+                },
+                {
+                    "number": 1992,
+                    "params": {
+                        "batch_size": 356,
+                        "learning_rate": 0.16578021991466382,
+                        "momentum": 0.3915417551366547,
+                        "weight_decay": 0.0642440927532017,
+                        "num_layers": 1,
+                        "max_units": 170,
+                        "dropout": 0.7367629828538416
+                    },
+                    "validation accuracy": 83.11151123046875
+                },
+                {
+                    "number": 1987,
+                    "params": {
+                        "batch_size": 195,
+                        "learning_rate": 0.0005659724412014916,
+                        "momentum": 0.3432385729619786,
+                        "weight_decay": 0.02238775474279114,
+                        "num_layers": 1,
+                        "max_units": 115,
+                        "dropout": 0.4294566641264662
+                    },
+                    "validation accuracy": 81.25080871582031
+                },
+                {
+                    "number": 1984,
+                    "params": {
+                        "batch_size": 295,
+                        "learning_rate": 0.008779398962515663,
+                        "momentum": 0.26638848354568195,
+                        "weight_decay": 0.030964958869527374,
+                        "num_layers": 2,
+                        "max_units": 635,
+                        "dropout": 0.24323664062969996
+                    },
+                    "validation accuracy": 82.54296112060547
+                },
+                {
+                    "number": 1985,
+                    "params": {
+                        "batch_size": 406,
+                        "learning_rate": 0.3,
+                        "momentum": 0.1,
+                        "weight_decay": 0.09189442017921046,
+                        "num_layers": 4,
+                        "max_units": 513,
+                        "dropout": 0.1
+                    },
+                    "validation accuracy": 73.91781616210938
+                },
+                {
+                    "number": 1986,
+                    "params": {
+                        "batch_size": 69,
+                        "learning_rate": 0.07398762842527538,
+                        "momentum": 0.42826868724651623,
+                        "weight_decay": 0.045718681860068396,
+                        "num_layers": 4,
+                        "max_units": 81,
+                        "dropout": 0.585054414268562
+                    },
+                    "validation accuracy": 78.9959945678711
+                },
+                {
+                    "number": 1991,
+                    "params": {
+                        "batch_size": 20,
+                        "learning_rate": 0.003025939672631207,
+                        "momentum": 0.2602057927090058,
+                        "weight_decay": 0.0413442310718028,
+                        "num_layers": 2,
+                        "max_units": 643,
+                        "dropout": 0.8813635254323724
+                    },
+                    "validation accuracy": 81.09574890136719
+                },
+                {
+                    "number": 1996,
+                    "params": {
+                        "batch_size": 490,
+                        "learning_rate": 0.009033933337892193,
+                        "momentum": 0.36498221426319816,
+                        "weight_decay": 0.06642147260734924,
+                        "num_layers": 4,
+                        "max_units": 237,
+                        "dropout": 0.5175433825508995
+                    },
+                    "validation accuracy": 58.85127258300781
+                },
+                {
+                    "number": 1994,
+                    "params": {
+                        "batch_size": 215,
+                        "learning_rate": 0.08720189293398417,
+                        "momentum": 0.12244940476127698,
+                        "weight_decay": 0.026564663695399254,
+                        "num_layers": 2,
+                        "max_units": 387,
+                        "dropout": 0.5175433825508995
+                    },
+                    "validation accuracy": 82.9822998046875
+                },
+                {
+                    "number": 1999,
+                    "params": {
+                        "batch_size": 57,
+                        "learning_rate": 0.09369657122908694,
+                        "momentum": 0.28168216579061095,
+                        "weight_decay": 0.05218621267283741,
+                        "num_layers": 4,
+                        "max_units": 408,
+                        "dropout": 0.404549055549585
+                    },
+                    "validation accuracy": 77.12236785888672
+                },
+                {
+                    "number": 1983,
+                    "params": {
+                        "batch_size": 36,
+                        "learning_rate": 0.00025813520648253045,
+                        "momentum": 0.4024689924917636,
+                        "weight_decay": 0.07563397781656633,
+                        "num_layers": 4,
+                        "max_units": 84,
+                        "dropout": 0.13311399580790562
+                    },
+                    "validation accuracy": 55.20093154907226
+                },
+                {
+                    "number": 1988,
+                    "params": {
+                        "batch_size": 20,
+                        "learning_rate": 0.00201849284995381,
+                        "momentum": 0.842987128055932,
+                        "weight_decay": 0.0268391281639566,
+                        "num_layers": 2,
+                        "max_units": 896,
+                        "dropout": 0.43162799901159155
+                    },
+                    "validation accuracy": 84.48766326904297
+                },
+                {
+                    "number": 1995,
+                    "params": {
+                        "batch_size": 155,
+                        "learning_rate": 0.00024633520444752643,
+                        "momentum": 0.43817473471411583,
+                        "weight_decay": 0.08404347250877163,
+                        "num_layers": 2,
+                        "max_units": 325,
+                        "dropout": 0.635370024639694
+                    },
+                    "validation accuracy": 71.01692962646484
+                },
+                {
+                    "number": 1976,
+                    "params": {
+                        "batch_size": 454,
+                        "learning_rate": 0.00389807613502906,
+                        "momentum": 0.27269115996334625,
+                        "weight_decay": 0.05107428003940984,
+                        "num_layers": 3,
+                        "max_units": 553,
+                        "dropout": 0.2711996365207163
+                    },
+                    "validation accuracy": 72.95516204833984
+                },
+                {
+                    "number": 1977,
+                    "params": {
+                        "batch_size": 305,
+                        "learning_rate": 0.036679398021341604,
+                        "momentum": 0.17473834535032015,
+                        "weight_decay": 0.08004435916795632,
+                        "num_layers": 4,
+                        "max_units": 530,
+                        "dropout": 0.03750063491149769
+                    },
+                    "validation accuracy": 73.82090759277344
+                },
+                {
+                    "number": 1980,
+                    "params": {
+                        "batch_size": 164,
+                        "learning_rate": 0.04200249287184766,
+                        "momentum": 0.16559514147091875,
+                        "weight_decay": 0.059717225012018926,
+                        "num_layers": 2,
+                        "max_units": 285,
+                        "dropout": 0.7612654656668524
+                    },
+                    "validation accuracy": 81.97441864013672
+                },
+                {
+                    "number": 1978,
+                    "params": {
+                        "batch_size": 78,
+                        "learning_rate": 0.00014839130432528938,
+                        "momentum": 0.19991922142779964,
+                        "weight_decay": 0.08419571302959351,
+                        "num_layers": 3,
+                        "max_units": 931,
+                        "dropout": 0.30906916669678
+                    },
+                    "validation accuracy": 59.20015335083008
+                },
+                {
+                    "number": 1975,
+                    "params": {
+                        "batch_size": 40,
+                        "learning_rate": 0.0009269788588407484,
+                        "momentum": 0.6294143647913284,
+                        "weight_decay": 0.0624529982768402,
+                        "num_layers": 4,
+                        "max_units": 76,
+                        "dropout": 0.3857753853080127
+                    },
+                    "validation accuracy": 74.73833465576172
+                },
+                {
+                    "number": 1982,
+                    "params": {
+                        "batch_size": 150,
+                        "learning_rate": 0.003679744126557601,
+                        "momentum": 0.1251410583624418,
+                        "weight_decay": 0.0716631841579152,
+                        "num_layers": 2,
+                        "max_units": 622,
+                        "dropout": 0.4127169435572027
+                    },
+                    "validation accuracy": 80.15247344970703
+                },
+                {
+                    "number": 1970,
+                    "params": {
+                        "batch_size": 66,
+                        "learning_rate": 0.001176698102336868,
+                        "momentum": 0.48658368246989436,
+                        "weight_decay": 0.09854723631038233,
+                        "num_layers": 1,
+                        "max_units": 666,
+                        "dropout": 0.749954966501362
+                    },
+                    "validation accuracy": 82.33621978759766
+                },
+                {
+                    "number": 1981,
+                    "params": {
+                        "batch_size": 37,
+                        "learning_rate": 0.00019555667978210612,
+                        "momentum": 0.9593159299280853,
+                        "weight_decay": 0.023132352453007633,
+                        "num_layers": 1,
+                        "max_units": 195,
+                        "dropout": 0.7755646521239984
+                    },
+                    "validation accuracy": 84.03540802001953
+                },
+                {
+                    "number": 1993,
+                    "params": {
+                        "batch_size": 98,
+                        "learning_rate": 0.003649481164554704,
+                        "momentum": 0.7358882129370595,
+                        "weight_decay": 0.09186574894289257,
+                        "num_layers": 4,
+                        "max_units": 109,
+                        "dropout": 0.8291542222582079
+                    },
+                    "validation accuracy": 68.71688842773439
+                },
+                {
+                    "number": 1971,
+                    "params": {
+                        "batch_size": 37,
+                        "learning_rate": 0.027881900498758383,
+                        "momentum": 0.3117491706253363,
+                        "weight_decay": 0.06857724674517676,
+                        "num_layers": 1,
+                        "max_units": 113,
+                        "dropout": 0.9992073059281495
+                    },
+                    "validation accuracy": 81.94857025146484
+                },
+                {
+                    "number": 1974,
+                    "params": {
+                        "batch_size": 129,
+                        "learning_rate": 0.00012419994100247786,
+                        "momentum": 0.21033715943093514,
+                        "weight_decay": 0.09684557985973082,
+                        "num_layers": 1,
+                        "max_units": 317,
+                        "dropout": 0.510790899538214
+                    },
+                    "validation accuracy": 72.28324127197266
+                },
+                {
+                    "number": 1997,
+                    "params": {
+                        "batch_size": 166,
+                        "learning_rate": 0.037966280954296834,
+                        "momentum": 0.4964137828331017,
+                        "weight_decay": 0.017773569131463184,
+                        "num_layers": 3,
+                        "max_units": 236,
+                        "dropout": 0.36345372331369563
+                    },
+                    "validation accuracy": 84.40367126464844
+                },
+                {
+                    "number": 1965,
+                    "params": {
+                        "batch_size": 364,
+                        "learning_rate": 0.1788140604519203,
+                        "momentum": 0.10168826838725037,
+                        "weight_decay": 0.05039034032601648,
+                        "num_layers": 1,
+                        "max_units": 672,
+                        "dropout": 0.7029009211760336
+                    },
+                    "validation accuracy": 76.44398498535156
+                },
+                {
+                    "number": 1968,
+                    "params": {
+                        "batch_size": 477,
+                        "learning_rate": 0.0018723686142138518,
+                        "momentum": 0.15603697543864903,
+                        "weight_decay": 0.045417693872676274,
+                        "num_layers": 1,
+                        "max_units": 82,
+                        "dropout": 0.6276252863276511
+                    },
+                    "validation accuracy": 78.54373931884766
+                },
+                {
+                    "number": 1972,
+                    "params": {
+                        "batch_size": 29,
+                        "learning_rate": 0.005890550617117782,
+                        "momentum": 0.8308498173270186,
+                        "weight_decay": 0.029978187475344812,
+                        "num_layers": 3,
+                        "max_units": 80,
+                        "dropout": 0.2650753665543889
+                    },
+                    "validation accuracy": 82.22638702392578
+                },
+                {
+                    "number": 1960,
+                    "params": {
+                        "batch_size": 111,
+                        "learning_rate": 0.0004995840971269145,
+                        "momentum": 0.7949140370019104,
+                        "weight_decay": 0.011000784048302492,
+                        "num_layers": 2,
+                        "max_units": 127,
+                        "dropout": 0.9913690562264066
+                    },
+                    "validation accuracy": 74.26023864746094
+                },
+                {
+                    "number": 1967,
+                    "params": {
+                        "batch_size": 68,
+                        "learning_rate": 0.00016709320216412132,
+                        "momentum": 0.24270678962174952,
+                        "weight_decay": 0.018997528982235213,
+                        "num_layers": 2,
+                        "max_units": 214,
+                        "dropout": 0.11074744751601684
+                    },
+                    "validation accuracy": 75.43610382080078
+                },
+                {
+                    "number": 1989,
+                    "params": {
+                        "batch_size": 195,
+                        "learning_rate": 0.016578021991466383,
+                        "momentum": 0.21759528863785083,
+                        "weight_decay": 0.0743226851586795,
+                        "num_layers": 1,
+                        "max_units": 65,
+                        "dropout": 0.1264930200200618
+                    },
+                    "validation accuracy": 82.94999694824219
+                },
+                {
+                    "number": 1957,
+                    "params": {
+                        "batch_size": 28,
+                        "learning_rate": 0.000984,
+                        "momentum": 0.5768,
+                        "weight_decay": 0.0844,
+                        "num_layers": 2,
+                        "max_units": 67,
+                        "dropout": 0.319
+                    },
+                    "validation accuracy": 81.23788452148438
+                },
+                {
+                    "number": 1964,
+                    "params": {
+                        "batch_size": 361,
+                        "learning_rate": 0.000235,
+                        "momentum": 0.795,
+                        "weight_decay": 0.0918,
+                        "num_layers": 3,
+                        "max_units": 152,
+                        "dropout": 0.816
+                    },
+                    "validation accuracy": 60.40832138061523
+                },
+                {
+                    "number": 1973,
+                    "params": {
+                        "batch_size": 16,
+                        "learning_rate": 0.00244,
+                        "momentum": 0.531,
+                        "weight_decay": 0.0235,
+                        "num_layers": 3,
+                        "max_units": 519,
+                        "dropout": 0.742
+                    },
+                    "validation accuracy": 83.71882629394531
+                },
+                {
+                    "number": 1969,
+                    "params": {
+                        "batch_size": 210,
+                        "learning_rate": 0.00153,
+                        "momentum": 0.118,
+                        "weight_decay": 0.0572,
+                        "num_layers": 3,
+                        "max_units": 381,
+                        "dropout": 0.351
+                    },
+                    "validation accuracy": 69.19498443603516
+                },
+                {
+                    "number": 1966,
+                    "params": {
+                        "batch_size": 364,
+                        "learning_rate": 0.05760459613576595,
+                        "momentum": 0.7618805968911863,
+                        "weight_decay": 0.06368948899329846,
+                        "num_layers": 4,
+                        "max_units": 321,
+                        "dropout": 0.7010864186707801
+                    },
+                    "validation accuracy": 78.55020141601562
+                },
+                {
+                    "number": 1961,
+                    "params": {
+                        "batch_size": 27,
+                        "learning_rate": 0.005955500934179373,
+                        "momentum": 0.14612068316381047,
+                        "weight_decay": 0.05766753398836224,
+                        "num_layers": 4,
+                        "max_units": 334,
+                        "dropout": 0.422122712995907
+                    },
+                    "validation accuracy": 79.1898193359375
+                },
+                {
+                    "number": 1962,
+                    "params": {
+                        "batch_size": 27,
+                        "learning_rate": 0.005955500934179373,
+                        "momentum": 0.4477546133202858,
+                        "weight_decay": 0.07539226718690177,
+                        "num_layers": 2,
+                        "max_units": 183,
+                        "dropout": 0.14670835162114504
+                    },
+                    "validation accuracy": 81.86457824707031
+                },
+                {
+                    "number": 1949,
+                    "params": {
+                        "batch_size": 441,
+                        "learning_rate": 0.013303574307057446,
+                        "momentum": 0.6988195400851359,
+                        "weight_decay": 0.03952408826490622,
+                        "num_layers": 3,
+                        "max_units": 113,
+                        "dropout": 0.3209247747884082
+                    },
+                    "validation accuracy": 81.82582092285156
+                },
+                {
+                    "number": 1954,
+                    "params": {
+                        "batch_size": 76,
+                        "learning_rate": 0.016709912361895438,
+                        "momentum": 0.1012265446614596,
+                        "weight_decay": 0.02815351423784821,
+                        "num_layers": 2,
+                        "max_units": 189,
+                        "dropout": 0.4145288401527294
+                    },
+                    "validation accuracy": 84.40367126464844
+                },
+                {
+                    "number": 1958,
+                    "params": {
+                        "batch_size": 68,
+                        "learning_rate": 0.006429705379057127,
+                        "momentum": 0.862647495885412,
+                        "weight_decay": 0.09868595159739037,
+                        "num_layers": 4,
+                        "max_units": 164,
+                        "dropout": 0.9210013201080003
+                    },
+                    "validation accuracy": 67.68962097167969
+                },
+                {
+                    "number": 1950,
+                    "params": {
+                        "batch_size": 40,
+                        "learning_rate": 0.00013014897379740842,
+                        "momentum": 0.15986730899741922,
+                        "weight_decay": 0.05082944355290439,
+                        "num_layers": 1,
+                        "max_units": 847,
+                        "dropout": 0.7057700490646865
+                    },
+                    "validation accuracy": 77.80075073242188
+                },
+                {
+                    "number": 1951,
+                    "params": {
+                        "batch_size": 155,
+                        "learning_rate": 0.0003514737212174385,
+                        "momentum": 0.1282496510757194,
+                        "weight_decay": 0.04492491045046276,
+                        "num_layers": 1,
+                        "max_units": 496,
+                        "dropout": 0.7478698615972984
+                    },
+                    "validation accuracy": 75.92066192626953
+                },
+                {
+                    "number": 1953,
+                    "params": {
+                        "batch_size": 305,
+                        "learning_rate": 0.0025816402367566764,
+                        "momentum": 0.6599124145849915,
+                        "weight_decay": 0.04111011589883469,
+                        "num_layers": 4,
+                        "max_units": 700,
+                        "dropout": 0.6043582488728887
+                    },
+                    "validation accuracy": 66.73989105224611
+                },
+                {
+                    "number": 1979,
+                    "params": {
+                        "batch_size": 38,
+                        "learning_rate": 0.022986,
+                        "momentum": 0.293664,
+                        "weight_decay": 0.091431,
+                        "num_layers": 2,
+                        "max_units": 334,
+                        "dropout": 0.481477
+                    },
+                    "validation accuracy": 81.10867309570312
+                },
+                {
+                    "number": 1952,
+                    "params": {
+                        "batch_size": 60,
+                        "learning_rate": 0.006817,
+                        "momentum": 0.115889,
+                        "weight_decay": 0.032666,
+                        "num_layers": 2,
+                        "max_units": 786,
+                        "dropout": 0.513034
+                    },
+                    "validation accuracy": 83.81573486328125
+                },
+                {
+                    "number": 1963,
+                    "params": {
+                        "batch_size": 68,
+                        "learning_rate": 0.000378,
+                        "momentum": 0.648138,
+                        "weight_decay": 0.063027,
+                        "num_layers": 2,
+                        "max_units": 313,
+                        "dropout": 0.644288
+                    },
+                    "validation accuracy": 78.6600341796875
+                },
+                {
+                    "number": 1948,
+                    "params": {
+                        "batch_size": 39,
+                        "learning_rate": 0.002727143290576728,
+                        "momentum": 0.9063718238043793,
+                        "weight_decay": 0.04524603367663206,
+                        "num_layers": 1,
+                        "max_units": 71,
+                        "dropout": 0.31346670181453073
+                    },
+                    "validation accuracy": 83.15673828125
+                },
+                {
+                    "number": 1945,
+                    "params": {
+                        "batch_size": 27,
+                        "learning_rate": 0.0085902590018535,
+                        "momentum": 0.13952822901994144,
+                        "weight_decay": 0.08072693546985697,
+                        "num_layers": 4,
+                        "max_units": 124,
+                        "dropout": 0.5561214577068165
+                    },
+                    "validation accuracy": 76.12740325927734
+                },
+                {
+                    "number": 1956,
+                    "params": {
+                        "batch_size": 149,
+                        "learning_rate": 0.016472279880777704,
+                        "momentum": 0.45785600794276426,
+                        "weight_decay": 0.005173667371961281,
+                        "num_layers": 2,
+                        "max_units": 268,
+                        "dropout": 0.8147241284965092
+                    },
+                    "validation accuracy": 85.61829376220703
+                },
+                {
+                    "number": 1940,
+                    "params": {
+                        "batch_size": 24,
+                        "learning_rate": 0.00020561220703666704,
+                        "momentum": 0.1480383565149204,
+                        "weight_decay": 0.04175528686180452,
+                        "num_layers": 1,
+                        "max_units": 939,
+                        "dropout": 0.4578609433438371
+                    },
+                    "validation accuracy": 80.66287994384766
+                },
+                {
+                    "number": 1947,
+                    "params": {
+                        "batch_size": 135,
+                        "learning_rate": 0.016004668020397017,
+                        "momentum": 0.12118812679931835,
+                        "weight_decay": 0.030680513602696514,
+                        "num_layers": 2,
+                        "max_units": 778,
+                        "dropout": 0.9116121563902746
+                    },
+                    "validation accuracy": 83.02751922607422
+                },
+                {
+                    "number": 1998,
+                    "params": {
+                        "batch_size": 460,
+                        "learning_rate": 0.000970679187264114,
+                        "momentum": 0.10831280722274315,
+                        "weight_decay": 0.04399929984181338,
+                        "num_layers": 2,
+                        "max_units": 711,
+                        "dropout": 0.04374660218549853
+                    },
+                    "validation accuracy": 70.44837951660156
+                },
+                {
+                    "number": 1955,
+                    "params": {
+                        "batch_size": 158,
+                        "learning_rate": 0.0017473893325008647,
+                        "momentum": 0.78055629593382,
+                        "weight_decay": 0.08468926584935317,
+                        "num_layers": 3,
+                        "max_units": 986,
+                        "dropout": 0.7198112626619159
+                    },
+                    "validation accuracy": 75.836669921875
+                },
+                {
+                    "number": 1946,
+                    "params": {
+                        "batch_size": 304,
+                        "learning_rate": 0.0006756624138061606,
+                        "momentum": 0.2560783476372038,
+                        "weight_decay": 0.09786115588814431,
+                        "num_layers": 3,
+                        "max_units": 262,
+                        "dropout": 0.6313554784985045
+                    },
+                    "validation accuracy": 60.14342880249024
+                },
+                {
+                    "number": 1934,
+                    "params": {
+                        "batch_size": 91,
+                        "learning_rate": 0.00012126735624181489,
+                        "momentum": 0.2907948825474751,
+                        "weight_decay": 0.0025542175351806443,
+                        "num_layers": 1,
+                        "max_units": 330,
+                        "dropout": 0.49446968461149854
+                    },
+                    "validation accuracy": 74.29900360107422
+                }
+            ],
+            "instructions": [
+                {
+                    "task": "Analysis of Current Trials",
+                    "description": "1. Summarize performance metrics\n2. Evaluate performance trends for hyper-parameters.\n3. Highlight promising hyper-parameter combinations."
+                },
+                {
+                    "task": "Optimization Recommendation",
+                    "description": "Based on the hyper-parameter analysis, recommend hyper-parameters for next $n_jobs trials based on the provided search space, along with reasons for each choice. Your suggestion must be satisfied below requirements:\n1) Suggested trials can't be in the completed trials \n 2) Suggested trials can't re-test the same hyper-parameters. \n 3) Suggested hyper-parameters should be from the given search space."
+                },
+                {
+                    "task": "Experiment Planning",
+                    "description": "Convert Optimization Recommendation to be below YAML format with ```yaml```: $trial_fmt, and 1) No markdown code blocks.\n 2) Output ONLY raw YAML without explanations."
+                },
+                {
+                    "task": "Stop Optimization",
+                    "description": "Evaluate whether optimization should stop. Only output 'Answer: Yes' if ALL the following conditions are true:\n- The best achieved result is at least 10% better than the initial baseline.\n- The confidence that additional trials will not yield meaningful improvements is high.\nOtherwise, output 'Answer: No with confidence score: <float between 0 and 1>'.\n\nIn either case, provide a short reason (1-2 sentences max) to justify the decision."
+                }
+            ]
+        }
+    }
+]

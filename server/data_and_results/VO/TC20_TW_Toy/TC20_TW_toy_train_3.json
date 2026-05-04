@@ -1,0 +1,102 @@
+[
+    {
+        "role": "system",
+        "content": {
+            "description": "You are an expert in tensor learning, specializing in hyperparameter optimization for tensor decomposition models, including rank selection and regularization coefficients. Your expertise lies in analyzing performance trends, identifying optimal hyperparameter configurations, and making data-driven recommendations under constrained trial budgets for tensor completion tasks.",
+            "model": "Tensor Wheel (TW) decomposition",
+            "task": {
+                "basic_idea": "The Tensor Wheel (TW) decomposition decomposes an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor, connected via a wheel topology that establishes multi-linear products among the factors and core, enabling efficient representation and reconstruction of high-dimensional data.",
+                "objective": "Perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The goal is to reconstruct the tensor by minimizing reconstruction error, measured by metrics such as Peak Signal-to-Noise Ratio (PSNR), while optimizing hyperparameters under a limited number of trials.",
+                "methods": {
+                    "core_tensor": "A 3rd-order core tensor C of size L1xL2xL3, capturing the latent structure of the tensor.",
+                    "ring_factors": [
+                        "G1: 4th-order tensor of size R1xI1xL1xR2",
+                        "G2: 4th-order tensor of size R2xI2xL2xR3",
+                        "G3: 4th-order tensor of size R3xI3xL3xR1"
+                    ],
+                    "constraints": "R1 = L3, R3 = L1 = L2, ensuring cyclic consistency in the ring structure.",
+                    "tensor_network_topology": {
+                        "description": "The TW decomposition forms a wheel-like topology, where the core tensor C is centrally connected to three 4th-order ring factors (G1, G2, G3). Each ring factor connects to the core via its L_k dimension and forms a closed loop with adjacent factors through shared rank indices (R1, R2, R3). The external indices (I1, I2, I3) align with the input tensor's dimensions.",
+                        "reconstruction": "The reconstructed tensor X(i1, i2, i3) is computed as: $$X(i_1, i_2, i_3) = \\sum_{l_1, l_2, l_3, r_1, r_2, r_3} C(l_1, l_2, l_3) \\cdot G_1(r_1, i_1, l_1, r_2) \\cdot G_2(r_2, i_2, l_2, r_3) \\cdot G_3(r_3, i_3, l_3, r_1)$$, where internal indices (l1, l2, l3, r1, r2, r3) are summed over, and i1, i2, i3 correspond to the input tensor's dimensions."
+                    }
+                }
+            },
+            "instruction": "Complete instructions under limited trials. 'nan' denotes unknown data."
+        }
+    },
+    {
+        "role": "user",
+        "content": {
+            "max_trials": 64,
+            "completed_trials": 3,
+            "search_space": {
+                "R1": [
+                    2,
+                    3,
+                    4,
+                    5
+                ],
+                "R2": [
+                    10,
+                    15,
+                    20,
+                    25
+                ],
+                "R3": [
+                    2,
+                    3,
+                    4,
+                    5
+                ]
+            },
+            "trials": [
+                {
+                    "number": 35,
+                    "params": {
+                        "R1": "4",
+                        "R2": "10",
+                        "R3": "5"
+                    },
+                    "PSNR": 41.23
+                },
+                {
+                    "number": 62,
+                    "params": {
+                        "R1": "5",
+                        "R2": "25",
+                        "R3": "4"
+                    },
+                    "PSNR": 27.58
+                },
+                {
+                    "number": 32,
+                    "params": {
+                        "R1": "4",
+                        "R2": "10",
+                        "R3": "2"
+                    },
+                    "PSNR": 37.97
+                }
+            ],
+            "instructions": [
+                {
+                    "task": "Analysis of Current Trials",
+                    "description": "1. Summarize performance metrics\n2. Evaluate performance trends for hyper-parameters.\n3. Highlight promising hyper-parameter combinations."
+                },
+                {
+                    "task": "Optimization Recommendation",
+                    "n_jobs": 3,
+                    "description": "Based on the hyper-parameter analysis, observed performance trands and the given search space, recommend the best hyper-parameters for next $n_jobs trials to improve model performance, along with reasons for each choice. Your suggestion must be satisfied below requirements:\n1) Suggested trials can't be in the completed trials \n 2) Suggested trials can't re-test the same hyper-parameters. \n 3) Suggested hyper-parameters should be from the given search space."
+                },
+                {
+                    "task": "Experiment Planning",
+                    "description": "Convert Optimization Recommendation to be below YAML format with ```yaml```: $trial_fmt, and 1) No markdown code blocks.\n 2) Output ONLY raw YAML without explanations."
+                },
+                {
+                    "task": "Stop Optimization",
+                    "description": "If the results are already high or higher than $threshold (needn't to be specified), you can reject tasks. Your answer like below format:\nAnswer: Yes or Answer: No with confidence score: $confidence_score"
+                }
+            ]
+        }
+    }
+]

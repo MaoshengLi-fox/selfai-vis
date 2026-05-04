@@ -1,0 +1,1238 @@
+----------------------------------------------------------------------------------------------------
+Start Optimization: TC20_TW_toy_train_gpt-4o-mini
+----------------------------------------------------------------------------------------------------
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv[INFO] Round [3][64], Failed: [0]/[3]vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+{'description': 'You are an expert in tensor learning, specializing in hyperparameter optimization for tensor decomposition models, including rank selection and regularization coefficients. Your expertise lies in analyzing performance trends, identifying optimal hyperparameter configurations, and making data-driven recommendations under constrained trial budgets for tensor completion tasks.', 'model': 'Tensor Wheel (TW) decomposition', 'task': {'basic_idea': 'The Tensor Wheel (TW) decomposition decomposes an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor, connected via a wheel topology that establishes multi-linear products among the factors and core, enabling efficient representation and reconstruction of high-dimensional data.', 'objective': 'Perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The goal is to reconstruct the tensor by minimizing reconstruction error, measured by metrics such as Peak Signal-to-Noise Ratio (PSNR), while optimizing hyperparameters under a limited number of trials.', 'methods': {'core_tensor': 'A 3rd-order core tensor C of size L1xL2xL3, capturing the latent structure of the tensor.', 'ring_factors': ['G1: 4th-order tensor of size R1xI1xL1xR2', 'G2: 4th-order tensor of size R2xI2xL2xR3', 'G3: 4th-order tensor of size R3xI3xL3xR1'], 'constraints': 'R1 = L3, R3 = L1 = L2, ensuring cyclic consistency in the ring structure.', 'tensor_network_topology': {'description': "The TW decomposition forms a wheel-like topology, where the core tensor C is centrally connected to three 4th-order ring factors (G1, G2, G3). Each ring factor connects to the core via its L_k dimension and forms a closed loop with adjacent factors through shared rank indices (R1, R2, R3). The external indices (I1, I2, I3) align with the input tensor's dimensions.", 'reconstruction': "The reconstructed tensor X(i1, i2, i3) is computed as: $$X(i_1, i_2, i_3) = \\sum_{l_1, l_2, l_3, r_1, r_2, r_3} C(l_1, l_2, l_3) \\cdot G_1(r_1, i_1, l_1, r_2) \\cdot G_2(r_2, i_2, l_2, r_3) \\cdot G_3(r_3, i_3, l_3, r_1)$$, where internal indices (l1, l2, l3, r1, r2, r3) are summed over, and i1, i2, i3 correspond to the input tensor's dimensions."}}}, 'instruction': "Complete instructions under limited trials. 'nan' denotes unknown data."}
+3-find_trials-analyse-cognitive: ### Task 1: Analyze Current Task
+
+**Basic Idea**: The Tensor Wheel (TW) decomposition is designed to break down an Nth-order tensor into a set of 4th-order ring factors and a core tensor, structured in a wheel topology. This allows for efficient representation and reconstruction of high-dimensional data.
+
+**Objective**: The primary goal is to perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor. The aim is to reconstruct this tensor while minimizing the reconstruction error, which is quantified using metrics like Peak Signal-to-Noise Ratio (PSNR). 
+
+**Hyperparameters**: The key hyperparameters involved in the TW decomposition are the ranks of the ring factors, denoted as R1, R2, and R3. These parameters influence the model's capacity to capture the underlying structure of the data and directly affect the reconstruction quality.
+
+---
+
+### Task 2: Analysis of Completed Trials
+
+**Step 1: Summarize Performance Metrics for Completed Trials**
+
+- **Trial 35**: Achieved the highest PSNR of 41.23 with parameters R1 = 4, R2 = 10, R3 = 5.
+- **Trial 32**: Recorded a PSNR of 37.97 with parameters R1 = 4, R2 = 10, R3 = 2.
+- **Trial 62**: Had the lowest PSNR of 27.58 with parameters R1 = 5, R2 = 25, R3 = 4.
+
+**Step 2: Evaluate Performance Trends for Hyper-parameters**
+
+- **Rank R1**: The configurations with R1 = 4 (Trials 35 and 32) yielded better PSNR values compared to R1 = 5 (Trial 62). This suggests that a lower rank for R1 may be more effective in this context.
+  
+- **Rank R2**: The best-performing trial (Trial 35) utilized R2 = 10, indicating that this rank may provide a balanced trade-off between model complexity and reconstruction accuracy. In contrast, the higher value of R2 = 25 in Trial 62 resulted in a significant drop in PSNR, suggesting overfitting or excessive complexity.
+
+- **Rank R3**: The configurations with R3 = 5 (Trial 35) and R3 = 2 (Trial 32) performed better than R3 = 4 (Trial 62). This indicates that a lower rank for R3 may also contribute positively to the reconstruction quality.
+
+**Step 3: Highlight Promising Hyper-parameter Combinations**
+
+- **Top-performing Configuration**: The combination of R1 = 4, R2 = 10, and R3 = 5 from Trial 35 stands out as the most effective configuration, achieving the highest PSNR. 
+
+- **Alternative Configuration**: The combination of R1 = 4, R2 = 10, and R3 = 2 from Trial 32 also shows promise, with a respectable PSNR of 37.97, indicating that maintaining R1 and R2 while adjusting R3 can still yield good results.
+
+- **Cautionary Note**: The configuration from Trial 62 (R1 = 5, R2 = 25, R3 = 4) serves as a cautionary example, demonstrating that increasing ranks indiscriminately can lead to poorer performance, highlighting the importance of careful hyperparameter tuning.
+
+In summary, the analysis suggests that lower ranks for R1 and R3, combined with a moderate rank for R2, are favorable for achieving high reconstruction quality in tensor completion tasks.
+3-find_trials-cognitive: ### Task 2: Optimization Recommendation
+
+Based on the analysis of completed trials and the performance trends observed, the following three promising trials from the provided **Search Space** are recommended:
+
+1. **Trial 33**: 
+   - **Params**: {'R1': 4, 'R2': 10, 'R3': 3}
+   - **Reasoning**: This configuration maintains R1 at 4 and R2 at 10, both of which were part of the top-performing trial (Trial 35). The adjustment of R3 to 3 allows exploration of a slightly lower rank while still being in the vicinity of previously successful configurations. This could potentially yield a balance between model complexity and reconstruction quality.
+
+2. **Trial 36**: 
+   - **Params**: {'R1': 4, 'R2': 15, 'R3': 2}
+   - **Reasoning**: This trial introduces a new value for R2 (15) while keeping R1 at 4 and lowering R3 to 2. The previous trials indicated that lower ranks for R3 were beneficial, and this configuration allows for exploration of a higher R2 while still adhering to the trend of lower R3, which may lead to improved performance.
+
+3. **Trial 4**: 
+   - **Params**: {'R1': 2, 'R2': 15, 'R3': 2}
+   - **Reasoning**: This configuration significantly lowers R1 to 2 while maintaining a higher R2 of 15 and a low R3 of 2. This trial explores a less tested region of the search space with a focus on lower ranks, which could provide insights into the effects of rank reduction on reconstruction quality. Given the previous trials' performance, this could reveal new opportunities for optimization.
+
+---
+
+## JSON Format:
+
+```json
+[
+    {"number": 33, "params": {"R1": 4, "R2": 10, "R3": 3}},
+    {"number": 36, "params": {"R1": 4, "R2": 15, "R3": 2}},
+    {"number": 4, "params": {"R1": 2, "R2": 15, "R3": 2}}
+]
+```
+- [difflib] amnbious matches: ['r1:4_r2:10_r3:3'], raw output: r1:4_r2:10_r3:3_
+- [difflib] amnbious matches: ['r1:4_r2:15_r3:2'], raw output: r1:4_r2:15_r3:2_
+- [difflib] amnbious matches: ['r1:2_r2:15_r3:2'], raw output: r1:2_r2:15_r3:2_
+Number of trials: 3 -> 3, 
+Error_trials: [] is non-empty. 
+Repeated_trials: 0 is non-empty. 
+ []
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^gpt-4o-mini: Round: 3, Failed: 0^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv[INFO] Round [6][64], Failed: [0]/[3]vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+{'description': 'You are an expert in tensor learning, specializing in hyperparameter optimization for tensor decomposition models, including rank selection and regularization coefficients. Your expertise lies in analyzing performance trends, identifying optimal hyperparameter configurations, and making data-driven recommendations under constrained trial budgets for tensor completion tasks.', 'model': 'Tensor Wheel (TW) decomposition', 'task': {'basic_idea': 'The Tensor Wheel (TW) decomposition decomposes an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor, connected via a wheel topology that establishes multi-linear products among the factors and core, enabling efficient representation and reconstruction of high-dimensional data.', 'objective': 'Perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The goal is to reconstruct the tensor by minimizing reconstruction error, measured by metrics such as Peak Signal-to-Noise Ratio (PSNR), while optimizing hyperparameters under a limited number of trials.', 'methods': {'core_tensor': 'A 3rd-order core tensor C of size L1xL2xL3, capturing the latent structure of the tensor.', 'ring_factors': ['G1: 4th-order tensor of size R1xI1xL1xR2', 'G2: 4th-order tensor of size R2xI2xL2xR3', 'G3: 4th-order tensor of size R3xI3xL3xR1'], 'constraints': 'R1 = L3, R3 = L1 = L2, ensuring cyclic consistency in the ring structure.', 'tensor_network_topology': {'description': "The TW decomposition forms a wheel-like topology, where the core tensor C is centrally connected to three 4th-order ring factors (G1, G2, G3). Each ring factor connects to the core via its L_k dimension and forms a closed loop with adjacent factors through shared rank indices (R1, R2, R3). The external indices (I1, I2, I3) align with the input tensor's dimensions.", 'reconstruction': "The reconstructed tensor X(i1, i2, i3) is computed as: $$X(i_1, i_2, i_3) = \\sum_{l_1, l_2, l_3, r_1, r_2, r_3} C(l_1, l_2, l_3) \\cdot G_1(r_1, i_1, l_1, r_2) \\cdot G_2(r_2, i_2, l_2, r_3) \\cdot G_3(r_3, i_3, l_3, r_1)$$, where internal indices (l1, l2, l3, r1, r2, r3) are summed over, and i1, i2, i3 correspond to the input tensor's dimensions."}}}, 'instruction': "Complete instructions under limited trials. 'nan' denotes unknown data."}
+6-find_trials-analyse-cognitive: ### Task 1: Analyze Current Task
+
+**Basic Idea:**  
+The Tensor Wheel (TW) decomposition aims to represent an Nth-order tensor as a combination of N 4th-order ring factors and an Nth-order core tensor. This structure allows for efficient representation and reconstruction of high-dimensional data through a wheel topology that facilitates multi-linear interactions among the components.
+
+**Objective:**  
+The primary goal is to perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The task focuses on reconstructing the tensor while minimizing the reconstruction error, quantified by metrics such as Peak Signal-to-Noise Ratio (PSNR). 
+
+**Hyperparameters:**  
+The hyperparameters involved in the TW decomposition include the ranks of the ring factors: R1, R2, and R3. These parameters dictate the complexity and capacity of the model to capture the underlying structure of the tensor.
+
+---
+
+### Task 2: Analysis of Completed Trials
+
+**Step 1: Summarize Performance Metrics for Completed Trials**  
+The completed trials exhibit a range of PSNR values, indicating varying levels of reconstruction quality. The highest PSNR achieved is 41.23, while the lowest is 27.58. The trials can be summarized as follows:
+
+- **Top Performance:** Trial 35 with PSNR of 41.23.
+- **Mid-range Performance:** Trials 32, 33, 36, and 4, with PSNR values between 35.31 and 39.97.
+- **Lower Performance:** Trial 62 with a PSNR of 27.58.
+
+**Step 2: Evaluate Performance Trends for Hyper-parameters**  
+Analyzing the hyperparameter configurations reveals several trends:
+
+- **Rank R1:** The configurations with R1 set to 4 consistently yield higher PSNR values (41.23, 39.73, 39.97). In contrast, lower values (e.g., R1 = 2) correlate with lower PSNR (35.31).
+  
+- **Rank R2:** Higher values of R2 (e.g., 10, 15, 25) appear to contribute positively to performance, particularly when paired with R1 = 4. However, R2 = 25 in trial 62 resulted in a significant drop in PSNR, indicating that excessively high values may not always be beneficial.
+
+- **Rank R3:** The configurations with R3 = 2 and R3 = 3 show competitive performance, while R3 = 4 in trial 62 led to the lowest PSNR. This suggests that moderate values for R3 may be more effective.
+
+**Step 3: Highlight Promising Hyper-parameter Combinations**  
+The analysis identifies several promising hyperparameter combinations based on their performance:
+
+- **Top-performing Configuration:**  
+  - **Trial 35:** R1 = 4, R2 = 10, R3 = 5 (PSNR = 41.23)  
+  This configuration stands out as the best-performing setup, indicating a balanced approach with R1 and R2.
+
+- **Other Notable Combinations:**  
+  - **Trial 33:** R1 = 4, R2 = 10, R3 = 3 (PSNR = 39.73)  
+  - **Trial 36:** R1 = 4, R2 = 15, R3 = 2 (PSNR = 39.97)  
+  Both configurations maintain R1 at 4, which appears to be a critical factor for achieving higher PSNR values.
+
+In conclusion, the analysis suggests that maintaining R1 at 4, while experimenting with moderate values for R2 and R3, may yield optimal results for tensor completion tasks. Further trials should focus on refining these parameters to enhance reconstruction quality.
+6-find_trials-cognitive: Based on the analysis of completed trials and the performance trends observed, the following three promising trials from the provided **Search Space** are recommended:
+
+1. **Trial 34:**  
+   - **Params:** {'R1': 4, 'R2': 10, 'R3': 4}  
+   - **Reasoning:** This configuration maintains R1 at 4, which has shown to be effective in previous trials. The combination of R2 = 10 and R3 = 4 allows for a balanced complexity that aligns with the top-performing configurations, potentially leading to high PSNR values.
+
+2. **Trial 37:**  
+   - **Params:** {'R1': 4, 'R2': 15, 'R3': 3}  
+   - **Reasoning:** This trial also keeps R1 at 4, which is associated with better performance. Increasing R2 to 15 while slightly reducing R3 to 3 may enhance the model's ability to capture more complex structures in the tensor, as indicated by the positive trends observed in previous trials.
+
+3. **Trial 39:**  
+   - **Params:** {'R1': 4, 'R2': 15, 'R3': 5}  
+   - **Reasoning:** Similar to Trial 37, this configuration retains R1 at 4 and R2 at 15, but increases R3 to 5. This adjustment could provide additional capacity for the model to represent the tensor effectively, potentially leading to improved reconstruction quality.
+
+These selections focus on configurations that leverage the successful aspects of previous trials while exploring slightly different parameter combinations that have not been extensively tested, thus maximizing the potential for performance gains.
+
+## JSON Format:
+
+```json
+[
+    {"number": 34, "params": {"R1": 4, "R2": 10, "R3": 4}},
+    {"number": 37, "params": {"R1": 4, "R2": 15, "R3": 3}},
+    {"number": 39, "params": {"R1": 4, "R2": 15, "R3": 5}}
+]
+```
+- [difflib] amnbious matches: ['r1:4_r2:10_r3:4'], raw output: r1:4_r2:10_r3:4_
+- [difflib] amnbious matches: ['r1:4_r2:15_r3:3'], raw output: r1:4_r2:15_r3:3_
+- [difflib] amnbious matches: ['r1:4_r2:15_r3:5'], raw output: r1:4_r2:15_r3:5_
+Number of trials: 3 -> 3, 
+Error_trials: [] is non-empty. 
+Repeated_trials: 0 is non-empty. 
+ []
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^gpt-4o-mini: Round: 6, Failed: 0^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv[INFO] Round [9][64], Failed: [0]/[3]vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+{'description': 'You are an expert in tensor learning, specializing in hyperparameter optimization for tensor decomposition models, including rank selection and regularization coefficients. Your expertise lies in analyzing performance trends, identifying optimal hyperparameter configurations, and making data-driven recommendations under constrained trial budgets for tensor completion tasks.', 'model': 'Tensor Wheel (TW) decomposition', 'task': {'basic_idea': 'The Tensor Wheel (TW) decomposition decomposes an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor, connected via a wheel topology that establishes multi-linear products among the factors and core, enabling efficient representation and reconstruction of high-dimensional data.', 'objective': 'Perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The goal is to reconstruct the tensor by minimizing reconstruction error, measured by metrics such as Peak Signal-to-Noise Ratio (PSNR), while optimizing hyperparameters under a limited number of trials.', 'methods': {'core_tensor': 'A 3rd-order core tensor C of size L1xL2xL3, capturing the latent structure of the tensor.', 'ring_factors': ['G1: 4th-order tensor of size R1xI1xL1xR2', 'G2: 4th-order tensor of size R2xI2xL2xR3', 'G3: 4th-order tensor of size R3xI3xL3xR1'], 'constraints': 'R1 = L3, R3 = L1 = L2, ensuring cyclic consistency in the ring structure.', 'tensor_network_topology': {'description': "The TW decomposition forms a wheel-like topology, where the core tensor C is centrally connected to three 4th-order ring factors (G1, G2, G3). Each ring factor connects to the core via its L_k dimension and forms a closed loop with adjacent factors through shared rank indices (R1, R2, R3). The external indices (I1, I2, I3) align with the input tensor's dimensions.", 'reconstruction': "The reconstructed tensor X(i1, i2, i3) is computed as: $$X(i_1, i_2, i_3) = \\sum_{l_1, l_2, l_3, r_1, r_2, r_3} C(l_1, l_2, l_3) \\cdot G_1(r_1, i_1, l_1, r_2) \\cdot G_2(r_2, i_2, l_2, r_3) \\cdot G_3(r_3, i_3, l_3, r_1)$$, where internal indices (l1, l2, l3, r1, r2, r3) are summed over, and i1, i2, i3 correspond to the input tensor's dimensions."}}}, 'instruction': "Complete instructions under limited trials. 'nan' denotes unknown data."}
+9-find_trials-analyse-cognitive: ### Task 1: Analyze Current Task
+
+**Basic Idea**: The Tensor Wheel (TW) decomposition aims to represent an Nth-order tensor using a wheel topology, consisting of N 4th-order ring factors and an Nth-order core tensor. This structure facilitates efficient representation and reconstruction of high-dimensional data.
+
+**Objective**: The primary goal is to perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The objective is to minimize reconstruction error, quantified by metrics such as Peak Signal-to-Noise Ratio (PSNR), while optimizing hyperparameters within a limited number of trials.
+
+**Hyperparameters**: The key hyperparameters involved in the TW decomposition are the ranks of the ring factors:
+- R1: Rank associated with the first ring factor (G1).
+- R2: Rank associated with the second ring factor (G2).
+- R3: Rank associated with the third ring factor (G3).
+These ranks must satisfy the constraints R1 = L3, R3 = L1 = L2, ensuring cyclic consistency in the ring structure.
+
+---
+
+### Task 2: Analysis of Completed Trials
+
+#### Step 1: Summarize Performance Metrics for Completed Trials
+
+The completed trials exhibit a range of PSNR values, indicating varying levels of reconstruction quality. The highest PSNR recorded is 41.23, while the lowest is 27.58. The trials can be categorized based on their performance:
+
+- **Top Performers**: Trials with PSNR values above 40 (e.g., Trials 35, 34, 37, and 39).
+- **Moderate Performers**: Trials with PSNR values between 35 and 40 (e.g., Trials 36, 33, and 32).
+- **Lower Performers**: Trials with PSNR values below 35 (e.g., Trial 62 and 4).
+
+#### Step 2: Evaluate Performance Trends for Hyper-parameters
+
+- **Rank R1**: The most successful configurations consistently utilize R1 values of 4. This rank appears to provide a balance between model complexity and reconstruction accuracy.
+  
+- **Rank R2**: Higher values of R2 (specifically 10 and 15) correlate with improved PSNR outcomes, suggesting that increasing this rank enhances the model's ability to capture the underlying data structure.
+
+- **Rank R3**: The optimal R3 values seem to cluster around 2 to 5, with configurations using R3 = 3 or 4 yielding better results. This indicates that moderate ranks may be sufficient for effective tensor completion.
+
+#### Step 3: Highlight Promising Hyper-parameter Combinations
+
+- **Top-performing Configurations**: 
+  - **Trial 35**: R1 = 4, R2 = 10, R3 = 5 (PSNR: 41.23)
+  - **Trial 37**: R1 = 4, R2 = 15, R3 = 3 (PSNR: 41.21)
+  - **Trial 39**: R1 = 4, R2 = 15, R3 = 5 (PSNR: 40.95)
+  - **Trial 34**: R1 = 4, R2 = 10, R3 = 4 (PSNR: 40.77)
+
+These configurations consistently utilize R1 = 4, with R2 values of either 10 or 15, and R3 values ranging from 3 to 5. This suggests a strong trend towards maintaining R1 at 4 while exploring higher R2 values for improved performance. 
+
+In summary, the analysis indicates that configurations with R1 = 4, R2 = 10 or 15, and R3 = 3 to 5 are particularly promising for achieving high PSNR in tensor completion tasks. Further trials should focus on refining these parameters to optimize performance further.
+9-find_trials-cognitive: Based on the analysis from Task 1, the following recommendations are made for promising trials from the provided Search Space:
+
+1. **Trial 38**: 
+   - **Params**: {'R1': 4, 'R2': 15, 'R3': 4}
+   - **Reasoning**: This configuration maintains R1 at 4, which has shown to be effective in previous trials. The R2 value of 15 is consistent with the top-performing trials, and the R3 value of 4 aligns with configurations that have yielded high PSNR values. This trial explores a slightly different R3 while keeping R1 and R2 in a successful range.
+
+2. **Trial 44**: 
+   - **Params**: {'R1': 4, 'R2': 25, 'R3': 2}
+   - **Reasoning**: This configuration introduces a higher R2 value of 25, which has not been extensively explored in the completed trials. While the PSNR for trials with R2 = 25 has been lower, this trial's combination with R1 = 4 and a lower R3 may provide a unique opportunity to capture latent structures effectively, potentially leading to improved performance.
+
+3. **Trial 21**: 
+   - **Params**: {'R1': 3, 'R2': 15, 'R3': 3}
+   - **Reasoning**: This configuration explores a lower R1 value of 3, which has not been a focus in the top-performing trials. However, it maintains R2 at 15, which has shown promise in previous trials. The R3 value of 3 is also consistent with successful configurations. This trial could reveal insights into the performance of lower ranks while still leveraging a strong R2.
+
+## JSON Format:
+
+```json
+[
+    {"number": 38, "params": {"R1": 4, "R2": 15, "R3": 4}},
+    {"number": 44, "params": {"R1": 4, "R2": 25, "R3": 2}},
+    {"number": 21, "params": {"R1": 3, "R2": 15, "R3": 3}}
+]
+```
+- [difflib] amnbious matches: ['r1:4_r2:15_r3:4'], raw output: r1:4_r2:15_r3:4_
+- [difflib] amnbious matches: ['r1:4_r2:25_r3:2'], raw output: r1:4_r2:25_r3:2_
+- [difflib] amnbious matches: ['r1:3_r2:15_r3:3'], raw output: r1:3_r2:15_r3:3_
+Number of trials: 3 -> 3, 
+Error_trials: [] is non-empty. 
+Repeated_trials: 0 is non-empty. 
+ []
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^gpt-4o-mini: Round: 9, Failed: 0^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv[INFO] Round [12][64], Failed: [0]/[3]vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+{'description': 'You are an expert in tensor learning, specializing in hyperparameter optimization for tensor decomposition models, including rank selection and regularization coefficients. Your expertise lies in analyzing performance trends, identifying optimal hyperparameter configurations, and making data-driven recommendations under constrained trial budgets for tensor completion tasks.', 'model': 'Tensor Wheel (TW) decomposition', 'task': {'basic_idea': 'The Tensor Wheel (TW) decomposition decomposes an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor, connected via a wheel topology that establishes multi-linear products among the factors and core, enabling efficient representation and reconstruction of high-dimensional data.', 'objective': 'Perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The goal is to reconstruct the tensor by minimizing reconstruction error, measured by metrics such as Peak Signal-to-Noise Ratio (PSNR), while optimizing hyperparameters under a limited number of trials.', 'methods': {'core_tensor': 'A 3rd-order core tensor C of size L1xL2xL3, capturing the latent structure of the tensor.', 'ring_factors': ['G1: 4th-order tensor of size R1xI1xL1xR2', 'G2: 4th-order tensor of size R2xI2xL2xR3', 'G3: 4th-order tensor of size R3xI3xL3xR1'], 'constraints': 'R1 = L3, R3 = L1 = L2, ensuring cyclic consistency in the ring structure.', 'tensor_network_topology': {'description': "The TW decomposition forms a wheel-like topology, where the core tensor C is centrally connected to three 4th-order ring factors (G1, G2, G3). Each ring factor connects to the core via its L_k dimension and forms a closed loop with adjacent factors through shared rank indices (R1, R2, R3). The external indices (I1, I2, I3) align with the input tensor's dimensions.", 'reconstruction': "The reconstructed tensor X(i1, i2, i3) is computed as: $$X(i_1, i_2, i_3) = \\sum_{l_1, l_2, l_3, r_1, r_2, r_3} C(l_1, l_2, l_3) \\cdot G_1(r_1, i_1, l_1, r_2) \\cdot G_2(r_2, i_2, l_2, r_3) \\cdot G_3(r_3, i_3, l_3, r_1)$$, where internal indices (l1, l2, l3, r1, r2, r3) are summed over, and i1, i2, i3 correspond to the input tensor's dimensions."}}}, 'instruction': "Complete instructions under limited trials. 'nan' denotes unknown data."}
+12-find_trials-analyse-cognitive: ### Task 1: Analyze Current Task
+
+**Basic Idea**: The Tensor Wheel (TW) decomposition is designed to break down an Nth-order tensor into a set of 4th-order ring factors and an Nth-order core tensor. This structure allows for efficient representation and reconstruction of high-dimensional data through a wheel topology that facilitates multi-linear interactions among the components.
+
+**Objective**: The primary goal is to perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The aim is to reconstruct the tensor while minimizing the reconstruction error, quantified by metrics such as Peak Signal-to-Noise Ratio (PSNR), and to optimize hyperparameters within a limited number of trials.
+
+**Hyperparameters**: The key hyperparameters involved in the TW decomposition are the ranks of the ring factors:
+- **R1**: Rank associated with the first ring factor.
+- **R2**: Rank associated with the second ring factor.
+- **R3**: Rank associated with the third ring factor.
+These ranks must adhere to the constraints of cyclic consistency, specifically R1 = L3 and R3 = L1 = L2.
+
+---
+
+### Task 2: Analysis of Completed Trials
+
+#### Step 1: Summarize Performance Metrics for Completed Trials
+
+The completed trials exhibit a range of PSNR values, with the highest recorded at 41.23 and the lowest at 27.58. The trials can be categorized based on their performance:
+
+- **Top Performers**: Trials with PSNR values above 40 (e.g., Trials 35, 34, 37, 39, 38).
+- **Moderate Performers**: Trials with PSNR values between 35 and 40 (e.g., Trials 32, 33, 36, 44, 21).
+- **Lower Performers**: Trials with PSNR values below 35 (e.g., Trial 62).
+
+#### Step 2: Evaluate Performance Trends for Hyper-parameters
+
+- **Rank R1**: The most successful configurations consistently utilized R1 values of 4 or 5. Lower values (e.g., R1 = 2 or 3) were associated with lower PSNR outcomes.
+  
+- **Rank R2**: Higher values of R2 (specifically 10, 15, and 25) appeared in the top-performing trials, indicating that a larger rank may enhance the model's ability to capture complex data structures.
+
+- **Rank R3**: The optimal R3 values were predominantly 2, 3, 4, or 5, with configurations using R3 = 3 or 4 yielding better results. The lowest R3 values (e.g., R3 = 2) were linked to moderate performance.
+
+#### Step 3: Highlight Promising Hyper-parameter Combinations
+
+- **Top-performing Configurations**: 
+  - **Trial 35**: R1 = 4, R2 = 10, R3 = 5 (PSNR: 41.23)
+  - **Trial 37**: R1 = 4, R2 = 15, R3 = 3 (PSNR: 41.21)
+  - **Trial 39**: R1 = 4, R2 = 15, R3 = 5 (PSNR: 40.95)
+  - **Trial 34**: R1 = 4, R2 = 10, R3 = 4 (PSNR: 40.77)
+  - **Trial 38**: R1 = 4, R2 = 15, R3 = 4 (PSNR: 40.91)
+
+These configurations suggest that maintaining R1 at 4, while experimenting with R2 values of 10 or 15, and R3 values around 3 to 5, may yield optimal results. 
+
+In summary, the analysis indicates that configurations with R1 = 4, R2 = 10 or 15, and R3 = 3 to 5 are particularly promising for achieving high PSNR values in tensor completion tasks. Further trials should focus on refining these parameters to maximize performance within the constraints of the trial budget.
+----------------------------------------------------------------------------------------------------
+Start Optimization: TC20_TW_toy_train_gpt-4o-mini
+----------------------------------------------------------------------------------------------------
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv[INFO] Round [12][64], Failed: [0]/[3]vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+{'description': 'You are an expert in tensor learning, specializing in hyperparameter optimization for tensor decomposition models, including rank selection and regularization coefficients. Your expertise lies in analyzing performance trends, identifying optimal hyperparameter configurations, and making data-driven recommendations under constrained trial budgets for tensor completion tasks.', 'model': 'Tensor Wheel (TW) decomposition', 'task': {'basic_idea': 'The Tensor Wheel (TW) decomposition decomposes an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor, connected via a wheel topology that establishes multi-linear products among the factors and core, enabling efficient representation and reconstruction of high-dimensional data.', 'objective': 'Perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The goal is to reconstruct the tensor by minimizing reconstruction error, measured by metrics such as Peak Signal-to-Noise Ratio (PSNR), while optimizing hyperparameters under a limited number of trials.', 'methods': {'core_tensor': 'A 3rd-order core tensor C of size L1xL2xL3, capturing the latent structure of the tensor.', 'ring_factors': ['G1: 4th-order tensor of size R1xI1xL1xR2', 'G2: 4th-order tensor of size R2xI2xL2xR3', 'G3: 4th-order tensor of size R3xI3xL3xR1'], 'constraints': 'R1 = L3, R3 = L1 = L2, ensuring cyclic consistency in the ring structure.', 'tensor_network_topology': {'description': "The TW decomposition forms a wheel-like topology, where the core tensor C is centrally connected to three 4th-order ring factors (G1, G2, G3). Each ring factor connects to the core via its L_k dimension and forms a closed loop with adjacent factors through shared rank indices (R1, R2, R3). The external indices (I1, I2, I3) align with the input tensor's dimensions.", 'reconstruction': "The reconstructed tensor X(i1, i2, i3) is computed as: $$X(i_1, i_2, i_3) = \\sum_{l_1, l_2, l_3, r_1, r_2, r_3} C(l_1, l_2, l_3) \\cdot G_1(r_1, i_1, l_1, r_2) \\cdot G_2(r_2, i_2, l_2, r_3) \\cdot G_3(r_3, i_3, l_3, r_1)$$, where internal indices (l1, l2, l3, r1, r2, r3) are summed over, and i1, i2, i3 correspond to the input tensor's dimensions."}}}, 'instruction': "Complete instructions under limited trials. 'nan' denotes unknown data."}
+12-find_trials-analyse-cognitive: ### Task 1: Analyze Current Task
+
+**Basic Idea**: The Tensor Wheel (TW) decomposition is designed to break down an Nth-order tensor into a set of 4th-order ring factors and an Nth-order core tensor. This structure allows for efficient representation and reconstruction of high-dimensional data through a wheel topology that facilitates multi-linear interactions among the components.
+
+**Objective**: The primary goal is to perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The aim is to reconstruct the tensor while minimizing the reconstruction error, quantified by metrics such as Peak Signal-to-Noise Ratio (PSNR), and to optimize hyperparameters within a limited number of trials.
+
+**Hyperparameters**: The key hyperparameters involved in the TW decomposition are the ranks of the ring factors:
+- **R1**: Rank associated with the first ring factor.
+- **R2**: Rank associated with the second ring factor.
+- **R3**: Rank associated with the third ring factor.
+These ranks must adhere to the constraints of cyclic consistency, specifically R1 = L3 and R3 = L1 = L2.
+
+---
+
+### Task 2: Analysis of Completed Trials
+
+#### Step 1: Summarize Performance Metrics for Completed Trials
+
+The completed trials exhibit a range of PSNR values, with the highest recorded at 41.23 and the lowest at 27.58. The trials can be categorized based on their performance:
+
+- **Top Performers**: Trials with PSNR values above 40 (e.g., Trials 35, 34, 37, 39, 38).
+- **Moderate Performers**: Trials with PSNR values between 35 and 40 (e.g., Trials 32, 33, 36, 44, 21).
+- **Lower Performers**: Trials with PSNR values below 35 (e.g., Trial 62).
+
+#### Step 2: Evaluate Performance Trends for Hyper-parameters
+
+- **Rank R1**: The most successful configurations consistently utilized R1 values of 4 or 5. Lower values (e.g., R1 = 2 or 3) were associated with lower PSNR outcomes.
+  
+- **Rank R2**: Higher values of R2 (specifically 10, 15, and 25) appeared in the top-performing trials, indicating that a larger rank may enhance the model's ability to capture complex data structures.
+
+- **Rank R3**: The optimal R3 values were predominantly 2, 3, 4, or 5, with configurations using R3 = 3 or 4 yielding better results. The lowest R3 values (e.g., R3 = 2) were linked to moderate performance.
+
+#### Step 3: Highlight Promising Hyper-parameter Combinations
+
+- **Top-performing Configurations**: 
+  - **Trial 35**: R1 = 4, R2 = 10, R3 = 5 (PSNR: 41.23)
+  - **Trial 37**: R1 = 4, R2 = 15, R3 = 3 (PSNR: 41.21)
+  - **Trial 39**: R1 = 4, R2 = 15, R3 = 5 (PSNR: 40.95)
+  - **Trial 34**: R1 = 4, R2 = 10, R3 = 4 (PSNR: 40.77)
+  - **Trial 38**: R1 = 4, R2 = 15, R3 = 4 (PSNR: 40.91)
+
+These configurations suggest that maintaining R1 at 4, while experimenting with R2 values of 10 or 15, and R3 values around 3 to 5, may yield optimal results. 
+
+In summary, the analysis indicates that configurations with R1 = 4, R2 = 10 or 15, and R3 = 3 to 5 are particularly promising for achieving high PSNR values in tensor completion tasks. Further trials should focus on refining these parameters to maximize performance within the constraints of the trial budget.
+12-find_trials-cognitive: Based on the analysis of completed trials and the performance trends observed, the following three promising trials from the provided **Search Space** are recommended:
+
+1. **Trial 45**: 
+   - **Params**: {'R1': 4, 'R2': 25, 'R3': 3}
+   - **Reasoning**: This configuration maintains R1 at 4, which has shown to be effective in previous trials. The higher R2 value of 25 is under-explored in the context of R1 = 4, and it may capture more complex interactions, potentially leading to improved performance.
+
+2. **Trial 41**: 
+   - **Params**: {'R1': 4, 'R2': 20, 'R3': 3}
+   - **Reasoning**: Similar to Trial 45, this configuration keeps R1 at 4 and explores a slightly lower R2 value of 20. This combination has not been tested in previous trials, and given the positive correlation between R1 = 4 and higher PSNR values, it presents a promising opportunity for performance enhancement.
+
+3. **Trial 53**: 
+   - **Params**: {'R1': 5, 'R2': 15, 'R3': 3}
+   - **Reasoning**: This trial explores a higher R1 value of 5, which has been associated with lower PSNR in previous trials. However, the combination with R2 = 15 and R3 = 3 is relatively under-explored and could yield new insights into the performance dynamics of higher ranks, especially since R2 = 15 has shown promise in other configurations.
+
+These selections are strategically chosen to explore under-explored regions while leveraging the insights gained from previous trials, particularly focusing on maintaining R1 at 4 or exploring R1 = 5 with promising combinations of R2 and R3.
+
+## JSON Format:
+
+```json
+[
+    {"number": 45, "params": {"R1": 4, "R2": 25, "R3": 3}},
+    {"number": 41, "params": {"R1": 4, "R2": 20, "R3": 3}},
+    {"number": 53, "params": {"R1": 5, "R2": 15, "R3": 3}}
+]
+```
+- [difflib] amnbious matches: ['r1:4_r2:25_r3:3'], raw output: r1:4_r2:25_r3:3_
+- [difflib] amnbious matches: ['r1:4_r2:20_r3:3'], raw output: r1:4_r2:20_r3:3_
+- [difflib] amnbious matches: ['r1:5_r2:15_r3:3'], raw output: r1:5_r2:15_r3:3_
+Number of trials: 3 -> 3, 
+Error_trials: [] is non-empty. 
+Repeated_trials: 0 is non-empty. 
+ []
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^gpt-4o-mini: Round: 12, Failed: 0^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv[INFO] Round [15][64], Failed: [0]/[3]vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+{'description': 'You are an expert in tensor learning, specializing in hyperparameter optimization for tensor decomposition models, including rank selection and regularization coefficients. Your expertise lies in analyzing performance trends, identifying optimal hyperparameter configurations, and making data-driven recommendations under constrained trial budgets for tensor completion tasks.', 'model': 'Tensor Wheel (TW) decomposition', 'task': {'basic_idea': 'The Tensor Wheel (TW) decomposition decomposes an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor, connected via a wheel topology that establishes multi-linear products among the factors and core, enabling efficient representation and reconstruction of high-dimensional data.', 'objective': 'Perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The goal is to reconstruct the tensor by minimizing reconstruction error, measured by metrics such as Peak Signal-to-Noise Ratio (PSNR), while optimizing hyperparameters under a limited number of trials.', 'methods': {'core_tensor': 'A 3rd-order core tensor C of size L1xL2xL3, capturing the latent structure of the tensor.', 'ring_factors': ['G1: 4th-order tensor of size R1xI1xL1xR2', 'G2: 4th-order tensor of size R2xI2xL2xR3', 'G3: 4th-order tensor of size R3xI3xL3xR1'], 'constraints': 'R1 = L3, R3 = L1 = L2, ensuring cyclic consistency in the ring structure.', 'tensor_network_topology': {'description': "The TW decomposition forms a wheel-like topology, where the core tensor C is centrally connected to three 4th-order ring factors (G1, G2, G3). Each ring factor connects to the core via its L_k dimension and forms a closed loop with adjacent factors through shared rank indices (R1, R2, R3). The external indices (I1, I2, I3) align with the input tensor's dimensions.", 'reconstruction': "The reconstructed tensor X(i1, i2, i3) is computed as: $$X(i_1, i_2, i_3) = \\sum_{l_1, l_2, l_3, r_1, r_2, r_3} C(l_1, l_2, l_3) \\cdot G_1(r_1, i_1, l_1, r_2) \\cdot G_2(r_2, i_2, l_2, r_3) \\cdot G_3(r_3, i_3, l_3, r_1)$$, where internal indices (l1, l2, l3, r1, r2, r3) are summed over, and i1, i2, i3 correspond to the input tensor's dimensions."}}}, 'instruction': "Complete instructions under limited trials. 'nan' denotes unknown data."}
+15-find_trials-analyse-cognitive: ### Task 1: Analyze Current Task
+
+**Basic Idea**: The Tensor Wheel (TW) decomposition is designed to break down an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor. This structure allows for efficient representation and reconstruction of high-dimensional data through a wheel topology that facilitates multi-linear interactions among the components.
+
+**Objective**: The primary goal is to perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The aim is to reconstruct the tensor while minimizing the reconstruction error, quantified by metrics such as Peak Signal-to-Noise Ratio (PSNR), and to optimize hyperparameters within a limited number of trials.
+
+**Hyperparameters**: The key hyperparameters involved in the TW decomposition are the ranks of the ring factors:
+- **R1**: Rank associated with the first ring factor (G1).
+- **R2**: Rank associated with the second ring factor (G2).
+- **R3**: Rank associated with the third ring factor (G3).
+These ranks must adhere to the constraints of cyclic consistency, specifically R1 = L3 and R3 = L1 = L2.
+
+---
+
+### Task 2: Analysis of Completed Trials
+
+#### Step 1: Summarize Performance Metrics for Completed Trials
+The completed trials exhibit a range of PSNR values, with the highest recorded at 41.23 for trial number 35. The PSNR values generally indicate a trend where configurations with lower ranks for R2 tend to yield better performance, particularly when R1 is kept at 4. The lowest PSNR observed is 27.58, indicating significant variability in performance based on hyperparameter choices.
+
+#### Step 2: Evaluate Performance Trends for Hyper-parameters
+- **R1**: The rank R1 consistently set at 4 appears to correlate with higher PSNR values, suggesting that this rank may be optimal for the current dataset.
+- **R2**: There is a notable trend where lower values of R2 (specifically 10 and 15) yield better PSNR results. Higher values (e.g., 25) seem to negatively impact performance, indicating potential overfitting or increased complexity without corresponding benefits.
+- **R3**: The rank R3 shows variability in its impact on performance. While lower values (2 and 3) are associated with higher PSNRs, configurations with R3 set to 4 or 5 still perform well, suggesting some flexibility in this parameter.
+
+#### Step 3: Highlight Promising Hyper-parameter Combinations
+- **Top-performing configurations**:
+  - **Trial 35**: R1 = 4, R2 = 10, R3 = 5 (PSNR: 41.23) - This configuration stands out as the best performer.
+  - **Trial 37**: R1 = 4, R2 = 15, R3 = 3 (PSNR: 41.21) - Close to the top performance, indicating that R2 = 15 with R1 = 4 is also effective.
+  - **Trial 34**: R1 = 4, R2 = 10, R3 = 4 (PSNR: 40.77) - Another strong configuration, reinforcing the effectiveness of R1 = 4 and R2 = 10.
+  - **Trial 39**: R1 = 4, R2 = 15, R3 = 5 (PSNR: 40.95) - This configuration shows that increasing R3 while keeping R1 and R2 at effective levels can still yield high performance.
+
+In summary, configurations with R1 set to 4 and R2 at 10 or 15 are particularly promising, while R3 can be varied without significant detriment to performance. Further trials should focus on fine-tuning these parameters to explore the optimal balance for tensor completion tasks.
+15-find_trials-cognitive: ### Task 2: Optimization Recommendation
+
+Based on the analysis of completed trials and the performance trends observed, the following three promising trials from the provided **Search Space** are recommended:
+
+1. **Trial 0**: 
+   - **Params**: {'R1': 2, 'R2': 10, 'R3': 2}
+   - **Reasoning**: This configuration explores a lower rank for R1, which has not been extensively tested in the completed trials. Given that lower ranks can sometimes lead to better generalization and reduced overfitting, this trial could yield interesting results, especially since R2 is set to 10, a value that has shown promise in previous trials.
+
+2. **Trial 40**: 
+   - **Params**: {'R1': 4, 'R2': 20, 'R3': 2}
+   - **Reasoning**: This configuration maintains R1 at 4, which has been associated with high PSNR values in previous trials. However, it explores a higher R2 of 20, which has not been tested with R1 = 4. This could provide insights into the impact of increasing R2 while keeping R1 stable, potentially leading to improved performance.
+
+3. **Trial 52**: 
+   - **Params**: {'R1': 5, 'R2': 15, 'R3': 2}
+   - **Reasoning**: This trial explores a higher R1 of 5, which has been linked to lower PSNR values in some configurations. However, it pairs this with R2 = 15, a value that has shown effectiveness in previous trials. This combination could reveal whether increasing R1 while maintaining a moderate R2 can still yield competitive performance.
+
+---
+
+## JSON Format:
+
+```json
+[
+    {"number": 0, "params": {"R1": 2, "R2": 10, "R3": 2}},
+    {"number": 40, "params": {"R1": 4, "R2": 20, "R3": 2}},
+    {"number": 52, "params": {"R1": 5, "R2": 15, "R3": 2}}
+]
+```
+- [difflib] amnbious matches: ['r1:2_r2:10_r3:2'], raw output: r1:2_r2:10_r3:2_
+- [difflib] amnbious matches: ['r1:4_r2:20_r3:2'], raw output: r1:4_r2:20_r3:2_
+- [difflib] amnbious matches: ['r1:5_r2:15_r3:2'], raw output: r1:5_r2:15_r3:2_
+Number of trials: 3 -> 3, 
+Error_trials: [] is non-empty. 
+Repeated_trials: 0 is non-empty. 
+ []
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^gpt-4o-mini: Round: 15, Failed: 0^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv[INFO] Round [18][64], Failed: [0]/[3]vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+{'description': 'You are an expert in tensor learning, specializing in hyperparameter optimization for tensor decomposition models, including rank selection and regularization coefficients. Your expertise lies in analyzing performance trends, identifying optimal hyperparameter configurations, and making data-driven recommendations under constrained trial budgets for tensor completion tasks.', 'model': 'Tensor Wheel (TW) decomposition', 'task': {'basic_idea': 'The Tensor Wheel (TW) decomposition decomposes an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor, connected via a wheel topology that establishes multi-linear products among the factors and core, enabling efficient representation and reconstruction of high-dimensional data.', 'objective': 'Perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The goal is to reconstruct the tensor by minimizing reconstruction error, measured by metrics such as Peak Signal-to-Noise Ratio (PSNR), while optimizing hyperparameters under a limited number of trials.', 'methods': {'core_tensor': 'A 3rd-order core tensor C of size L1xL2xL3, capturing the latent structure of the tensor.', 'ring_factors': ['G1: 4th-order tensor of size R1xI1xL1xR2', 'G2: 4th-order tensor of size R2xI2xL2xR3', 'G3: 4th-order tensor of size R3xI3xL3xR1'], 'constraints': 'R1 = L3, R3 = L1 = L2, ensuring cyclic consistency in the ring structure.', 'tensor_network_topology': {'description': "The TW decomposition forms a wheel-like topology, where the core tensor C is centrally connected to three 4th-order ring factors (G1, G2, G3). Each ring factor connects to the core via its L_k dimension and forms a closed loop with adjacent factors through shared rank indices (R1, R2, R3). The external indices (I1, I2, I3) align with the input tensor's dimensions.", 'reconstruction': "The reconstructed tensor X(i1, i2, i3) is computed as: $$X(i_1, i_2, i_3) = \\sum_{l_1, l_2, l_3, r_1, r_2, r_3} C(l_1, l_2, l_3) \\cdot G_1(r_1, i_1, l_1, r_2) \\cdot G_2(r_2, i_2, l_2, r_3) \\cdot G_3(r_3, i_3, l_3, r_1)$$, where internal indices (l1, l2, l3, r1, r2, r3) are summed over, and i1, i2, i3 correspond to the input tensor's dimensions."}}}, 'instruction': "Complete instructions under limited trials. 'nan' denotes unknown data."}
+18-find_trials-analyse-cognitive: ### Task 1: Analyze Current Task
+
+**Basic Idea**: The Tensor Wheel (TW) decomposition is designed to break down an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor. This structure allows for efficient representation and reconstruction of high-dimensional data through a wheel topology that facilitates multi-linear interactions among the components.
+
+**Objective**: The primary goal is to perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The aim is to reconstruct the tensor while minimizing the reconstruction error, quantified by metrics such as Peak Signal-to-Noise Ratio (PSNR), and to optimize hyperparameters within a limited number of trials.
+
+**Hyperparameters**: The key hyperparameters involved in the TW decomposition are the ranks of the ring factors:
+- **R1**: Rank associated with the first ring factor.
+- **R2**: Rank associated with the second ring factor.
+- **R3**: Rank associated with the third ring factor.
+These ranks must adhere to the constraints of cyclic consistency, specifically R1 = L3 and R3 = L1 = L2.
+
+---
+
+### Task 2: Analysis of Completed Trials
+
+#### Step 1: Summarize Performance Metrics for Completed Trials
+
+The completed trials exhibit a range of PSNR values, with the highest recorded at 41.23 and the lowest at 27.58. The trials can be categorized based on their performance:
+
+- **Top Performers**: Trials with PSNR values above 40 (e.g., 41.23, 41.21, 40.95).
+- **Mid-Range Performers**: Trials with PSNR values between 35 and 40 (e.g., 39.97, 39.89).
+- **Lower Performers**: Trials with PSNR values below 35 (e.g., 33.17, 27.58).
+
+#### Step 2: Evaluate Performance Trends for Hyper-parameters
+
+- **Rank R1**: The most successful configurations predominantly feature R1 values of 4, indicating that this rank may be optimal for the current dataset. Trials with R1 set to 5 generally yielded lower PSNR values, suggesting diminishing returns with higher ranks.
+  
+- **Rank R2**: A variety of R2 values were tested, with configurations around 15 and 10 showing promising results. Higher values (e.g., 25) did not consistently lead to improved performance, indicating a potential sweet spot around R2 = 10 to 15.
+
+- **Rank R3**: The configurations with R3 values of 2 and 3 performed well, while those with R3 set to 4 or 5 did not significantly outperform the lower ranks. This suggests that lower ranks may be more effective in this context.
+
+#### Step 3: Highlight Promising Hyper-parameter Combinations
+
+- **Top-performing Configurations**: 
+  - **Configuration 1**: R1 = 4, R2 = 10, R3 = 5 (PSNR: 41.23)
+  - **Configuration 2**: R1 = 4, R2 = 15, R3 = 3 (PSNR: 41.21)
+  - **Configuration 3**: R1 = 4, R2 = 15, R3 = 5 (PSNR: 40.95)
+  - **Configuration 4**: R1 = 4, R2 = 10, R3 = 4 (PSNR: 40.77)
+
+These configurations consistently utilize R1 = 4, which appears to be a critical factor in achieving high PSNR values. The R2 values of 10 and 15 are also common among the top performers, while R3 values of 3 and 5 are frequently associated with higher PSNR outcomes. 
+
+In summary, the analysis indicates that maintaining R1 at 4, while experimenting with R2 around 10 to 15 and R3 at 2 to 3, may yield the best results for tensor completion tasks in this context.
+18-find_trials-cognitive: ### Task 2: Optimization Recommendation
+
+Based on the analysis of completed trials, the following three promising trials from the provided **Search Space** are recommended:
+
+1. **Trial Number 1**: 
+   - **Params**: {'R1': 4, 'R2': 20, 'R3': 4}
+   - **Reasoning**: This configuration maintains R1 at 4, which has shown to be effective in previous trials. The R2 value of 20 is slightly higher than the most successful configurations but still within a reasonable range, allowing exploration of potential improvements in performance. The R3 value of 4 is also consistent with the trend of achieving good PSNR values.
+
+2. **Trial Number 2**: 
+   - **Params**: {'R1': 3, 'R2': 15, 'R3': 4}
+   - **Reasoning**: This configuration explores a lower R1 value of 3, which has previously yielded competitive PSNR results. The R2 value of 15 aligns with successful trials, and the R3 value of 4 allows for testing a combination that has not been extensively explored. This trial could provide insights into the balance between lower ranks and higher R2 values.
+
+3. **Trial Number 3**: 
+   - **Params**: {'R1': 5, 'R2': 15, 'R3': 4}
+   - **Reasoning**: This configuration introduces a higher R1 value of 5, which has not performed as well in previous trials but could yield new insights into the upper limits of rank selection. The R2 value of 15 is consistent with successful configurations, and the R3 value of 4 allows for a balanced approach. This trial could help determine if increasing R1 can still lead to acceptable performance.
+
+## JSON Format:
+
+```json
+[
+    {"number": 42, "params": {"R1": 4, "R2": 20, "R3": 4}},
+    {"number": 20, "params": {"R1": 3, "R2": 15, "R3": 4}},
+    {"number": 54, "params": {"R1": 5, "R2": 15, "R3": 4}}
+]
+```
+- [difflib] amnbious matches: ['r1:4_r2:20_r3:4'], raw output: r1:4_r2:20_r3:4_
+- [difflib] amnbious matches: ['r1:3_r2:15_r3:4'], raw output: r1:3_r2:15_r3:4_
+- [difflib] amnbious matches: ['r1:5_r2:15_r3:4'], raw output: r1:5_r2:15_r3:4_
+Number of trials: 3 -> 3, 
+Error_trials: [] is non-empty. 
+Repeated_trials: 0 is non-empty. 
+ []
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^gpt-4o-mini: Round: 18, Failed: 0^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv[INFO] Round [21][64], Failed: [0]/[3]vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+{'description': 'You are an expert in tensor learning, specializing in hyperparameter optimization for tensor decomposition models, including rank selection and regularization coefficients. Your expertise lies in analyzing performance trends, identifying optimal hyperparameter configurations, and making data-driven recommendations under constrained trial budgets for tensor completion tasks.', 'model': 'Tensor Wheel (TW) decomposition', 'task': {'basic_idea': 'The Tensor Wheel (TW) decomposition decomposes an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor, connected via a wheel topology that establishes multi-linear products among the factors and core, enabling efficient representation and reconstruction of high-dimensional data.', 'objective': 'Perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The goal is to reconstruct the tensor by minimizing reconstruction error, measured by metrics such as Peak Signal-to-Noise Ratio (PSNR), while optimizing hyperparameters under a limited number of trials.', 'methods': {'core_tensor': 'A 3rd-order core tensor C of size L1xL2xL3, capturing the latent structure of the tensor.', 'ring_factors': ['G1: 4th-order tensor of size R1xI1xL1xR2', 'G2: 4th-order tensor of size R2xI2xL2xR3', 'G3: 4th-order tensor of size R3xI3xL3xR1'], 'constraints': 'R1 = L3, R3 = L1 = L2, ensuring cyclic consistency in the ring structure.', 'tensor_network_topology': {'description': "The TW decomposition forms a wheel-like topology, where the core tensor C is centrally connected to three 4th-order ring factors (G1, G2, G3). Each ring factor connects to the core via its L_k dimension and forms a closed loop with adjacent factors through shared rank indices (R1, R2, R3). The external indices (I1, I2, I3) align with the input tensor's dimensions.", 'reconstruction': "The reconstructed tensor X(i1, i2, i3) is computed as: $$X(i_1, i_2, i_3) = \\sum_{l_1, l_2, l_3, r_1, r_2, r_3} C(l_1, l_2, l_3) \\cdot G_1(r_1, i_1, l_1, r_2) \\cdot G_2(r_2, i_2, l_2, r_3) \\cdot G_3(r_3, i_3, l_3, r_1)$$, where internal indices (l1, l2, l3, r1, r2, r3) are summed over, and i1, i2, i3 correspond to the input tensor's dimensions."}}}, 'instruction': "Complete instructions under limited trials. 'nan' denotes unknown data."}
+21-find_trials-analyse-cognitive: ### Task 1: Analyze Current Task
+
+**Basic Idea**: The Tensor Wheel (TW) decomposition is designed to efficiently represent and reconstruct high-dimensional data by decomposing an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor. This structure allows for multi-linear interactions among the components, facilitating tensor completion tasks.
+
+**Objective**: The primary goal is to reconstruct a 3rd-order tensor representing multi-spectral images from the CAVE dataset. The reconstruction aims to minimize the reconstruction error, quantified by metrics such as Peak Signal-to-Noise Ratio (PSNR), while optimizing hyperparameters under a constrained number of trials.
+
+**Hyperparameters**: The key hyperparameters involved in the TW decomposition are the ranks of the ring factors:
+- **R1**: Rank associated with the first ring factor.
+- **R2**: Rank associated with the second ring factor.
+- **R3**: Rank associated with the third ring factor.
+These ranks must satisfy the cyclic consistency constraints: R1 = L3, R3 = L1 = L2.
+
+---
+
+### Task 2: Analysis of Completed Trials
+
+#### Step 1: Summarize Performance Metrics for Completed Trials
+
+The completed trials exhibit a range of PSNR values, with the highest recorded at **41.23** and the lowest at **27.58**. The trials can be categorized based on their performance:
+
+- **Top Performers**: Trials with PSNR values above **40** include:
+  - Trial 35: PSNR 41.23
+  - Trial 37: PSNR 41.21
+  - Trial 34: PSNR 40.77
+  - Trial 39: PSNR 40.95
+  - Trial 38: PSNR 40.91
+  - Trial 41: PSNR 40.94
+  - Trial 53: PSNR 40.76
+
+- **Mid-Range Performers**: Trials with PSNR values between **35** and **40** show moderate performance, indicating potential for further optimization.
+
+- **Lower Performers**: Trials with PSNR values below **35** suggest configurations that may not be suitable for effective tensor completion.
+
+#### Step 2: Evaluate Performance Trends for Hyper-parameters
+
+- **Rank R1**: The most successful configurations predominantly utilize **R1 = 4**. This rank appears to balance complexity and performance effectively, as seen in trials 35, 37, 34, and others.
+
+- **Rank R2**: Higher values of **R2** (specifically **15** and **25**) correlate with improved PSNR in several trials, indicating that increasing this rank may enhance the model's ability to capture complex data structures.
+
+- **Rank R3**: The optimal values for **R3** seem to vary, with configurations of **2**, **3**, and **4** yielding competitive results. However, **R3 = 5** in trial 39 also performed well, suggesting that a broader exploration of this parameter could be beneficial.
+
+#### Step 3: Highlight Promising Hyper-parameter Combinations
+
+- **Top-performing configurations**:
+  - **Trial 35**: R1 = 4, R2 = 10, R3 = 5 (PSNR 41.23) - This configuration stands out as the best performer, suggesting a strong balance among ranks.
+  - **Trial 37**: R1 = 4, R2 = 15, R3 = 3 (PSNR 41.21) - Indicates that increasing R2 while maintaining R1 at 4 can yield excellent results.
+  - **Trial 39**: R1 = 4, R2 = 15, R3 = 5 (PSNR 40.95) - Further supports the trend of higher R2 values contributing to better performance.
+
+- **Configurations with potential**:
+  - Trials with R1 = 4 and varying R2 (10, 15, 25) and R3 (2, 3, 4) consistently show promising PSNR values, suggesting that maintaining R1 at 4 while experimenting with R2 and R3 could lead to further improvements.
+
+In summary, the analysis indicates that configurations centered around R1 = 4, with R2 values of 10 to 15, and R3 values of 2 to 5, are particularly effective for tensor completion tasks in the context of the TW decomposition. Further trials should focus on fine-tuning these parameters to maximize PSNR outcomes.
+21-find_trials-cognitive: ### Task 2: Optimization Recommendation
+
+Based on the analysis of completed trials, the following three promising trials from the provided **Search Space** are recommended:
+
+1. **Trial 43**: 
+   - **Params**: {'R1': 4, 'R2': 20, 'R3': 5}
+   - **Reasoning**: This configuration maintains R1 at 4, which has shown strong performance in previous trials. Increasing R2 to 20 and R3 to 5 explores a higher complexity that could yield better results, as indicated by the positive trend observed with higher R2 values in trials like 37 and 39.
+
+2. **Trial 46**: 
+   - **Params**: {'R1': 4, 'R2': 25, 'R3': 4}
+   - **Reasoning**: This trial explores a higher R2 value of 25 while keeping R1 at 4, which has been associated with top PSNR results. The combination of R2 = 25 and R3 = 4 allows for a more complex representation of the data, potentially leading to improved reconstruction quality, as seen in trials with similar configurations.
+
+3. **Trial 55**: 
+   - **Params**: {'R1': 5, 'R2': 15, 'R3': 5}
+   - **Reasoning**: This configuration introduces a higher R1 value of 5, which has not been extensively explored in the completed trials. The combination of R2 = 15 and R3 = 5 could leverage the benefits of increased ranks while still being within a reasonable range, as indicated by the performance of trials with R2 = 15.
+
+---
+
+## JSON Format:
+
+```json
+[
+    {"number": 43, "params": {"R1": 4, "R2": 20, "R3": 5}},
+    {"number": 46, "params": {"R1": 4, "R2": 25, "R3": 4}},
+    {"number": 55, "params": {"R1": 5, "R2": 15, "R3": 5}}
+]
+```
+- [difflib] amnbious matches: ['r1:4_r2:20_r3:5'], raw output: r1:4_r2:20_r3:5_
+- [difflib] amnbious matches: ['r1:4_r2:25_r3:4'], raw output: r1:4_r2:25_r3:4_
+- [difflib] amnbious matches: ['r1:5_r2:15_r3:5'], raw output: r1:5_r2:15_r3:5_
+Number of trials: 3 -> 3, 
+Error_trials: [] is non-empty. 
+Repeated_trials: 0 is non-empty. 
+ []
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^gpt-4o-mini: Round: 21, Failed: 0^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv[INFO] Round [24][64], Failed: [0]/[3]vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+{'description': 'You are an expert in tensor learning, specializing in hyperparameter optimization for tensor decomposition models, including rank selection and regularization coefficients. Your expertise lies in analyzing performance trends, identifying optimal hyperparameter configurations, and making data-driven recommendations under constrained trial budgets for tensor completion tasks.', 'model': 'Tensor Wheel (TW) decomposition', 'task': {'basic_idea': 'The Tensor Wheel (TW) decomposition decomposes an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor, connected via a wheel topology that establishes multi-linear products among the factors and core, enabling efficient representation and reconstruction of high-dimensional data.', 'objective': 'Perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The goal is to reconstruct the tensor by minimizing reconstruction error, measured by metrics such as Peak Signal-to-Noise Ratio (PSNR), while optimizing hyperparameters under a limited number of trials.', 'methods': {'core_tensor': 'A 3rd-order core tensor C of size L1xL2xL3, capturing the latent structure of the tensor.', 'ring_factors': ['G1: 4th-order tensor of size R1xI1xL1xR2', 'G2: 4th-order tensor of size R2xI2xL2xR3', 'G3: 4th-order tensor of size R3xI3xL3xR1'], 'constraints': 'R1 = L3, R3 = L1 = L2, ensuring cyclic consistency in the ring structure.', 'tensor_network_topology': {'description': "The TW decomposition forms a wheel-like topology, where the core tensor C is centrally connected to three 4th-order ring factors (G1, G2, G3). Each ring factor connects to the core via its L_k dimension and forms a closed loop with adjacent factors through shared rank indices (R1, R2, R3). The external indices (I1, I2, I3) align with the input tensor's dimensions.", 'reconstruction': "The reconstructed tensor X(i1, i2, i3) is computed as: $$X(i_1, i_2, i_3) = \\sum_{l_1, l_2, l_3, r_1, r_2, r_3} C(l_1, l_2, l_3) \\cdot G_1(r_1, i_1, l_1, r_2) \\cdot G_2(r_2, i_2, l_2, r_3) \\cdot G_3(r_3, i_3, l_3, r_1)$$, where internal indices (l1, l2, l3, r1, r2, r3) are summed over, and i1, i2, i3 correspond to the input tensor's dimensions."}}}, 'instruction': "Complete instructions under limited trials. 'nan' denotes unknown data."}
+24-find_trials-analyse-cognitive: ### Task 1: Analyze Current Task
+
+**Basic Idea:**
+The Tensor Wheel (TW) decomposition is designed to break down an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor. This structure allows for efficient representation and reconstruction of high-dimensional data through a wheel topology that facilitates multi-linear interactions among the components.
+
+**Objective:**
+The primary goal is to perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The aim is to reconstruct the tensor while minimizing the reconstruction error, which is quantified using metrics like Peak Signal-to-Noise Ratio (PSNR). This must be achieved while optimizing hyperparameters within a limited number of trials.
+
+**Hyperparameters:**
+The hyperparameters involved in the TW decomposition include:
+- R1: Rank of the first ring factor.
+- R2: Rank of the second ring factor.
+- R3: Rank of the third ring factor.
+These ranks must adhere to the constraints of cyclic consistency, specifically R1 = L3 and R3 = L1 = L2.
+
+---
+
+### Task 2: Analysis of Completed Trials
+
+#### Step 1: Summarize Performance Metrics for Completed Trials
+The completed trials exhibit a range of PSNR values, with the highest recorded at 41.23 and the lowest at 27.58. The trials can be categorized based on their performance:
+- **Top Performers:** Trials with PSNR values above 40 (e.g., 41.23, 41.21, 40.95).
+- **Moderate Performers:** Trials with PSNR values between 35 and 40 (e.g., 39.97, 39.89).
+- **Lower Performers:** Trials with PSNR values below 35 (e.g., 33.17, 27.58).
+
+#### Step 2: Evaluate Performance Trends for Hyper-parameters
+- **Rank R1:** The most successful configurations predominantly feature R1 values of 4 or 5. Lower values (e.g., R1 = 2 or 3) tend to correlate with lower PSNR scores.
+- **Rank R2:** Higher values of R2 (15 or 25) appear frequently among the top-performing trials, suggesting that increased complexity in this dimension may enhance reconstruction quality.
+- **Rank R3:** The optimal configurations often have R3 values of 2 or 3, with a few successful trials at 4 or 5. This indicates a potential balance between complexity and overfitting.
+
+#### Step 3: Highlight Promising Hyper-parameter Combinations
+- **Top-performing configurations** include:
+  - **Trial 35:** R1 = 4, R2 = 10, R3 = 5 (PSNR: 41.23)
+  - **Trial 37:** R1 = 4, R2 = 15, R3 = 3 (PSNR: 41.21)
+  - **Trial 39:** R1 = 4, R2 = 15, R3 = 5 (PSNR: 40.95)
+  - **Trial 34:** R1 = 4, R2 = 10, R3 = 4 (PSNR: 40.77)
+
+These configurations consistently utilize R1 = 4, which seems to be a critical factor for achieving high PSNR values. The combination of R2 = 15 with varying R3 values also appears to yield strong results, indicating that this range may be optimal for the task at hand.
+
+In summary, the analysis reveals that maintaining R1 at 4, leveraging higher R2 values, and carefully selecting R3 can lead to improved tensor completion performance. Further trials should focus on fine-tuning these parameters to explore the potential for even higher PSNR outcomes.
+24-find_trials-cognitive: Based on the analysis of completed trials and the performance trends observed, here are three promising trials from the provided search space:
+
+1. **Trial 1:**
+   - **Number:** 1
+   - **Params:** {'R1': 2, 'R2': 10, 'R3': 3}
+   - **Reasoning:** This configuration explores a lower rank for R1, which has not been extensively tested in the top-performing trials. Given that R2 is set to 10, which has shown potential in previous trials, this combination may yield interesting results, especially since it balances lower complexity with a moderate rank in the second dimension.
+
+2. **Trial 2:**
+   - **Number:** 20
+   - **Params:** {'R1': 3, 'R2': 15, 'R3': 2}
+   - **Reasoning:** This configuration utilizes R1 = 3 and R2 = 15, both of which have been associated with good performance in previous trials. The lower R3 value of 2 allows for exploration of a less complex model, which could potentially lead to better generalization and performance, especially in the context of the observed trends.
+
+3. **Trial 3:**
+   - **Number:** 47
+   - **Params:** {'R1': 4, 'R2': 25, 'R3': 5}
+   - **Reasoning:** This configuration pushes the boundaries of R2 to 25, which has been linked to some successful trials. The combination of R1 = 4 and R3 = 5 aligns with the top-performing configurations, suggesting that this trial could capitalize on the strengths of higher ranks while testing the limits of R2.
+
+## JSON Format:
+
+```json
+[
+    {"number": 1, "params": {"R1": 2, "R2": 10, "R3": 3}},
+    {"number": 20, "params": {"R1": 3, "R2": 15, "R3": 2}},
+    {"number": 47, "params": {"R1": 4, "R2": 25, "R3": 5}}
+]
+```
+- [difflib] amnbious matches: ['r1:2_r2:10_r3:3'], raw output: r1:2_r2:10_r3:3_
+- [difflib] amnbious matches: ['r1:3_r2:15_r3:2'], raw output: r1:3_r2:15_r3:2_
+- [difflib] amnbious matches: ['r1:4_r2:25_r3:5'], raw output: r1:4_r2:25_r3:5_
+Number of trials: 3 -> 3, 
+Error_trials: [] is non-empty. 
+Repeated_trials: 0 is non-empty. 
+ []
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^gpt-4o-mini: Round: 24, Failed: 0^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv[INFO] Round [27][64], Failed: [0]/[3]vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+{'description': 'You are an expert in tensor learning, specializing in hyperparameter optimization for tensor decomposition models, including rank selection and regularization coefficients. Your expertise lies in analyzing performance trends, identifying optimal hyperparameter configurations, and making data-driven recommendations under constrained trial budgets for tensor completion tasks.', 'model': 'Tensor Wheel (TW) decomposition', 'task': {'basic_idea': 'The Tensor Wheel (TW) decomposition decomposes an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor, connected via a wheel topology that establishes multi-linear products among the factors and core, enabling efficient representation and reconstruction of high-dimensional data.', 'objective': 'Perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The goal is to reconstruct the tensor by minimizing reconstruction error, measured by metrics such as Peak Signal-to-Noise Ratio (PSNR), while optimizing hyperparameters under a limited number of trials.', 'methods': {'core_tensor': 'A 3rd-order core tensor C of size L1xL2xL3, capturing the latent structure of the tensor.', 'ring_factors': ['G1: 4th-order tensor of size R1xI1xL1xR2', 'G2: 4th-order tensor of size R2xI2xL2xR3', 'G3: 4th-order tensor of size R3xI3xL3xR1'], 'constraints': 'R1 = L3, R3 = L1 = L2, ensuring cyclic consistency in the ring structure.', 'tensor_network_topology': {'description': "The TW decomposition forms a wheel-like topology, where the core tensor C is centrally connected to three 4th-order ring factors (G1, G2, G3). Each ring factor connects to the core via its L_k dimension and forms a closed loop with adjacent factors through shared rank indices (R1, R2, R3). The external indices (I1, I2, I3) align with the input tensor's dimensions.", 'reconstruction': "The reconstructed tensor X(i1, i2, i3) is computed as: $$X(i_1, i_2, i_3) = \\sum_{l_1, l_2, l_3, r_1, r_2, r_3} C(l_1, l_2, l_3) \\cdot G_1(r_1, i_1, l_1, r_2) \\cdot G_2(r_2, i_2, l_2, r_3) \\cdot G_3(r_3, i_3, l_3, r_1)$$, where internal indices (l1, l2, l3, r1, r2, r3) are summed over, and i1, i2, i3 correspond to the input tensor's dimensions."}}}, 'instruction': "Complete instructions under limited trials. 'nan' denotes unknown data."}
+27-find_trials-analyse-cognitive: ### Task 1: Analyze Current Task
+
+**Basic Idea:**
+The Tensor Wheel (TW) decomposition is designed to decompose an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor. This structure allows for efficient representation and reconstruction of high-dimensional data through a wheel topology that facilitates multi-linear products among the factors and core.
+
+**Objective:**
+The primary goal is to perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The aim is to reconstruct the tensor while minimizing the reconstruction error, which is quantified using metrics such as Peak Signal-to-Noise Ratio (PSNR). This must be achieved while optimizing hyperparameters under a limited number of trials.
+
+**Hyperparameters:**
+The hyperparameters involved in the TW decomposition include:
+- R1: Rank of the first ring factor.
+- R2: Rank of the second ring factor.
+- R3: Rank of the third ring factor.
+These ranks must adhere to the constraints of cyclic consistency, specifically R1 = L3 and R3 = L1 = L2.
+
+---
+
+### Task 2: Analysis of Completed Trials
+
+**Step 1: Summarize Performance Metrics for Completed Trials**
+The completed trials exhibit a range of PSNR values, with the highest recorded at 41.23 (Trial 35) and the lowest at 27.58 (Trial 62). The trials can be categorized based on their PSNR performance:
+- **Top Performers (PSNR > 40):** Trials 35, 37, 34, 39, 38, 41, 53, 40, 42, 22.
+- **Mid Performers (PSNR between 35 and 40):** Trials 36, 32, 33, 44, 21, 45, 52, 54, 20.
+- **Low Performers (PSNR < 35):** Trials 4, 0, 1, 47, 62.
+
+**Step 2: Evaluate Performance Trends for Hyper-parameters**
+- **Rank R1:** The most successful configurations predominantly feature R1 values of 4 or 5. Trials with R1 = 4 (e.g., Trials 35, 37, 34) consistently yield high PSNR values, indicating that this rank may be optimal for the current dataset.
+- **Rank R2:** Higher values of R2 (15 or 25) appear in several top-performing trials (e.g., Trials 35, 37, 39), suggesting that increasing R2 can enhance performance, particularly when paired with R1 = 4.
+- **Rank R3:** The optimal R3 values seem to vary, with both lower (2, 3) and higher (4, 5) ranks appearing in successful configurations. However, R3 = 3 and R3 = 4 are common in the top-performing trials.
+
+**Step 3: Highlight Promising Hyper-parameter Combinations**
+- **Top-performing configurations:** 
+  - **Trial 35:** R1 = 4, R2 = 10, R3 = 5 (PSNR = 41.23)
+  - **Trial 37:** R1 = 4, R2 = 15, R3 = 3 (PSNR = 41.21)
+  - **Trial 34:** R1 = 4, R2 = 10, R3 = 4 (PSNR = 40.77)
+  - **Trial 39:** R1 = 4, R2 = 15, R3 = 5 (PSNR = 40.95)
+  - **Trial 41:** R1 = 4, R2 = 20, R3 = 3 (PSNR = 40.94)
+
+These configurations suggest that maintaining R1 at 4 while experimenting with R2 values of 10, 15, or 20, and R3 values of 3, 4, or 5 could yield optimal results. The consistent performance of R1 = 4 across multiple trials indicates its potential as a stable choice for further exploration.
+27-find_trials-cognitive: Based on the analysis from Task 1, the following recommendations are made for trials from the provided Search Space:
+
+1. **Trial 3:** 
+   - **Params:** {'R1': 2, 'R2': 10, 'R3': 5}
+   - **Reasoning:** This configuration explores a lower rank for R1 (2) while maintaining a moderate R2 (10) and a higher R3 (5). Given that trials with R1 = 2 have shown lower PSNR values, this trial could provide insights into the impact of increasing R3 while keeping R1 low. It allows for exploration of a potentially under-explored region that may yield unexpected performance gains.
+
+2. **Trial 12:** 
+   - **Params:** {'R1': 2, 'R2': 25, 'R3': 2}
+   - **Reasoning:** This configuration features a high R2 (25) with a low R1 (2) and R3 (2). The previous trials indicate that higher R2 values can lead to improved performance, especially when paired with R1 = 4. This trial allows for testing the limits of R2 while keeping R1 low, which could reveal whether a high R2 compensates for a lower R1.
+
+3. **Trial 58:** 
+   - **Params:** {'R1': 5, 'R2': 20, 'R3': 4}
+   - **Reasoning:** This configuration utilizes a high R1 (5) and R2 (20) while maintaining a moderate R3 (4). Given that trials with R1 = 5 have shown mixed results, this trial could help determine if a high R2 can enhance performance when paired with a high R1. It explores a promising combination that has not been extensively tested in previous trials.
+
+---
+
+```json
+[
+    {"number": 3, "params": {"R1": 2, "R2": 10, "R3": 5}},
+    {"number": 12, "params": {"R1": 2, "R2": 25, "R3": 2}},
+    {"number": 58, "params": {"R1": 5, "R2": 20, "R3": 4}}
+]
+```
+- [difflib] amnbious matches: ['r1:2_r2:10_r3:5'], raw output: r1:2_r2:10_r3:5_
+- [difflib] amnbious matches: ['r1:2_r2:25_r3:2'], raw output: r1:2_r2:25_r3:2_
+- [difflib] amnbious matches: ['r1:5_r2:20_r3:4'], raw output: r1:5_r2:20_r3:4_
+Number of trials: 3 -> 3, 
+Error_trials: [] is non-empty. 
+Repeated_trials: 0 is non-empty. 
+ []
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^gpt-4o-mini: Round: 27, Failed: 0^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv[INFO] Round [30][64], Failed: [0]/[3]vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+{'description': 'You are an expert in tensor learning, specializing in hyperparameter optimization for tensor decomposition models, including rank selection and regularization coefficients. Your expertise lies in analyzing performance trends, identifying optimal hyperparameter configurations, and making data-driven recommendations under constrained trial budgets for tensor completion tasks.', 'model': 'Tensor Wheel (TW) decomposition', 'task': {'basic_idea': 'The Tensor Wheel (TW) decomposition decomposes an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor, connected via a wheel topology that establishes multi-linear products among the factors and core, enabling efficient representation and reconstruction of high-dimensional data.', 'objective': 'Perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The goal is to reconstruct the tensor by minimizing reconstruction error, measured by metrics such as Peak Signal-to-Noise Ratio (PSNR), while optimizing hyperparameters under a limited number of trials.', 'methods': {'core_tensor': 'A 3rd-order core tensor C of size L1xL2xL3, capturing the latent structure of the tensor.', 'ring_factors': ['G1: 4th-order tensor of size R1xI1xL1xR2', 'G2: 4th-order tensor of size R2xI2xL2xR3', 'G3: 4th-order tensor of size R3xI3xL3xR1'], 'constraints': 'R1 = L3, R3 = L1 = L2, ensuring cyclic consistency in the ring structure.', 'tensor_network_topology': {'description': "The TW decomposition forms a wheel-like topology, where the core tensor C is centrally connected to three 4th-order ring factors (G1, G2, G3). Each ring factor connects to the core via its L_k dimension and forms a closed loop with adjacent factors through shared rank indices (R1, R2, R3). The external indices (I1, I2, I3) align with the input tensor's dimensions.", 'reconstruction': "The reconstructed tensor X(i1, i2, i3) is computed as: $$X(i_1, i_2, i_3) = \\sum_{l_1, l_2, l_3, r_1, r_2, r_3} C(l_1, l_2, l_3) \\cdot G_1(r_1, i_1, l_1, r_2) \\cdot G_2(r_2, i_2, l_2, r_3) \\cdot G_3(r_3, i_3, l_3, r_1)$$, where internal indices (l1, l2, l3, r1, r2, r3) are summed over, and i1, i2, i3 correspond to the input tensor's dimensions."}}}, 'instruction': "Complete instructions under limited trials. 'nan' denotes unknown data."}
+30-find_trials-analyse-cognitive: ### Task 1: Analyze Current Task
+
+**Basic Idea:**
+The Tensor Wheel (TW) decomposition is designed to efficiently represent and reconstruct high-dimensional data by decomposing an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor. This structure allows for multi-linear interactions among the components, facilitating tensor completion tasks.
+
+**Objective:**
+The primary goal is to perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The reconstruction aims to minimize the reconstruction error, quantified by metrics such as Peak Signal-to-Noise Ratio (PSNR), while optimizing hyperparameters within a limited number of trials.
+
+**Hyperparameters:**
+The hyperparameters involved in the TW decomposition include:
+- R1: Rank of the first ring factor.
+- R2: Rank of the second ring factor.
+- R3: Rank of the third ring factor.
+These ranks must adhere to the constraints of cyclic consistency, specifically R1 = L3 and R3 = L1 = L2.
+
+---
+
+### Task 2: Analysis of Completed Trials
+
+**Step 1: Summarize Performance Metrics for Completed Trials**
+The completed trials exhibit a range of PSNR values, with the highest recorded at 41.23 and the lowest at 27.58. The trials can be categorized based on their performance:
+- **Top Performers:** Trials with PSNR values above 40 (e.g., 41.23, 41.21, 40.95).
+- **Moderate Performers:** Trials with PSNR values between 35 and 40 (e.g., 39.97, 39.89).
+- **Lower Performers:** Trials with PSNR values below 35 (e.g., 33.17, 31.11).
+
+**Step 2: Evaluate Performance Trends for Hyper-parameters**
+- **Rank R1:** The most successful configurations predominantly feature R1 values of 4 or 5. Lower values (e.g., R1 = 2 or 3) tend to correlate with lower PSNR outcomes.
+- **Rank R2:** Higher values of R2 (15 or 25) appear frequently among the top-performing trials, suggesting that increased complexity in the second ring factor may enhance reconstruction quality.
+- **Rank R3:** The optimal R3 values seem to cluster around 2 to 5, with configurations using R3 = 3 or 4 yielding better results.
+
+**Step 3: Highlight Promising Hyper-parameter Combinations**
+- **Top-performing configurations** include:
+  - **(R1: 4, R2: 10, R3: 5)** with PSNR = 41.23
+  - **(R1: 4, R2: 15, R3: 3)** with PSNR = 41.21
+  - **(R1: 4, R2: 15, R3: 5)** with PSNR = 40.95
+  - **(R1: 4, R2: 10, R3: 4)** with PSNR = 40.77
+  - **(R1: 4, R2: 20, R3: 3)** with PSNR = 40.94
+
+These configurations consistently utilize R1 = 4, indicating a strong preference for this rank in achieving high PSNR values. The combination of R2 values around 10 to 15, along with R3 values of 3 to 5, appears to be particularly effective in enhancing reconstruction quality. 
+
+In summary, the analysis suggests that focusing on R1 = 4, R2 values between 10 and 15, and R3 values of 3 to 5 may yield the best results for future trials, optimizing the tensor completion process under the constraints of the current task.
+30-find_trials-cognitive: Based on the analysis from Task 1, the following recommendations are made for promising trials from the provided Search Space:
+
+1. **Trial Number 5:**
+   - **Params:** {'R1': 2, 'R2': 15, 'R3': 3}
+   - **Reasoning:** This configuration explores a lower rank for R1, which has shown to yield moderate PSNR values in previous trials. The combination of R2 = 15 and R3 = 3 aligns with successful configurations that have demonstrated good performance, particularly in trials where R2 was high. This trial could provide insights into the impact of lower R1 values while maintaining a strong R2.
+
+2. **Trial Number 24:**
+   - **Params:** {'R1': 3, 'R2': 20, 'R3': 2}
+   - **Reasoning:** This configuration utilizes a higher R2 value, which has been associated with improved PSNR in previous trials. The choice of R1 = 3 is consistent with several successful trials, and R3 = 2 allows for exploration of lower ranks in the third dimension. This combination could potentially uncover new performance gains, especially given the success of configurations with R2 = 20.
+
+3. **Trial Number 49:**
+   - **Params:** {'R1': 5, 'R2': 10, 'R3': 3}
+   - **Reasoning:** This trial explores a higher R1 value, which has been linked to some of the top-performing configurations. The R2 value of 10 is moderate and has shown promise in previous trials, while R3 = 3 is a common value among successful trials. This combination allows for exploration of higher ranks while maintaining a balance that could lead to improved reconstruction quality.
+
+## JSON Format:
+
+```json
+[
+    {"number": 5, "params": {"R1": 2, "R2": 15, "R3": 3}},
+    {"number": 24, "params": {"R1": 3, "R2": 20, "R3": 2}},
+    {"number": 49, "params": {"R1": 5, "R2": 10, "R3": 3}}
+]
+```
+- [difflib] amnbious matches: ['r1:2_r2:15_r3:3'], raw output: r1:2_r2:15_r3:3_
+- [difflib] amnbious matches: ['r1:3_r2:20_r3:2'], raw output: r1:3_r2:20_r3:2_
+- [difflib] amnbious matches: ['r1:5_r2:10_r3:3'], raw output: r1:5_r2:10_r3:3_
+Number of trials: 3 -> 3, 
+Error_trials: [] is non-empty. 
+Repeated_trials: 0 is non-empty. 
+ []
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^gpt-4o-mini: Round: 30, Failed: 0^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv[INFO] Round [33][64], Failed: [0]/[3]vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+{'description': 'You are an expert in tensor learning, specializing in hyperparameter optimization for tensor decomposition models, including rank selection and regularization coefficients. Your expertise lies in analyzing performance trends, identifying optimal hyperparameter configurations, and making data-driven recommendations under constrained trial budgets for tensor completion tasks.', 'model': 'Tensor Wheel (TW) decomposition', 'task': {'basic_idea': 'The Tensor Wheel (TW) decomposition decomposes an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor, connected via a wheel topology that establishes multi-linear products among the factors and core, enabling efficient representation and reconstruction of high-dimensional data.', 'objective': 'Perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The goal is to reconstruct the tensor by minimizing reconstruction error, measured by metrics such as Peak Signal-to-Noise Ratio (PSNR), while optimizing hyperparameters under a limited number of trials.', 'methods': {'core_tensor': 'A 3rd-order core tensor C of size L1xL2xL3, capturing the latent structure of the tensor.', 'ring_factors': ['G1: 4th-order tensor of size R1xI1xL1xR2', 'G2: 4th-order tensor of size R2xI2xL2xR3', 'G3: 4th-order tensor of size R3xI3xL3xR1'], 'constraints': 'R1 = L3, R3 = L1 = L2, ensuring cyclic consistency in the ring structure.', 'tensor_network_topology': {'description': "The TW decomposition forms a wheel-like topology, where the core tensor C is centrally connected to three 4th-order ring factors (G1, G2, G3). Each ring factor connects to the core via its L_k dimension and forms a closed loop with adjacent factors through shared rank indices (R1, R2, R3). The external indices (I1, I2, I3) align with the input tensor's dimensions.", 'reconstruction': "The reconstructed tensor X(i1, i2, i3) is computed as: $$X(i_1, i_2, i_3) = \\sum_{l_1, l_2, l_3, r_1, r_2, r_3} C(l_1, l_2, l_3) \\cdot G_1(r_1, i_1, l_1, r_2) \\cdot G_2(r_2, i_2, l_2, r_3) \\cdot G_3(r_3, i_3, l_3, r_1)$$, where internal indices (l1, l2, l3, r1, r2, r3) are summed over, and i1, i2, i3 correspond to the input tensor's dimensions."}}}, 'instruction': "Complete instructions under limited trials. 'nan' denotes unknown data."}
+33-find_trials-analyse-cognitive: ### Task 1: Analyze Current Task
+
+**Basic Idea:**
+The Tensor Wheel (TW) decomposition is designed to efficiently represent and reconstruct high-dimensional data by decomposing an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor. This structure allows for multi-linear interactions among the components, facilitating tensor completion tasks.
+
+**Objective:**
+The primary goal is to perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The aim is to minimize reconstruction error, quantified by metrics such as Peak Signal-to-Noise Ratio (PSNR), while optimizing hyperparameters within a limited number of trials.
+
+**Hyperparameters:**
+The hyperparameters involved in the TW decomposition include:
+- R1: Rank of the first ring factor.
+- R2: Rank of the second ring factor.
+- R3: Rank of the third ring factor.
+These ranks must adhere to the constraints of cyclic consistency, specifically R1 = L3 and R3 = L1 = L2.
+
+---
+
+### Task 2: Analysis of Completed Trials
+
+**Step 1: Summarize Performance Metrics for Completed Trials**
+The completed trials exhibit a range of PSNR values, with the highest recorded at 41.23 for trial number 35. The PSNR values generally indicate varying levels of reconstruction quality, with several trials achieving values above 40, suggesting effective tensor completion. The lowest PSNR recorded is 27.58, indicating a significant drop in performance for that configuration.
+
+**Step 2: Evaluate Performance Trends for Hyper-parameters**
+- **Rank R1:** The most successful configurations predominantly feature R1 values of 4 or 5. Trials with R1 set to 4 consistently yield higher PSNR values, suggesting that this rank may be optimal for the current dataset.
+- **Rank R2:** Higher values of R2 (specifically 15 and 25) appear frequently among the top-performing trials, indicating that increased complexity in the second ring factor may enhance reconstruction quality.
+- **Rank R3:** The configurations with R3 values of 2 or 3 are common among the higher PSNR results, while higher values (4 or 5) do not consistently correlate with improved performance, suggesting a potential diminishing return on increasing this rank.
+
+**Step 3: Highlight Promising Hyper-parameter Combinations**
+- **Top-performing configurations:** 
+  - Trial 35: R1 = 4, R2 = 10, R3 = 5 (PSNR: 41.23)
+  - Trial 37: R1 = 4, R2 = 15, R3 = 3 (PSNR: 41.21)
+  - Trial 34: R1 = 4, R2 = 10, R3 = 4 (PSNR: 40.77)
+  - Trial 39: R1 = 4, R2 = 15, R3 = 5 (PSNR: 40.95)
+  - Trial 41: R1 = 4, R2 = 20, R3 = 3 (PSNR: 40.94)
+
+These configurations consistently utilize R1 = 4, with varying R2 and R3 values, indicating a strong preference for this rank in achieving high PSNR. The combination of R2 values around 10 to 20 and R3 values of 3 to 5 appears to be particularly effective, suggesting a balanced approach to complexity in the ring factors. 
+
+In summary, the analysis indicates that maintaining R1 at 4, while experimenting with R2 and R3 within the identified ranges, could yield optimal results for future trials.
+33-find_trials-cognitive: ### Task 2: Optimization Recommendation
+
+Based on the analysis of completed trials, the following three promising trials from the provided **Search Space** are recommended:
+
+1. **Trial Number 6:**
+   - **Params:** {'R1': 2, 'R2': 15, 'R3': 4}
+   - **Reasoning:** This configuration explores a lower rank for R1, which has shown potential in previous trials. The R2 value of 15 aligns with successful configurations that utilized higher complexity, while R3 at 4 is a middle ground that has been effective in other trials. This combination could yield a balance between model complexity and performance.
+
+2. **Trial Number 19:**
+   - **Params:** {'R1': 3, 'R2': 10, 'R3': 5}
+   - **Reasoning:** This configuration introduces a moderate rank for R1 and a higher rank for R3, which has been associated with good performance in previous trials. The R2 value of 10 is also a common factor in successful trials, suggesting that this combination may lead to improved reconstruction quality while exploring a slightly different region of the parameter space.
+
+3. **Trial Number 57:**
+   - **Params:** {'R1': 5, 'R2': 20, 'R3': 3}
+   - **Reasoning:** This configuration utilizes a higher rank for R1, which has been linked to some of the best-performing trials. The R2 value of 20 is on the higher end, which has shown promise in previous trials, while R3 at 3 is a moderate choice that could help maintain a balance between complexity and performance. This trial explores a region that has not been extensively tested, potentially leading to new insights.
+
+---
+
+## JSON Format:
+
+```json
+[
+    {"number": 6, "params": {"R1": 2, "R2": 15, "R3": 4}},
+    {"number": 19, "params": {"R1": 3, "R2": 10, "R3": 5}},
+    {"number": 57, "params": {"R1": 5, "R2": 20, "R3": 3}}
+]
+```
+- [difflib] amnbious matches: ['r1:2_r2:15_r3:4'], raw output: r1:2_r2:15_r3:4_
+- [difflib] amnbious matches: ['r1:3_r2:10_r3:5'], raw output: r1:3_r2:10_r3:5_
+- [difflib] amnbious matches: ['r1:5_r2:20_r3:3'], raw output: r1:5_r2:20_r3:3_
+Number of trials: 3 -> 3, 
+Error_trials: [] is non-empty. 
+Repeated_trials: 0 is non-empty. 
+ []
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^gpt-4o-mini: Round: 33, Failed: 0^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv[INFO] Round [36][64], Failed: [0]/[3]vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+{'description': 'You are an expert in tensor learning, specializing in hyperparameter optimization for tensor decomposition models, including rank selection and regularization coefficients. Your expertise lies in analyzing performance trends, identifying optimal hyperparameter configurations, and making data-driven recommendations under constrained trial budgets for tensor completion tasks.', 'model': 'Tensor Wheel (TW) decomposition', 'task': {'basic_idea': 'The Tensor Wheel (TW) decomposition decomposes an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor, connected via a wheel topology that establishes multi-linear products among the factors and core, enabling efficient representation and reconstruction of high-dimensional data.', 'objective': 'Perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The goal is to reconstruct the tensor by minimizing reconstruction error, measured by metrics such as Peak Signal-to-Noise Ratio (PSNR), while optimizing hyperparameters under a limited number of trials.', 'methods': {'core_tensor': 'A 3rd-order core tensor C of size L1xL2xL3, capturing the latent structure of the tensor.', 'ring_factors': ['G1: 4th-order tensor of size R1xI1xL1xR2', 'G2: 4th-order tensor of size R2xI2xL2xR3', 'G3: 4th-order tensor of size R3xI3xL3xR1'], 'constraints': 'R1 = L3, R3 = L1 = L2, ensuring cyclic consistency in the ring structure.', 'tensor_network_topology': {'description': "The TW decomposition forms a wheel-like topology, where the core tensor C is centrally connected to three 4th-order ring factors (G1, G2, G3). Each ring factor connects to the core via its L_k dimension and forms a closed loop with adjacent factors through shared rank indices (R1, R2, R3). The external indices (I1, I2, I3) align with the input tensor's dimensions.", 'reconstruction': "The reconstructed tensor X(i1, i2, i3) is computed as: $$X(i_1, i_2, i_3) = \\sum_{l_1, l_2, l_3, r_1, r_2, r_3} C(l_1, l_2, l_3) \\cdot G_1(r_1, i_1, l_1, r_2) \\cdot G_2(r_2, i_2, l_2, r_3) \\cdot G_3(r_3, i_3, l_3, r_1)$$, where internal indices (l1, l2, l3, r1, r2, r3) are summed over, and i1, i2, i3 correspond to the input tensor's dimensions."}}}, 'instruction': "Complete instructions under limited trials. 'nan' denotes unknown data."}
+36-find_trials-analyse-cognitive: ### Task 1: Analyze Current Task
+
+**Basic Idea:**
+The Tensor Wheel (TW) decomposition is designed to efficiently represent and reconstruct high-dimensional data by decomposing an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor. This structure allows for multi-linear interactions among the components, facilitating tensor completion tasks.
+
+**Objective:**
+The primary goal is to perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The reconstruction aims to minimize the reconstruction error, quantified by metrics such as Peak Signal-to-Noise Ratio (PSNR), while optimizing hyperparameters within a limited number of trials.
+
+**Hyperparameters:**
+The hyperparameters involved in the TW decomposition include:
+- R1: Rank of the first ring factor.
+- R2: Rank of the second ring factor.
+- R3: Rank of the third ring factor.
+These ranks must satisfy the constraints R1 = L3, R3 = L1 = L2, ensuring cyclic consistency in the ring structure.
+
+---
+
+### Task 2: Analysis of Completed Trials
+
+**Step 1: Summarize Performance Metrics for Completed Trials**
+The completed trials exhibit a range of PSNR values, with the highest recorded at 41.23 and the lowest at 27.58. The top-performing configurations consistently achieve PSNR values above 40, indicating effective tensor completion. The trials show a general trend where configurations with lower ranks (R1, R2, R3) tend to yield better PSNR results, particularly when R1 is fixed at 4.
+
+**Step 2: Evaluate Performance Trends for Hyper-parameters**
+- **Rank R1:** The most successful trials predominantly feature R1 set to 4. This rank appears to balance model complexity and reconstruction accuracy effectively.
+- **Rank R2:** Higher values of R2 (specifically 10 to 25) correlate with improved PSNR, suggesting that a moderate to high rank in the second factor enhances the model's ability to capture data variability.
+- **Rank R3:** The rank R3 shows variability, with configurations using ranks of 2 to 5. However, configurations with R3 set to 3 or 4 often yield higher PSNR, indicating these ranks may be optimal for maintaining the model's performance.
+
+**Step 3: Highlight Promising Hyper-parameter Combinations**
+- **Top-performing configurations:**
+  - **Trial 35:** R1 = 4, R2 = 10, R3 = 5 (PSNR: 41.23)
+  - **Trial 37:** R1 = 4, R2 = 15, R3 = 3 (PSNR: 41.21)
+  - **Trial 34:** R1 = 4, R2 = 10, R3 = 4 (PSNR: 40.77)
+  - **Trial 39:** R1 = 4, R2 = 15, R3 = 5 (PSNR: 40.95)
+  - **Trial 38:** R1 = 4, R2 = 15, R3 = 4 (PSNR: 40.91)
+
+These configurations consistently utilize R1 = 4, with varying R2 and R3 values that suggest a preference for moderate to high ranks in the second factor while maintaining R3 around 3 to 5. This indicates a potential sweet spot for achieving high reconstruction quality while managing computational complexity. 
+
+In summary, the analysis reveals that maintaining R1 at 4, while experimenting with R2 and R3 within the identified ranges, is likely to yield the best results for tensor completion tasks in the context of the TW decomposition.
+36-find_trials-cognitive: Based on the analysis of completed trials and the performance trends observed, the following three promising trials from the provided search space are recommended:
+
+1. **Trial 2:** 
+   - **Params:** {'R1': 2, 'R2': 10, 'R3': 4}
+   - **Reasoning:** This configuration explores a lower rank for R1, which has shown potential in previous trials. The combination of R2 at 10 and R3 at 4 aligns with successful configurations that have yielded high PSNR values. This trial could provide insights into the performance of lower ranks while maintaining a balance in the other dimensions.
+
+2. **Trial 14:** 
+   - **Params:** {'R1': 2, 'R2': 25, 'R3': 4}
+   - **Reasoning:** This trial explores a higher R2 value while keeping R1 low. The previous trials indicate that increasing R2 can enhance performance, especially when R1 is constrained. This configuration could reveal whether a high R2 can compensate for the lower R1, potentially leading to improved reconstruction quality.
+
+3. **Trial 25:** 
+   - **Params:** {'R1': 3, 'R2': 20, 'R3': 3}
+   - **Reasoning:** This configuration maintains a moderate R1 while significantly increasing R2. The combination of R2 at 20 and R3 at 3 is under-explored in the completed trials, and given the positive trends observed with higher R2 values, this trial could uncover new performance gains in tensor completion.
+
+---
+
+## JSON Format:
+
+```json
+[
+    {"number": 2, "params": {"R1": 2, "R2": 10, "R3": 4}},
+    {"number": 14, "params": {"R1": 2, "R2": 25, "R3": 4}},
+    {"number": 25, "params": {"R1": 3, "R2": 20, "R3": 3}}
+]
+```
+- [difflib] amnbious matches: ['r1:2_r2:10_r3:4'], raw output: r1:2_r2:10_r3:4_
+- [difflib] amnbious matches: ['r1:2_r2:25_r3:4'], raw output: r1:2_r2:25_r3:4_
+- [difflib] amnbious matches: ['r1:3_r2:20_r3:3'], raw output: r1:3_r2:20_r3:3_
+Number of trials: 3 -> 3, 
+Error_trials: [] is non-empty. 
+Repeated_trials: 0 is non-empty. 
+ []
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^gpt-4o-mini: Round: 36, Failed: 0^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv[INFO] Round [39][64], Failed: [0]/[3]vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+{'description': 'You are an expert in tensor learning, specializing in hyperparameter optimization for tensor decomposition models, including rank selection and regularization coefficients. Your expertise lies in analyzing performance trends, identifying optimal hyperparameter configurations, and making data-driven recommendations under constrained trial budgets for tensor completion tasks.', 'model': 'Tensor Wheel (TW) decomposition', 'task': {'basic_idea': 'The Tensor Wheel (TW) decomposition decomposes an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor, connected via a wheel topology that establishes multi-linear products among the factors and core, enabling efficient representation and reconstruction of high-dimensional data.', 'objective': 'Perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The goal is to reconstruct the tensor by minimizing reconstruction error, measured by metrics such as Peak Signal-to-Noise Ratio (PSNR), while optimizing hyperparameters under a limited number of trials.', 'methods': {'core_tensor': 'A 3rd-order core tensor C of size L1xL2xL3, capturing the latent structure of the tensor.', 'ring_factors': ['G1: 4th-order tensor of size R1xI1xL1xR2', 'G2: 4th-order tensor of size R2xI2xL2xR3', 'G3: 4th-order tensor of size R3xI3xL3xR1'], 'constraints': 'R1 = L3, R3 = L1 = L2, ensuring cyclic consistency in the ring structure.', 'tensor_network_topology': {'description': "The TW decomposition forms a wheel-like topology, where the core tensor C is centrally connected to three 4th-order ring factors (G1, G2, G3). Each ring factor connects to the core via its L_k dimension and forms a closed loop with adjacent factors through shared rank indices (R1, R2, R3). The external indices (I1, I2, I3) align with the input tensor's dimensions.", 'reconstruction': "The reconstructed tensor X(i1, i2, i3) is computed as: $$X(i_1, i_2, i_3) = \\sum_{l_1, l_2, l_3, r_1, r_2, r_3} C(l_1, l_2, l_3) \\cdot G_1(r_1, i_1, l_1, r_2) \\cdot G_2(r_2, i_2, l_2, r_3) \\cdot G_3(r_3, i_3, l_3, r_1)$$, where internal indices (l1, l2, l3, r1, r2, r3) are summed over, and i1, i2, i3 correspond to the input tensor's dimensions."}}}, 'instruction': "Complete instructions under limited trials. 'nan' denotes unknown data."}
+39-find_trials-analyse-cognitive: ### Task 1: Analyze Current Task
+
+**Basic Idea:**
+The Tensor Wheel (TW) decomposition is designed to efficiently decompose an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor. This structure allows for effective representation and reconstruction of high-dimensional data through a wheel topology that facilitates multi-linear interactions among the components.
+
+**Objective:**
+The primary goal is to perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The aim is to reconstruct the tensor while minimizing the reconstruction error, quantified by metrics such as Peak Signal-to-Noise Ratio (PSNR), and to optimize hyperparameters within a limited number of trials.
+
+**Hyperparameters:**
+The hyperparameters involved in the TW decomposition include:
+- R1: Rank of the first ring factor.
+- R2: Rank of the second ring factor.
+- R3: Rank of the third ring factor.
+These ranks must adhere to the constraints of cyclic consistency, specifically R1 = L3 and R3 = L1 = L2.
+
+---
+
+### Task 2: Analysis of Completed Trials
+
+**Step 1: Summarize Performance Metrics for Completed Trials**
+The completed trials exhibit a range of PSNR values, with the highest recorded at 41.23 and the lowest at 27.58. The majority of trials yield PSNR values above 30, indicating a generally effective reconstruction capability across various configurations. Notably, trials with R1 set to 4 consistently appear among the top performers.
+
+**Step 2: Evaluate Performance Trends for Hyper-parameters**
+- **Rank R1:** The configurations with R1 = 4 are particularly prominent, achieving the highest PSNR values. This suggests that a rank of 4 may be optimal for capturing the underlying structure of the tensor.
+- **Rank R2:** Higher values of R2 (specifically 15 and 25) tend to correlate with better performance, especially when paired with R1 = 4. However, R2 = 10 also shows competitive results, indicating a potential trade-off between complexity and performance.
+- **Rank R3:** The rank R3 appears to have a less consistent impact on performance, with configurations of 2, 3, 4, and 5 yielding varying results. However, R3 = 3 and R3 = 4 are frequently associated with higher PSNR values when combined with R1 = 4 and R2 = 15.
+
+**Step 3: Highlight Promising Hyper-parameter Combinations**
+- **Top-performing configurations:**
+  - **Trial 35:** R1 = 4, R2 = 10, R3 = 5 (PSNR: 41.23)
+  - **Trial 37:** R1 = 4, R2 = 15, R3 = 3 (PSNR: 41.21)
+  - **Trial 34:** R1 = 4, R2 = 10, R3 = 4 (PSNR: 40.77)
+  - **Trial 39:** R1 = 4, R2 = 15, R3 = 5 (PSNR: 40.95)
+  - **Trial 38:** R1 = 4, R2 = 15, R3 = 4 (PSNR: 40.91)
+
+These configurations consistently leverage R1 = 4, indicating its potential as a key parameter for achieving high reconstruction quality. The combination of R2 = 15 with R1 = 4 also appears to enhance performance, suggesting a strong interaction between these ranks. 
+
+In summary, the analysis indicates that maintaining R1 at 4 while exploring R2 values around 10 to 15 and R3 values of 3 to 5 may yield optimal results for tensor completion tasks. Further trials could focus on fine-tuning these parameters to maximize PSNR within the constraints of the trial budget.
+39-find_trials-cognitive: Based on the analysis of completed trials and the performance trends observed, the following three promising trials from the provided search space are recommended:
+
+1. **Trial 7:** 
+   - **Params:** {'R1': 2, 'R2': 15, 'R3': 5}
+   - **Reasoning:** This configuration explores a lower rank for R1, which has not been extensively tested in the top-performing configurations. Given that R2 is set to 15, which has shown to correlate positively with performance in previous trials, this combination could yield interesting results, especially since R3 is also varied.
+
+2. **Trial 23:** 
+   - **Params:** {'R1': 3, 'R2': 15, 'R3': 5}
+   - **Reasoning:** This trial maintains R2 at 15, which has been associated with higher PSNR values in previous trials. By increasing R1 to 3, it allows for a broader exploration of the tensor's latent structure while still leveraging the promising R2 value. The combination of R1 = 3 and R3 = 5 is under-explored, making it a candidate for potentially improved performance.
+
+3. **Trial 61:** 
+   - **Params:** {'R1': 5, 'R2': 25, 'R3': 3}
+   - **Reasoning:** This configuration tests a higher rank for R1 and R2, which have previously shown to yield lower PSNR values. However, the combination of R1 = 5 and R2 = 25 is less explored, and the inclusion of R3 = 3 allows for a different interaction among the factors. This trial could uncover new insights into the performance of higher ranks in the TW decomposition.
+
+## JSON Format:
+
+```json
+[
+    {"number": 7, "params": {"R1": 2, "R2": 15, "R3": 5}},
+    {"number": 23, "params": {"R1": 3, "R2": 15, "R3": 5}},
+    {"number": 61, "params": {"R1": 5, "R2": 25, "R3": 3}}
+]
+```
+- [difflib] amnbious matches: ['r1:2_r2:15_r3:5'], raw output: r1:2_r2:15_r3:5_
+- [difflib] amnbious matches: ['r1:3_r2:15_r3:5'], raw output: r1:3_r2:15_r3:5_
+- [difflib] amnbious matches: ['r1:5_r2:25_r3:3'], raw output: r1:5_r2:25_r3:3_
+Number of trials: 3 -> 3, 
+Error_trials: [] is non-empty. 
+Repeated_trials: 0 is non-empty. 
+ []
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^gpt-4o-mini: Round: 39, Failed: 0^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv[INFO] Round [42][64], Failed: [0]/[3]vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+{'description': 'You are an expert in tensor learning, specializing in hyperparameter optimization for tensor decomposition models, including rank selection and regularization coefficients. Your expertise lies in analyzing performance trends, identifying optimal hyperparameter configurations, and making data-driven recommendations under constrained trial budgets for tensor completion tasks.', 'model': 'Tensor Wheel (TW) decomposition', 'task': {'basic_idea': 'The Tensor Wheel (TW) decomposition decomposes an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor, connected via a wheel topology that establishes multi-linear products among the factors and core, enabling efficient representation and reconstruction of high-dimensional data.', 'objective': 'Perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The goal is to reconstruct the tensor by minimizing reconstruction error, measured by metrics such as Peak Signal-to-Noise Ratio (PSNR), while optimizing hyperparameters under a limited number of trials.', 'methods': {'core_tensor': 'A 3rd-order core tensor C of size L1xL2xL3, capturing the latent structure of the tensor.', 'ring_factors': ['G1: 4th-order tensor of size R1xI1xL1xR2', 'G2: 4th-order tensor of size R2xI2xL2xR3', 'G3: 4th-order tensor of size R3xI3xL3xR1'], 'constraints': 'R1 = L3, R3 = L1 = L2, ensuring cyclic consistency in the ring structure.', 'tensor_network_topology': {'description': "The TW decomposition forms a wheel-like topology, where the core tensor C is centrally connected to three 4th-order ring factors (G1, G2, G3). Each ring factor connects to the core via its L_k dimension and forms a closed loop with adjacent factors through shared rank indices (R1, R2, R3). The external indices (I1, I2, I3) align with the input tensor's dimensions.", 'reconstruction': "The reconstructed tensor X(i1, i2, i3) is computed as: $$X(i_1, i_2, i_3) = \\sum_{l_1, l_2, l_3, r_1, r_2, r_3} C(l_1, l_2, l_3) \\cdot G_1(r_1, i_1, l_1, r_2) \\cdot G_2(r_2, i_2, l_2, r_3) \\cdot G_3(r_3, i_3, l_3, r_1)$$, where internal indices (l1, l2, l3, r1, r2, r3) are summed over, and i1, i2, i3 correspond to the input tensor's dimensions."}}}, 'instruction': "Complete instructions under limited trials. 'nan' denotes unknown data."}
+42-find_trials-analyse-cognitive: ### Task 1: Analyze Current Task
+
+**Basic Idea:**
+The Tensor Wheel (TW) decomposition is designed to efficiently decompose an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor. This structure allows for effective representation and reconstruction of high-dimensional data through a wheel topology that facilitates multi-linear interactions among the components.
+
+**Objective:**
+The primary goal is to perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The aim is to reconstruct the tensor while minimizing the reconstruction error, quantified by metrics such as Peak Signal-to-Noise Ratio (PSNR). This must be achieved while optimizing hyperparameters under a constrained number of trials.
+
+**Hyperparameters:**
+The hyperparameters involved in the TW decomposition include:
+- R1: Rank of the first ring factor.
+- R2: Rank of the second ring factor.
+- R3: Rank of the third ring factor.
+These ranks must adhere to the constraints of cyclic consistency, specifically R1 = L3 and R3 = L1 = L2.
+
+---
+
+### Task 2: Analysis of Completed Trials
+
+**Step 1: Summarize Performance Metrics for Completed Trials**
+The completed trials exhibit a range of PSNR values, with the highest recorded at 41.23 (Trial 35) and the lowest at 27.58 (Trial 62). The majority of trials yield PSNR values between 30 and 41, indicating a generally effective performance in tensor completion. 
+
+**Step 2: Evaluate Performance Trends for Hyper-parameters**
+- **Rank R1:** The most successful configurations predominantly utilize R1 values of 4 or 5. Trials with R1 set to 4 consistently yield higher PSNR values, suggesting that this rank may be optimal for the current dataset.
+- **Rank R2:** Higher values of R2 (15, 20, 25) appear frequently in top-performing trials, particularly in conjunction with R1 = 4. This indicates that increasing R2 can enhance performance, especially when paired with a stable R1.
+- **Rank R3:** The optimal values for R3 seem to cluster around 2 to 5, with configurations using R3 = 3 or 4 often achieving better PSNR scores. This suggests a balanced approach to R3 can contribute positively to reconstruction quality.
+
+**Step 3: Highlight Promising Hyper-parameter Combinations**
+- **Top-performing configurations:**
+  - **Trial 35:** R1 = 4, R2 = 10, R3 = 5 (PSNR: 41.23)
+  - **Trial 37:** R1 = 4, R2 = 15, R3 = 3 (PSNR: 41.21)
+  - **Trial 34:** R1 = 4, R2 = 10, R3 = 4 (PSNR: 40.77)
+  - **Trial 39:** R1 = 4, R2 = 15, R3 = 5 (PSNR: 40.95)
+  - **Trial 41:** R1 = 4, R2 = 20, R3 = 3 (PSNR: 40.94)
+
+These configurations consistently utilize R1 = 4, indicating a strong preference for this rank. The variations in R2 and R3 suggest that while R1 is critical, the optimal combination of R2 and R3 can vary, allowing for flexibility in tuning these parameters to achieve high PSNR values. 
+
+In summary, the analysis indicates that maintaining R1 at 4, while experimenting with R2 values around 10 to 20 and R3 values between 3 to 5, may yield the best results for tensor completion tasks in this context.
+42-find_trials-cognitive: Based on the analysis of completed trials and the insights gathered, here are three promising trials from the provided search space:
+
+1. **Trial 9**: 
+   - **Params**: {'R1': 2, 'R2': 20, 'R3': 3}
+   - **Reasoning**: This configuration explores a lower rank for R1 (2) while increasing R2 significantly to 20. Given that higher R2 values have shown potential in previous trials, this combination could yield interesting results, especially since R1 = 2 has not been extensively tested with high R2 values.
+
+2. **Trial 27**: 
+   - **Params**: {'R1': 3, 'R2': 20, 'R3': 5}
+   - **Reasoning**: This trial maintains R1 at 3, which has been associated with good performance in previous trials, while pushing R2 to 20 and R3 to 5. The combination of a moderate R1 with high R2 and R3 could lead to improved PSNR, as seen in trials with similar configurations.
+
+3. **Trial 51**: 
+   - **Params**: {'R1': 5, 'R2': 10, 'R3': 5}
+   - **Reasoning**: This configuration utilizes the highest rank (R1 = 5) while keeping R2 at a moderate level (10) and R3 at 5. Given that trials with R1 = 5 have shown promising results, this combination could explore the upper limits of rank while maintaining a balance with R2 and R3, potentially leading to high reconstruction quality.
+
+## JSON Format:
+
+```json
+[
+    {"number": 9, "params": {"R1": 2, "R2": 20, "R3": 3}},
+    {"number": 27, "params": {"R1": 3, "R2": 20, "R3": 5}},
+    {"number": 51, "params": {"R1": 5, "R2": 10, "R3": 5}}
+]
+```
+- [difflib] amnbious matches: ['r1:2_r2:20_r3:3'], raw output: r1:2_r2:20_r3:3_
+- [difflib] amnbious matches: ['r1:3_r2:20_r3:5'], raw output: r1:3_r2:20_r3:5_
+- [difflib] amnbious matches: ['r1:5_r2:10_r3:5'], raw output: r1:5_r2:10_r3:5_
+Number of trials: 3 -> 3, 
+Error_trials: [] is non-empty. 
+Repeated_trials: 0 is non-empty. 
+ []
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^gpt-4o-mini: Round: 42, Failed: 0^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv[INFO] Round [45][64], Failed: [0]/[3]vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+{'description': 'You are an expert in tensor learning, specializing in hyperparameter optimization for tensor decomposition models, including rank selection and regularization coefficients. Your expertise lies in analyzing performance trends, identifying optimal hyperparameter configurations, and making data-driven recommendations under constrained trial budgets for tensor completion tasks.', 'model': 'Tensor Wheel (TW) decomposition', 'task': {'basic_idea': 'The Tensor Wheel (TW) decomposition decomposes an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor, connected via a wheel topology that establishes multi-linear products among the factors and core, enabling efficient representation and reconstruction of high-dimensional data.', 'objective': 'Perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The goal is to reconstruct the tensor by minimizing reconstruction error, measured by metrics such as Peak Signal-to-Noise Ratio (PSNR), while optimizing hyperparameters under a limited number of trials.', 'methods': {'core_tensor': 'A 3rd-order core tensor C of size L1xL2xL3, capturing the latent structure of the tensor.', 'ring_factors': ['G1: 4th-order tensor of size R1xI1xL1xR2', 'G2: 4th-order tensor of size R2xI2xL2xR3', 'G3: 4th-order tensor of size R3xI3xL3xR1'], 'constraints': 'R1 = L3, R3 = L1 = L2, ensuring cyclic consistency in the ring structure.', 'tensor_network_topology': {'description': "The TW decomposition forms a wheel-like topology, where the core tensor C is centrally connected to three 4th-order ring factors (G1, G2, G3). Each ring factor connects to the core via its L_k dimension and forms a closed loop with adjacent factors through shared rank indices (R1, R2, R3). The external indices (I1, I2, I3) align with the input tensor's dimensions.", 'reconstruction': "The reconstructed tensor X(i1, i2, i3) is computed as: $$X(i_1, i_2, i_3) = \\sum_{l_1, l_2, l_3, r_1, r_2, r_3} C(l_1, l_2, l_3) \\cdot G_1(r_1, i_1, l_1, r_2) \\cdot G_2(r_2, i_2, l_2, r_3) \\cdot G_3(r_3, i_3, l_3, r_1)$$, where internal indices (l1, l2, l3, r1, r2, r3) are summed over, and i1, i2, i3 correspond to the input tensor's dimensions."}}}, 'instruction': "Complete instructions under limited trials. 'nan' denotes unknown data."}
+45-find_trials-analyse-cognitive: ### Task 1: Analyze Current Task
+
+**Basic Idea:**
+The Tensor Wheel (TW) decomposition is designed to efficiently decompose an Nth-order tensor into N 4th-order ring factors and an Nth-order core tensor. This structure allows for effective representation and reconstruction of high-dimensional data through a wheel topology that facilitates multi-linear interactions among the components.
+
+**Objective:**
+The primary goal is to perform tensor completion on multi-spectral images from the CAVE dataset, represented as a 3rd-order tensor of size I1xI2xI3. The task focuses on reconstructing the tensor while minimizing the reconstruction error, quantified by metrics such as Peak Signal-to-Noise Ratio (PSNR). This must be achieved while optimizing hyperparameters within a limited number of trials.
+
+**Hyperparameters:**
+The hyperparameters involved in the TW decomposition include:
+- R1: Rank of the first ring factor.
+- R2: Rank of the second ring factor.
+- R3: Rank of the third ring factor.
+These ranks must adhere to the constraints of cyclic consistency, specifically R1 = L3 and R3 = L1 = L2.
+
+---
+
+### Task 2: Analysis of Completed Trials
+
+**Step 1: Summarize Performance Metrics for Completed Trials**
+The completed trials exhibit a range of PSNR values, with the highest recorded at 41.34 and the lowest at 27.58. The majority of trials yield PSNR values above 35, indicating a generally effective reconstruction capability across various configurations. Notably, trials with R1 set to 4 consistently appear among the top performers, suggesting a potential optimal rank for this parameter.
+
+**Step 2: Evaluate Performance Trends for Hyper-parameters**
+- **Rank R1:** The configurations with R1 = 4 are prevalent in the top-performing trials, indicating that this rank may be optimal for achieving higher PSNR values. Trials with R1 = 5, while still competitive, tend to yield lower PSNR scores compared to those with R1 = 4.
+  
+- **Rank R2:** The trials with R2 values of 10 and 15 frequently appear in the higher PSNR results. Specifically, R2 = 10 is associated with several configurations that achieve PSNRs above 40, suggesting it may be a favorable choice for this parameter.
+
+- **Rank R3:** The impact of R3 is less consistent, but configurations with R3 = 3 and R3 = 4 are often found in the upper echelon of PSNR results. This indicates that moderate ranks for R3 can contribute positively to reconstruction quality.
+
+**Step 3: Highlight Promising Hyper-parameter Combinations**
+- **Top-performing configurations:**
+  - **Configuration 1:** R1 = 4, R2 = 10, R3 = 5 (PSNR: 41.23)
+  - **Configuration 2:** R1 = 4, R2 = 15, R3 = 3 (PSNR: 41.21)
+  - **Configuration 3:** R1 = 4, R2 = 10, R3 = 4 (PSNR: 40.77)
+  - **Configuration 4:** R1 = 4, R2 = 20, R3 = 3 (PSNR: 40.94)
+  - **Configuration 5:** R1 = 5, R2 = 15, R3 = 3 (PSNR: 40.76)
+
+These configurations demonstrate a strong correlation between the selected ranks and high PSNR values, particularly emphasizing the effectiveness of R1 = 4 and R2 = 10 or 15. The consistent performance of these combinations suggests they should be prioritized in future trials, especially under budget constraints. 
+
+In summary, the analysis indicates that maintaining R1 at 4 while experimenting with R2 values around 10 to 15 and R3 values of 3 to 5 may yield optimal results for tensor completion tasks.
+####################################################################################################
+45-find_trials-stop-cognitive: 
+    Completed trials:
+
+    [{'number': 35, 'params': {'R1': '4', 'R2': '10', 'R3': '5'}, 'PSNR': 41.23}, {'number': 62, 'params': {'R1': '5', 'R2': '25', 'R3': '4'}, 'PSNR': 27.58}, {'number': 32, 'params': {'R1': '4', 'R2': '10', 'R3': '2'}, 'PSNR': 37.97}, {'number': 33, 'params': {'R1': 4, 'R2': 10, 'R3': 3}, 'PSNR': 39.73}, {'number': 36, 'params': {'R1': 4, 'R2': 15, 'R3': 2}, 'PSNR': 39.97}, {'number': 4, 'params': {'R1': 2, 'R2': 15, 'R3': 2}, 'PSNR': 35.31}, {'number': 34, 'params': {'R1': 4, 'R2': 10, 'R3': 4}, 'PSNR': 40.77}, {'number': 37, 'params': {'R1': 4, 'R2': 15, 'R3': 3}, 'PSNR': 41.21}, {'number': 39, 'params': {'R1': 4, 'R2': 15, 'R3': 5}, 'PSNR': 40.95}, {'number': 38, 'params': {'R1': 4, 'R2': 15, 'R3': 4}, 'PSNR': 40.91}, {'number': 44, 'params': {'R1': 4, 'R2': 25, 'R3': 2}, 'PSNR': 39.96}, {'number': 21, 'params': {'R1': 3, 'R2': 15, 'R3': 3}, 'PSNR': 39.89}, {'number': 45, 'params': {'R1': 4, 'R2': 25, 'R3': 3}, 'PSNR': 38.85}, {'number': 41, 'params': {'R1': 4, 'R2': 20, 'R3': 3}, 'PSNR': 40.94}, {'number': 53, 'params': {'R1': 5, 'R2': 15, 'R3': 3}, 'PSNR': 40.76}, {'number': 0, 'params': {'R1': 2, 'R2': 10, 'R3': 2}, 'PSNR': 33.17}, {'number': 40, 'params': {'R1': 4, 'R2': 20, 'R3': 2}, 'PSNR': 40.84}, {'number': 52, 'params': {'R1': 5, 'R2': 15, 'R3': 2}, 'PSNR': 40.47}, {'number': 42, 'params': {'R1': 4, 'R2': 20, 'R3': 4}, 'PSNR': 40.19}, {'number': 22, 'params': {'R1': 3, 'R2': 15, 'R3': 4}, 'PSNR': 40.42}, {'number': 54, 'params': {'R1': 5, 'R2': 15, 'R3': 4}, 'PSNR': 39.34}, {'number': 43, 'params': {'R1': 4, 'R2': 20, 'R3': 5}, 'PSNR': 38.23}, {'number': 46, 'params': {'R1': 4, 'R2': 25, 'R3': 4}, 'PSNR': 36.36}, {'number': 55, 'params': {'R1': 5, 'R2': 15, 'R3': 5}, 'PSNR': 37.49}, {'number': 1, 'params': {'R1': 2, 'R2': 10, 'R3': 3}, 'PSNR': 34.12}, {'number': 20, 'params': {'R1': 3, 'R2': 15, 'R3': 2}, 'PSNR': 38.54}, {'number': 47, 'params': {'R1': 4, 'R2': 25, 'R3': 5}, 'PSNR': 31.11}, {'number': 3, 'params': {'R1': 2, 'R2': 10, 'R3': 5}, 'PSNR': 34.42}, {'number': 12, 'params': {'R1': 2, 'R2': 25, 'R3': 2}, 'PSNR': 37.63}, {'number': 58, 'params': {'R1': 5, 'R2': 20, 'R3': 4}, 'PSNR': 32.1}, {'number': 5, 'params': {'R1': 2, 'R2': 15, 'R3': 3}, 'PSNR': 36.36}, {'number': 24, 'params': {'R1': 3, 'R2': 20, 'R3': 2}, 'PSNR': 39.66}, {'number': 49, 'params': {'R1': 5, 'R2': 10, 'R3': 3}, 'PSNR': 41.09}, {'number': 6, 'params': {'R1': 2, 'R2': 15, 'R3': 4}, 'PSNR': 36.73}, {'number': 19, 'params': {'R1': 3, 'R2': 10, 'R3': 5}, 'PSNR': 39.21}, {'number': 57, 'params': {'R1': 5, 'R2': 20, 'R3': 3}, 'PSNR': 37.06}, {'number': 2, 'params': {'R1': 2, 'R2': 10, 'R3': 4}, 'PSNR': 34.37}, {'number': 14, 'params': {'R1': 2, 'R2': 25, 'R3': 4}, 'PSNR': 40.07}, {'number': 25, 'params': {'R1': 3, 'R2': 20, 'R3': 3}, 'PSNR': 41.04}, {'number': 7, 'params': {'R1': 2, 'R2': 15, 'R3': 5}, 'PSNR': 36.78}, {'number': 23, 'params': {'R1': 3, 'R2': 15, 'R3': 5}, 'PSNR': 40.86}, {'number': 61, 'params': {'R1': 5, 'R2': 25, 'R3': 3}, 'PSNR': 31.01}, {'number': 9, 'params': {'R1': 2, 'R2': 20, 'R3': 3}, 'PSNR': 38.13}, {'number': 27, 'params': {'R1': 3, 'R2': 20, 'R3': 5}, 'PSNR': 41.16}, {'number': 51, 'params': {'R1': 5, 'R2': 10, 'R3': 5}, 'PSNR': 41.34}]
+
+    The following **Search Space** contains **unexplored** trials.
+
+    [{'number': 8, 'params': {'R1': 2, 'R2': 20, 'R3': 2}}, {'number': 10, 'params': {'R1': 2, 'R2': 20, 'R3': 4}}, {'number': 11, 'params': {'R1': 2, 'R2': 20, 'R3': 5}}, {'number': 13, 'params': {'R1': 2, 'R2': 25, 'R3': 3}}, {'number': 15, 'params': {'R1': 2, 'R2': 25, 'R3': 5}}, {'number': 16, 'params': {'R1': 3, 'R2': 10, 'R3': 2}}, {'number': 17, 'params': {'R1': 3, 'R2': 10, 'R3': 3}}, {'number': 18, 'params': {'R1': 3, 'R2': 10, 'R3': 4}}, {'number': 26, 'params': {'R1': 3, 'R2': 20, 'R3': 4}}, {'number': 28, 'params': {'R1': 3, 'R2': 25, 'R3': 2}}, {'number': 29, 'params': {'R1': 3, 'R2': 25, 'R3': 3}}, {'number': 30, 'params': {'R1': 3, 'R2': 25, 'R3': 4}}, {'number': 31, 'params': {'R1': 3, 'R2': 25, 'R3': 5}}, {'number': 48, 'params': {'R1': 5, 'R2': 10, 'R3': 2}}, {'number': 50, 'params': {'R1': 5, 'R2': 10, 'R3': 4}}, {'number': 56, 'params': {'R1': 5, 'R2': 20, 'R3': 2}}, {'number': 59, 'params': {'R1': 5, 'R2': 20, 'R3': 5}}, {'number': 60, 'params': {'R1': 5, 'R2': 25, 'R3': 2}}, {'number': 63, 'params': {'R1': 5, 'R2': 25, 'R3': 5}}]
+
+
+    Instructions:
+
+    ** Task 1: Review Analysis of Completed Trials (trial analysis, performance trends, highlights and other insights)**
+
+    ** Task 2: Decide Whether to Stop Optimization**
+
+    Based on the above analysis and **Completed Trials**, determine whether the optimization process should be stopped.
+
+    Carefully analyze each of the following stop rules and provide a short (1-2 sentences) justification for whether it is met:
+
+    
+        You do not need to test all configuration.
+
+        ---
+        **Step 1: Analyze the following criteria:**
+
+        Based on the above trial analysis, observed performance trends, and highlighted promising regions in the **Completed Trials**:
+
+        1. Have all promising configurations, as identified from performance trends, already been tested?
+
+        2. Are unexplored configurations unlikely to perform better, based on observed trends and diminishing returns?
+
+        3. Has the best metric `PSNR` improved significantly compared to the first three **Completed Trials**?
+
+        ---
+        
+
+    **Step 2: Decide whether **all** conditions are met.**
+
+    If **all** criteria in Step 1 are met or early stopping,
+
+    Answer: Yes with confidence score: $confidence_socre. Otherwise, Answer: No with confidence score: $confidence_socre.
+
+    Note that: **You MUST complete Step 1 before Step 2.** 
+    Do not speculate beyond **Search Space**.
+
+    Finally, you MUST output 'Answer: No/Yes' with confidence score: $confidence_socre
+
+
+    
+####################################################################################################
+45-find_trials-stop-cognitive: ### Task 1: Review Analysis of Completed Trials
+
+**Trial Analysis:**
+The completed trials reveal a range of PSNR values, with the highest being 41.34 and the lowest at 27.58. The trials with R1 = 4 consistently yield better performance, particularly with R2 values of 10 and 15, indicating a strong correlation between these parameters and higher PSNR scores.
+
+**Performance Trends:**
+- **R1 = 4**: This rank appears in multiple top-performing configurations, suggesting it is a favorable choice for achieving high PSNR.
+- **R2 = 10 and 15**: These values are frequently associated with higher PSNR results, reinforcing their potential as optimal settings.
+- **R3 Variability**: While R3 values of 3 and 4 are common in successful trials, the impact of R3 appears less consistent compared to R1 and R2.
+
+**Highlights and Insights:**
+- The configurations yielding PSNR above 40 are predominantly those with R1 = 4 and R2 = 10 or 15.
+- The exploration of R1 = 5 has not yielded results that surpass the best configurations with R1 = 4, indicating a potential diminishing return for higher ranks in this context.
+- The trials with lower PSNR values (below 35) generally involve lower ranks for R1 and R2, suggesting that these configurations are less effective.
+
+---
+
+### Task 2: Decide Whether to Stop Optimization
+
+**Step 1: Analyze the following criteria:**
+
+1. **Have all promising configurations, as identified from performance trends, already been tested?**
+   - Yes, the promising configurations with R1 = 4 and R2 = 10 or 15 have been tested, and the best PSNR values have been achieved with these settings.
+
+2. **Are unexplored configurations unlikely to perform better, based on observed trends and diminishing returns?**
+   - Yes, the unexplored configurations primarily involve variations of R1 = 2 or R1 = 5, which have shown lower performance in completed trials. Given the strong performance of R1 = 4, it is unlikely that these unexplored configurations will yield better results.
+
+3. **Has the best metric `PSNR` improved significantly compared to the first three Completed Trials?**
+   - Yes, the best PSNR (41.34) is significantly higher than the PSNR values from the first three completed trials, which were below 40.
+
+---
+
+**Step 2: Decide whether all conditions are met.**
+
+Since all criteria in Step 1 are met, the optimization process can be confidently stopped.
+
+**Answer: Yes with confidence score: 0.95**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^gpt-4o-mini: Round: 45, Failed: 0^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

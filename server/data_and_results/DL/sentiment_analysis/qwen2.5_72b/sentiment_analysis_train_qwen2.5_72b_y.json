@@ -1,0 +1,199 @@
+[
+    {
+        "role": "system",
+        "content": {
+            "description": "You are a Senior Computer Vision Researcher specializing in Long Short Term Memory. 'nan' denotes unknown data. Please provide professional and detailed answers.",
+            "model": "Long Short Term Memory (Performance Analysis of Hyperparameters on a  Sentiment Analysis Model)",
+            "task": "Sentiment Analysis",
+            "basic_idea": "The representation of sentence in a sequence form was conducted by using the LSTM network.",
+            "search_space": {
+                "activation": [
+                    "Softmax",
+                    "Softplus",
+                    "Sigmoid",
+                    "Relu",
+                    "hard-sigmoid"
+                ],
+                "optimizer": [
+                    "Adam",
+                    "Adagrad",
+                    "Nadam",
+                    "Adamax"
+                ]
+            },
+            "instrustion": "Complete instructions under limited trials"
+        }
+    },
+    {
+        "role": "user",
+        "content": {
+            "max_trials": 20,
+            "completed_trials": 18,
+            "trials": [
+                {
+                    "number": 14,
+                    "params": {
+                        "activation": "Relu",
+                        "optimizer": "Nadam"
+                    },
+                    "training accuracy": 0.9
+                },
+                {
+                    "number": 19,
+                    "params": {
+                        "activation": "hard_sigmoid",
+                        "optimizer": "Adamax"
+                    },
+                    "training accuracy": 0.91
+                },
+                {
+                    "number": 16,
+                    "params": {
+                        "activation": "hard_sigmoid",
+                        "optimizer": "Adam"
+                    },
+                    "training accuracy": 0.89
+                },
+                {
+                    "number": 3,
+                    "params": {
+                        "activation": "Softmax",
+                        "optimizer": "Adamax"
+                    },
+                    "training accuracy": 0.94
+                },
+                {
+                    "number": 15,
+                    "params": {
+                        "activation": "Relu",
+                        "optimizer": "Adamax"
+                    },
+                    "training accuracy": 0.91
+                },
+                {
+                    "number": 18,
+                    "params": {
+                        "activation": "hard_sigmoid",
+                        "optimizer": "Nadam"
+                    },
+                    "training accuracy": 0.92
+                },
+                {
+                    "number": 0,
+                    "params": {
+                        "activation": "Softmax",
+                        "optimizer": "Adam"
+                    },
+                    "training accuracy": 0.96
+                },
+                {
+                    "number": 12,
+                    "params": {
+                        "activation": "Relu",
+                        "optimizer": "Adam"
+                    },
+                    "training accuracy": 0.93
+                },
+                {
+                    "number": 8,
+                    "params": {
+                        "activation": "Sigmoid",
+                        "optimizer": "Adam"
+                    },
+                    "training accuracy": 0.93
+                },
+                {
+                    "number": 1,
+                    "params": {
+                        "activation": "Softmax",
+                        "optimizer": "Adagrad"
+                    },
+                    "training accuracy": 0.92
+                },
+                {
+                    "number": 9,
+                    "params": {
+                        "activation": "Sigmoid",
+                        "optimizer": "Adagrad"
+                    },
+                    "training accuracy": 0.87
+                },
+                {
+                    "number": 13,
+                    "params": {
+                        "activation": "Relu",
+                        "optimizer": "Adagrad"
+                    },
+                    "training accuracy": 0.91
+                },
+                {
+                    "number": 2,
+                    "params": {
+                        "activation": "Softmax",
+                        "optimizer": "Nadam"
+                    },
+                    "training accuracy": 0.93
+                },
+                {
+                    "number": 10,
+                    "params": {
+                        "activation": "Sigmoid",
+                        "optimizer": "Nadam"
+                    },
+                    "training accuracy": 0.87
+                },
+                {
+                    "number": 7,
+                    "params": {
+                        "activation": "Softplus",
+                        "optimizer": "Adamax"
+                    },
+                    "training accuracy": 0.91
+                },
+                {
+                    "number": 4,
+                    "params": {
+                        "activation": "Softplus",
+                        "optimizer": "Adam"
+                    },
+                    "training accuracy": 0.91
+                },
+                {
+                    "number": 5,
+                    "params": {
+                        "activation": "Softplus",
+                        "optimizer": "Adagrad"
+                    },
+                    "training accuracy": 0.92
+                },
+                {
+                    "number": 11,
+                    "params": {
+                        "activation": "Sigmoid",
+                        "optimizer": "Adamax"
+                    },
+                    "training accuracy": 0.89
+                }
+            ],
+            "instructions": [
+                {
+                    "task": "Analysis of Current Trials",
+                    "description": "1. Summarize performance metrics\n2. Evaluate performance trends for hyper-parameters.\n3. Highlight promising hyper-parameter combinations."
+                },
+                {
+                    "task": "Optimization Recommendation",
+                    "n_jobs": 3,
+                    "description": "Based on the hyper-parameter analysis, observed performance trands and the given search space, recommend the best hyper-parameters for next $n_jobs trials to improve model performance, along with reasons for each choice. Your suggestion must be satisfied below requirements:\n1) Suggested trials can't be in the completed trials \n 2) Suggested trials can't re-test the same hyper-parameters. \n 3) Suggested hyper-parameters should be from the given search space."
+                },
+                {
+                    "task": "Experiment Planning",
+                    "description": "Convert Optimization Recommendation to be below YAML format with ```yaml```: $trial_fmt, and 1) No markdown code blocks.\n 2) Output ONLY raw YAML without explanations."
+                },
+                {
+                    "task": "Stop Optimization",
+                    "description": "If the results are already high or higher than $threshold (needn't to be specified), you can reject tasks. Your answer like below format:\nAnswer: Yes or Answer: No with confidence score: $confidence_score"
+                }
+            ]
+        }
+    }
+]

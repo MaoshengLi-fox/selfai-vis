@@ -1,0 +1,132 @@
+[
+    {
+        "role": "system",
+        "content": {
+            "description": "You are a Senior Computer Vision Researcher specializing in implicit neural representations. 'nan' denotes unknown data. Please provide professional and detailed answers.",
+            "model": "SIREN-TV (Implicit Neural Representations with Periodic Activation Functions, Frobenius norm of Hessian regularization)",
+            "task": "Image Denoising",
+            "basic_idea": "SIREN is an implicit neural network that utilizes coordinate inputs. Regularization is part of the loss functions to introduce edge-aware priors.",
+            "instrustion": "Complete instructions under limited trials"
+        }
+    },
+    {
+        "role": "user",
+        "content": {
+            "max_trials": 25,
+            "completed_trials": 12,
+            "search_space": {
+                "lr": [
+                    1,
+                    0.1,
+                    0.01,
+                    0.001,
+                    0.0001
+                ],
+                "k2": [
+                    0.1,
+                    0.01,
+                    0.0005,
+                    0.0001
+                ]
+            },
+            "trials": [
+                {
+                    "number": 5,
+                    "params": {
+                        "k2": 0.01,
+                        "lr": 1.0
+                    },
+                    "PSNR": 6.982
+                },
+                {
+                    "number": 8,
+                    "params": {
+                        "k2": 0.01,
+                        "lr": 0.001
+                    },
+                    "PSNR": 23.1309
+                },
+                {
+                    "number": 18,
+                    "params": {
+                        "k2": 0.0005,
+                        "lr": 0.001
+                    },
+                    "PSNR": 21.1342
+                },
+                {
+                    "number": 7,
+                    "params": {
+                        "k2": 0.01,
+                        "lr": 0.01
+                    },
+                    "PSNR": 10.7817
+                },
+                {
+                    "number": 12,
+                    "params": {
+                        "k2": 0.001,
+                        "lr": 0.01
+                    },
+                    "PSNR": 10.7822
+                },
+                {
+                    "number": 22,
+                    "params": {
+                        "k2": 0.0001,
+                        "lr": 0.01
+                    },
+                    "PSNR": 10.7835
+                },
+                {
+                    "number": 13,
+                    "params": {
+                        "k2": 0.001,
+                        "lr": 0.001
+                    },
+                    "PSNR": 20.6591
+                },
+                {
+                    "number": 17,
+                    "params": {
+                        "k2": 0.0005,
+                        "lr": 0.01
+                    },
+                    "PSNR": 10.7814
+                },
+                {
+                    "number": 19,
+                    "params": {
+                        "k2": 0.0005,
+                        "lr": 0.0001
+                    },
+                    "PSNR": 23.9511
+                },
+                {
+                    "number": 9,
+                    "params": {
+                        "k2": 0.01,
+                        "lr": 0.0001
+                    },
+                    "PSNR": 24.8842
+                },
+                {
+                    "number": 14,
+                    "params": {
+                        "k2": 0.001,
+                        "lr": 0.0001
+                    },
+                    "PSNR": 24.0382
+                },
+                {
+                    "number": 24,
+                    "params": {
+                        "k2": 0.0001,
+                        "lr": 0.0001
+                    },
+                    "PSNR": 23.8641
+                }
+            ]
+        }
+    }
+]

@@ -1,0 +1,141 @@
+[
+    {
+        "role": "system",
+        "content": {
+            "description": "ResNet ablation grid (depth, shortcut, block, lr)",
+            "model": "ResNet-family",
+            "task": "Image Classification",
+            "basic_idea": "Test how depth, shortcut formulation and block design affect optimisation/performance of residual networks.",
+            "instruction": "Train each combination with SGD (momentum 0.9, wd 1e-4)",
+            "link": "https://arxiv.org/abs/1512.03385"
+        }
+    },
+    {
+        "role": "user",
+        "content": {
+            "max_trials": 20,
+            "completed_trials": 12,
+            "search_space": [
+                "masking_ratio",
+                "strategy"
+            ],
+            "trials": [
+                {
+                    "number": 13,
+                    "params": {
+                        "masking_ratio": "40",
+                        "strategy": "fine-tuning"
+                    },
+                    "validation accuracy": 84.7
+                },
+                {
+                    "number": 11,
+                    "params": {
+                        "masking_ratio": "20",
+                        "strategy": "fine-tuning"
+                    },
+                    "validation accuracy": 83.4
+                },
+                {
+                    "number": 17,
+                    "params": {
+                        "masking_ratio": "75",
+                        "strategy": "fine-tuning"
+                    },
+                    "validation accuracy": 84.9
+                },
+                {
+                    "number": 4,
+                    "params": {
+                        "masking_ratio": 50,
+                        "strategy": "linear probing"
+                    },
+                    "validation accuracy": 69.9
+                },
+                {
+                    "number": 15,
+                    "params": {
+                        "masking_ratio": 60,
+                        "strategy": "fine-tuning"
+                    },
+                    "validation accuracy": 85.0
+                },
+                {
+                    "number": 19,
+                    "params": {
+                        "masking_ratio": 90,
+                        "strategy": "fine-tuning"
+                    },
+                    "validation accuracy": 83.0
+                },
+                {
+                    "number": 10,
+                    "params": {
+                        "masking_ratio": 10,
+                        "strategy": "fine-tuning"
+                    },
+                    "validation accuracy": 83.2
+                },
+                {
+                    "number": 14,
+                    "params": {
+                        "masking_ratio": 50,
+                        "strategy": "fine-tuning"
+                    },
+                    "validation accuracy": 84.9
+                },
+                {
+                    "number": 16,
+                    "params": {
+                        "masking_ratio": 70,
+                        "strategy": "fine-tuning"
+                    },
+                    "validation accuracy": 84.9
+                },
+                {
+                    "number": 5,
+                    "params": {
+                        "masking_ratio": 60,
+                        "strategy": "linear probing"
+                    },
+                    "validation accuracy": 71.8
+                },
+                {
+                    "number": 12,
+                    "params": {
+                        "masking_ratio": 30,
+                        "strategy": "fine-tuning"
+                    },
+                    "validation accuracy": 83.4
+                },
+                {
+                    "number": 8,
+                    "params": {
+                        "masking_ratio": 80,
+                        "strategy": "linear probing"
+                    },
+                    "validation accuracy": 71.8
+                }
+            ],
+            "instructions": [
+                {
+                    "task": "Analysis of Current Trials",
+                    "description": "1. Summarize performance metrics\n2. Evaluate performance trends for hyper-parameters.\n3. Highlight promising hyper-parameter combinations."
+                },
+                {
+                    "task": "Optimization Recommendation",
+                    "n_jobs": 3,
+                    "description": "Based on the hyper-parameter analysis, recommend hyper-parameters for next $n_jobs trials based on the provided search space, along with reasons for each choice. Your suggestion must be satisfied below requirements:\n1) Suggested trials can't be in the completed trials \n 2) Suggested trials can't re-test the same hyper-parameters. \n 3) Suggested hyper-parameters should be from the given search space."
+                },
+                {
+                    "task": "Experiment Planning",
+                    "description": "Convert Optimization Recommendation to be below YAML format with ```yaml```: $trial_fmt, and 1) No markdown code blocks.\n 2) Output ONLY raw YAML without explanations."
+                },
+                {
+                    "task": "Stop Optimization",
+                    "description": "Evaluate whether optimization should stop. Only output 'Answer: Yes' if ALL the following conditions are true:\n- The best achieved result is at least 10% better than the initial baseline.\n- The confidence that additional trials will not yield meaningful improvements is higher than $threshold.\nOtherwise, output 'Answer: No with confidence score: $condifence_score'.\n\nIn either case, provide a short reason (1-2 sentences max) to justify the decision."
+                }
+            ]
+        }
+    }
+]

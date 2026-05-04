@@ -1,0 +1,175 @@
+----------------------------------------------------------------------------------------------------
+Start Optimization: mae_train_gpt-4o-mini
+----------------------------------------------------------------------------------------------------
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv[INFO] Round [3][20], Failed: [0]/[3]vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+{'description': 'ResNet ablation grid (depth, shortcut, block, lr)', 'model': 'ResNet-family', 'task': 'Image Classification', 'basic_idea': 'Test how depth, shortcut formulation and block design affect optimisation/performance of residual networks.', 'instruction': 'Train each combination with SGD (momentum 0.9, wd 1e-4)', 'link': 'https://arxiv.org/abs/1512.03385'}
+3-find_trials-cognitive: **Task 1: Optimization Recommendation**
+
+1. **Trial 4**: {'number': 4, 'params': {'masking_ratio': 50, 'strategy': 'linear probing'}}
+   - **Reasoning**: A masking ratio of 50 is a balanced choice that allows for a significant amount of information to be retained while still providing enough challenge for the model to learn effectively. Linear probing is a common strategy that can yield good results in many scenarios, making this trial a strong candidate.
+
+2. **Trial 15**: {'number': 15, 'params': {'masking_ratio': 60, 'strategy': 'fine-tuning'}}
+   - **Reasoning**: Fine-tuning with a masking ratio of 60 can help the model adapt to the specific characteristics of the dataset while still retaining a good amount of information. This trial is promising as fine-tuning often leads to improved performance, especially when the model has already been pre-trained.
+
+3. **Trial 19**: {'number': 19, 'params': {'masking_ratio': 90, 'strategy': 'fine-tuning'}}
+   - **Reasoning**: A masking ratio of 90 is quite aggressive, which can lead to the model learning to focus on the most relevant features. Coupled with fine-tuning, this trial could potentially yield high performance by forcing the model to adapt to a more challenging scenario, making it a worthwhile option to explore.
+
+---
+
+**Task 2 JSON Format**
+
+```json
+[
+    {"number": 4, "params": {"masking_ratio": 50, "strategy": "linear probing"}},
+    {"number": 15, "params": {"masking_ratio": 60, "strategy": "fine-tuning"}},
+    {"number": 19, "params": {"masking_ratio": 90, "strategy": "fine-tuning"}}
+]
+```
+- [difflib] amnbious matches: ['masking_ratio:50_strategy:linear probing'], raw output: masking_ratio:50_strategy:linear probing_
+- [difflib] amnbious matches: ['masking_ratio:60_strategy:fine-tuning'], raw output: masking_ratio:60_strategy:fine-tuning_
+- [difflib] amnbious matches: ['masking_ratio:90_strategy:fine-tuning'], raw output: masking_ratio:90_strategy:fine-tuning_
+Number of trials: 3 -> 3, 
+Error_trials: [] is non-empty. 
+Repeated_trials: 0 is non-empty. 
+ []
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^gpt-4o-mini: Round: 3, Failed: 0^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv[INFO] Round [6][20], Failed: [0]/[3]vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+{'description': 'ResNet ablation grid (depth, shortcut, block, lr)', 'model': 'ResNet-family', 'task': 'Image Classification', 'basic_idea': 'Test how depth, shortcut formulation and block design affect optimisation/performance of residual networks.', 'instruction': 'Train each combination with SGD (momentum 0.9, wd 1e-4)', 'link': 'https://arxiv.org/abs/1512.03385'}
+####################################################################################################
+6-find_trials-stop-cognitive: 
+    Completed trials:
+
+    [{'number': 13, 'params': {'masking_ratio': '40', 'strategy': 'fine-tuning'}, 'validation accuracy': 84.7}, {'number': 11, 'params': {'masking_ratio': '20', 'strategy': 'fine-tuning'}, 'validation accuracy': 83.4}, {'number': 17, 'params': {'masking_ratio': '75', 'strategy': 'fine-tuning'}, 'validation accuracy': 84.9}, {'number': 4, 'params': {'masking_ratio': 50, 'strategy': 'linear probing'}, 'validation accuracy': 69.9}, {'number': 15, 'params': {'masking_ratio': 60, 'strategy': 'fine-tuning'}, 'validation accuracy': 85.0}, {'number': 19, 'params': {'masking_ratio': 90, 'strategy': 'fine-tuning'}, 'validation accuracy': 83.0}]
+
+    The following **Search Space** contains **unexplored** trials.
+
+    [{'number': 0, 'params': {'masking_ratio': 10, 'strategy': 'linear probing'}}, {'number': 1, 'params': {'masking_ratio': 20, 'strategy': 'linear probing'}}, {'number': 2, 'params': {'masking_ratio': 30, 'strategy': 'linear probing'}}, {'number': 3, 'params': {'masking_ratio': 40, 'strategy': 'linear probing'}}, {'number': 5, 'params': {'masking_ratio': 60, 'strategy': 'linear probing'}}, {'number': 6, 'params': {'masking_ratio': 70, 'strategy': 'linear probing'}}, {'number': 7, 'params': {'masking_ratio': 75, 'strategy': 'linear probing'}}, {'number': 8, 'params': {'masking_ratio': 80, 'strategy': 'linear probing'}}, {'number': 9, 'params': {'masking_ratio': 90, 'strategy': 'linear probing'}}, {'number': 10, 'params': {'masking_ratio': 10, 'strategy': 'fine-tuning'}}, {'number': 12, 'params': {'masking_ratio': 30, 'strategy': 'fine-tuning'}}, {'number': 14, 'params': {'masking_ratio': 50, 'strategy': 'fine-tuning'}}, {'number': 16, 'params': {'masking_ratio': 70, 'strategy': 'fine-tuning'}}, {'number': 18, 'params': {'masking_ratio': 80, 'strategy': 'fine-tuning'}}]
+
+
+    If optimization process should be stopped, Answer: Yes with confidence score: $confidence_socre. Otherwise, Answer: No with confidence score: $confidence_socre.
+
+    Do not speculate beyond **Search Space**.
+
+    Finally, you MUST output 'Answer: No/Yes' with confidence score: $confidence_socre
+
+
+    
+####################################################################################################
+6-find_trials-stop-cognitive: Answer: No with confidence score: 0.85
+6-find_trials-cognitive: **Task 1: Optimization Recommendation**
+
+1. **Trial 10**: 
+   - **Params**: {'masking_ratio': 10, 'strategy': 'fine-tuning'}
+   - **Reasoning**: This trial uses a low masking ratio with a fine-tuning strategy, which can help in retaining more information from the original data. Given that fine-tuning generally yields better results than linear probing, this combination could potentially lead to improved performance.
+
+2. **Trial 14**: 
+   - **Params**: {'masking_ratio': 50, 'strategy': 'fine-tuning'}
+   - **Reasoning**: A masking ratio of 50 is a balanced approach that allows for a significant amount of information to be retained while still applying some level of masking. Coupled with fine-tuning, this trial has the potential to achieve a good trade-off between performance and generalization.
+
+3. **Trial 16**: 
+   - **Params**: {'masking_ratio': 70, 'strategy': 'fine-tuning'}
+   - **Reasoning**: This trial has a higher masking ratio, which can be beneficial for learning robust features by forcing the model to focus on the most relevant parts of the data. The fine-tuning strategy is likely to enhance the model's performance further, making this a promising option.
+
+---
+
+**Task 2 JSON Format**
+
+```json
+[
+    {"number": 10, "params": {"masking_ratio": 10, "strategy": "fine-tuning"}},
+    {"number": 14, "params": {"masking_ratio": 50, "strategy": "fine-tuning"}},
+    {"number": 16, "params": {"masking_ratio": 70, "strategy": "fine-tuning"}}
+]
+```
+- [difflib] amnbious matches: ['masking_ratio:10_strategy:fine-tuning'], raw output: masking_ratio:10_strategy:fine-tuning_
+- [difflib] amnbious matches: ['masking_ratio:50_strategy:fine-tuning'], raw output: masking_ratio:50_strategy:fine-tuning_
+- [difflib] amnbious matches: ['masking_ratio:70_strategy:fine-tuning'], raw output: masking_ratio:70_strategy:fine-tuning_
+Number of trials: 3 -> 3, 
+Error_trials: [] is non-empty. 
+Repeated_trials: 0 is non-empty. 
+ []
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^gpt-4o-mini: Round: 6, Failed: 0^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv[INFO] Round [9][20], Failed: [0]/[3]vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+{'description': 'ResNet ablation grid (depth, shortcut, block, lr)', 'model': 'ResNet-family', 'task': 'Image Classification', 'basic_idea': 'Test how depth, shortcut formulation and block design affect optimisation/performance of residual networks.', 'instruction': 'Train each combination with SGD (momentum 0.9, wd 1e-4)', 'link': 'https://arxiv.org/abs/1512.03385'}
+####################################################################################################
+9-find_trials-stop-cognitive: 
+    Completed trials:
+
+    [{'number': 13, 'params': {'masking_ratio': '40', 'strategy': 'fine-tuning'}, 'validation accuracy': 84.7}, {'number': 11, 'params': {'masking_ratio': '20', 'strategy': 'fine-tuning'}, 'validation accuracy': 83.4}, {'number': 17, 'params': {'masking_ratio': '75', 'strategy': 'fine-tuning'}, 'validation accuracy': 84.9}, {'number': 4, 'params': {'masking_ratio': 50, 'strategy': 'linear probing'}, 'validation accuracy': 69.9}, {'number': 15, 'params': {'masking_ratio': 60, 'strategy': 'fine-tuning'}, 'validation accuracy': 85.0}, {'number': 19, 'params': {'masking_ratio': 90, 'strategy': 'fine-tuning'}, 'validation accuracy': 83.0}, {'number': 10, 'params': {'masking_ratio': 10, 'strategy': 'fine-tuning'}, 'validation accuracy': 83.2}, {'number': 14, 'params': {'masking_ratio': 50, 'strategy': 'fine-tuning'}, 'validation accuracy': 84.9}, {'number': 16, 'params': {'masking_ratio': 70, 'strategy': 'fine-tuning'}, 'validation accuracy': 84.9}]
+
+    The following **Search Space** contains **unexplored** trials.
+
+    [{'number': 0, 'params': {'masking_ratio': 10, 'strategy': 'linear probing'}}, {'number': 1, 'params': {'masking_ratio': 20, 'strategy': 'linear probing'}}, {'number': 2, 'params': {'masking_ratio': 30, 'strategy': 'linear probing'}}, {'number': 3, 'params': {'masking_ratio': 40, 'strategy': 'linear probing'}}, {'number': 5, 'params': {'masking_ratio': 60, 'strategy': 'linear probing'}}, {'number': 6, 'params': {'masking_ratio': 70, 'strategy': 'linear probing'}}, {'number': 7, 'params': {'masking_ratio': 75, 'strategy': 'linear probing'}}, {'number': 8, 'params': {'masking_ratio': 80, 'strategy': 'linear probing'}}, {'number': 9, 'params': {'masking_ratio': 90, 'strategy': 'linear probing'}}, {'number': 12, 'params': {'masking_ratio': 30, 'strategy': 'fine-tuning'}}, {'number': 18, 'params': {'masking_ratio': 80, 'strategy': 'fine-tuning'}}]
+
+
+    If optimization process should be stopped, Answer: Yes with confidence score: $confidence_socre. Otherwise, Answer: No with confidence score: $confidence_socre.
+
+    Do not speculate beyond **Search Space**.
+
+    Finally, you MUST output 'Answer: No/Yes' with confidence score: $confidence_socre
+
+
+    
+####################################################################################################
+9-find_trials-stop-cognitive: Based on the completed trials, the highest validation accuracy achieved is 85.0 with a masking ratio of 60 using the fine-tuning strategy. The unexplored trials include various combinations of masking ratios and strategies, particularly in the linear probing strategy, which has not yet been fully explored.
+
+Given that there are still unexplored trials that could potentially yield better results, it would be premature to stop the optimization process at this point.
+
+Answer: No with confidence score: 0.85
+9-find_trials-cognitive: **Task 1: Optimization Recommendation**
+
+1. **Trial 5**: 
+   - **Params**: {'masking_ratio': 60, 'strategy': 'linear probing'}
+   - **Reasoning**: This trial has a masking ratio that aligns with the successful fine-tuning trial (number 15) which achieved a validation accuracy of 85.0. Exploring this masking ratio with a linear probing strategy could yield competitive results.
+
+2. **Trial 12**: 
+   - **Params**: {'masking_ratio': 30, 'strategy': 'fine-tuning'}
+   - **Reasoning**: This trial introduces a different masking ratio with the fine-tuning strategy. Given that fine-tuning has shown promising results in previous trials, this combination could potentially uncover new insights or improvements in validation accuracy.
+
+3. **Trial 8**: 
+   - **Params**: {'masking_ratio': 80, 'strategy': 'linear probing'}
+   - **Reasoning**: This trial explores a higher masking ratio with the linear probing strategy. Since higher masking ratios have been associated with better performance in fine-tuning trials, it is worth investigating how this ratio performs under linear probing.
+
+---
+
+**Task 2 JSON Format**
+
+```json
+[
+    {"number": 5, "params": {"masking_ratio": 60, "strategy": "linear probing"}},
+    {"number": 12, "params": {"masking_ratio": 30, "strategy": "fine-tuning"}},
+    {"number": 8, "params": {"masking_ratio": 80, "strategy": "linear probing"}}
+]
+```
+- [difflib] amnbious matches: ['masking_ratio:60_strategy:linear probing'], raw output: masking_ratio:60_strategy:linear probing_
+- [difflib] amnbious matches: ['masking_ratio:30_strategy:fine-tuning'], raw output: masking_ratio:30_strategy:fine-tuning_
+- [difflib] amnbious matches: ['masking_ratio:80_strategy:linear probing'], raw output: masking_ratio:80_strategy:linear probing_
+Number of trials: 3 -> 3, 
+Error_trials: [] is non-empty. 
+Repeated_trials: 0 is non-empty. 
+ []
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^gpt-4o-mini: Round: 9, Failed: 0^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv[INFO] Round [12][20], Failed: [0]/[3]vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+{'description': 'ResNet ablation grid (depth, shortcut, block, lr)', 'model': 'ResNet-family', 'task': 'Image Classification', 'basic_idea': 'Test how depth, shortcut formulation and block design affect optimisation/performance of residual networks.', 'instruction': 'Train each combination with SGD (momentum 0.9, wd 1e-4)', 'link': 'https://arxiv.org/abs/1512.03385'}
+####################################################################################################
+12-find_trials-stop-cognitive: 
+    Completed trials:
+
+    [{'number': 13, 'params': {'masking_ratio': '40', 'strategy': 'fine-tuning'}, 'validation accuracy': 84.7}, {'number': 11, 'params': {'masking_ratio': '20', 'strategy': 'fine-tuning'}, 'validation accuracy': 83.4}, {'number': 17, 'params': {'masking_ratio': '75', 'strategy': 'fine-tuning'}, 'validation accuracy': 84.9}, {'number': 4, 'params': {'masking_ratio': 50, 'strategy': 'linear probing'}, 'validation accuracy': 69.9}, {'number': 15, 'params': {'masking_ratio': 60, 'strategy': 'fine-tuning'}, 'validation accuracy': 85.0}, {'number': 19, 'params': {'masking_ratio': 90, 'strategy': 'fine-tuning'}, 'validation accuracy': 83.0}, {'number': 10, 'params': {'masking_ratio': 10, 'strategy': 'fine-tuning'}, 'validation accuracy': 83.2}, {'number': 14, 'params': {'masking_ratio': 50, 'strategy': 'fine-tuning'}, 'validation accuracy': 84.9}, {'number': 16, 'params': {'masking_ratio': 70, 'strategy': 'fine-tuning'}, 'validation accuracy': 84.9}, {'number': 5, 'params': {'masking_ratio': 60, 'strategy': 'linear probing'}, 'validation accuracy': 71.8}, {'number': 12, 'params': {'masking_ratio': 30, 'strategy': 'fine-tuning'}, 'validation accuracy': 83.4}, {'number': 8, 'params': {'masking_ratio': 80, 'strategy': 'linear probing'}, 'validation accuracy': 71.8}]
+
+    The following **Search Space** contains **unexplored** trials.
+
+    [{'number': 0, 'params': {'masking_ratio': 10, 'strategy': 'linear probing'}}, {'number': 1, 'params': {'masking_ratio': 20, 'strategy': 'linear probing'}}, {'number': 2, 'params': {'masking_ratio': 30, 'strategy': 'linear probing'}}, {'number': 3, 'params': {'masking_ratio': 40, 'strategy': 'linear probing'}}, {'number': 6, 'params': {'masking_ratio': 70, 'strategy': 'linear probing'}}, {'number': 7, 'params': {'masking_ratio': 75, 'strategy': 'linear probing'}}, {'number': 9, 'params': {'masking_ratio': 90, 'strategy': 'linear probing'}}, {'number': 18, 'params': {'masking_ratio': 80, 'strategy': 'fine-tuning'}}]
+
+
+    If optimization process should be stopped, Answer: Yes with confidence score: $confidence_socre. Otherwise, Answer: No with confidence score: $confidence_socre.
+
+    Do not speculate beyond **Search Space**.
+
+    Finally, you MUST output 'Answer: No/Yes' with confidence score: $confidence_socre
+
+
+    
+####################################################################################################
+12-find_trials-stop-cognitive: Answer: Yes with confidence score: 0.85
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^gpt-4o-mini: Round: 12, Failed: 0^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -1,0 +1,100 @@
+[
+    {
+        "role": "system",
+        "content": {
+            "description": "You are a Senior Computer Vision Researcher specializing in Long Short Term Memory. 'nan' denotes unknown data. Please provide professional and detailed answers.",
+            "model": "Long Short Term Memory (Performance Analysis of Hyperparameters on a  Sentiment Analysis Model)",
+            "task": "Sentiment Analysis",
+            "basic_idea": "The representation of sentence in a sequence form was conducted by using the LSTM network.",
+            "search_space": {
+                "activation": [
+                    "Softmax",
+                    "Softplus",
+                    "Sigmoid",
+                    "Relu",
+                    "hard_sigmoid"
+                ],
+                "optimizer": [
+                    "Adam",
+                    "Adagrad",
+                    "Nadam",
+                    "Adamax"
+                ]
+            },
+            "instruction": "Complete instructions under limited trials"
+        }
+    },
+    {
+        "role": "user",
+        "content": {
+            "max_trials": 20,
+            "completed_trials": 6,
+            "best_trials_number": 0,
+            "trials": [
+                {
+                    "number": 14,
+                    "params": {
+                        "activation": "Relu",
+                        "optimizer": "Nadam"
+                    },
+                    "training accuracy": 0.9
+                },
+                {
+                    "number": 19,
+                    "params": {
+                        "activation": "hard_sigmoid",
+                        "optimizer": "Adamax"
+                    },
+                    "training accuracy": 0.91
+                },
+                {
+                    "number": 16,
+                    "params": {
+                        "activation": "hard_sigmoid",
+                        "optimizer": "Adam"
+                    },
+                    "training accuracy": 0.89
+                },
+                {
+                    "number": 0,
+                    "params": {
+                        "activation": "Softmax",
+                        "optimizer": "Adam"
+                    },
+                    "training accuracy": 0.96
+                },
+                {
+                    "number": 17,
+                    "params": {
+                        "activation": "hard_sigmoid",
+                        "optimizer": "Adagrad"
+                    },
+                    "training accuracy": 0.89
+                },
+                {
+                    "number": 15,
+                    "params": {
+                        "activation": "Relu",
+                        "optimizer": "Adamax"
+                    },
+                    "training accuracy": 0.91
+                }
+            ]
+        },
+        "instructions": [
+            {
+                "task": "Stop optimizer",
+                "description": "You needn't to test all the hyper-parameters in the search space. If the PSNR is already high, you can reject tasks: optimizer recommendation and experiment planning."
+            },
+            {
+                "task": "optimizer Recommendation",
+                "n_jobs": 3,
+                "description": "Evaluate the performance of different hyper-parameters based on the analysis and suggest next hyper-parameters for the next $n_jobs trials from the given search space. Note that the trial can't re-test the same hyper-parameters."
+            },
+            {
+                "task": "Experiment Planning",
+                "description": "Convert optimizer Recommendation to YAML format."
+            }
+        ]
+    }
+]

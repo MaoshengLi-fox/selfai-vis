@@ -1,0 +1,57 @@
+[
+    {
+        "role": "user",
+        "content": {
+            "max_trials": 25,
+            "completed_trials": 25,
+        "search_space":
+            {
+                "lr": [0.1, 0.01, 0.001, 0.0005, 0.0001],
+                "k2": [0.1, 0.01, 0.001, 0.0005, 0.0001]
+            },
+        "trials": 
+            [
+                {"k2": 0.01, "lr": 0.1, "PSNR": 3.74981},
+                {"k2": 0.01, "lr": 0.0005, "PSNR": 15.4874},
+                {"k2": 0.0005, "lr": 0.0005, "PSNR": 4.46851},
+                {"k2": 0.0001, "lr": 0.1, "PSNR": 3.73421},
+                {"k2": 0.0005, "lr": 0.01, "PSNR": 1.37036},
+                {"k2": 0.001, "lr": 0.1, "PSNR": 3.6958},
+                {"k2": 0.1, "lr": 0.001, "PSNR": 1.36817},
+                {"k2": 0.0001, "lr": 0.0005, "PSNR": 3.61025},
+                {"k2": 0.0001, "lr": 0.01, "PSNR": 1.3786},
+                {"k2": 0.0001, "lr": 0.001, "PSNR": 4.04519},
+                {"k2": 0.01, "lr": 0.01, "PSNR": 1.38389},
+                {"k2": 0.001, "lr": 0.0001, "PSNR": 17.6089},
+                {"k2": 0.0005, "lr": 0.0001, "PSNR": 15.8349},
+                {"k2": 0.001, "lr": 0.01, "PSNR": 1.37256},
+                {"k2": 0.001, "lr": 0.001, "PSNR": 6.41087},
+                {"k2": 0.01, "lr": 0.0001, "PSNR": 16.2676},
+                {"k2": 0.1, "lr": 0.1, "PSNR": 3.82087},
+                {"k2": 0.1, "lr": 0.01, "PSNR": 1.38248},
+                {"k2": 0.0005, "lr": 0.1, "PSNR": 3.75564},
+                {"k2": 0.0001, "lr": 0.0001, "PSNR": 3.69427},
+                {"k2": 0.001, "lr": 0.0005, "PSNR": 7.27433},
+                {"k2": 0.01, "lr": 0.001, "PSNR": 15.9517},
+                {"k2": 0.0005, "lr": 0.001, "PSNR": 4.57776},
+                {"k2": 0.1, "lr": 0.0005, "PSNR": 1.36817},
+                {"k2": 0.1, "lr": 0.0001, "PSNR": 1.36817}
+        ]
+        },
+        "instructions": [
+            {
+                "task": "Stop optimization",
+                "description": "You needn't to test all the hyper-parameters in the search space. If the PSNR is already high, you can reject tasks: optimization recommendation and experiment planning."
+            },
+            {
+                "task": "Optimization Recommendation",
+                "n_jobs": 3,
+                "description": "Evaluate the performance of different hyper-parameters based on the analysis and suggest next hyper-parameters for the next $n_jobs trials from the given search space. Note that the trial can't re-test the same hyper-parameters."
+            },
+            {
+                "task": "Experiment Planning",
+                "description": "Convert Optimization Recommendation to YAML format."
+            }
+        ]
+    }
+]

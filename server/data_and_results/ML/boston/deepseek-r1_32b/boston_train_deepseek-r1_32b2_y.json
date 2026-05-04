@@ -1,0 +1,396 @@
+[
+    {
+        "role": "system",
+        "content": {
+            "description": "You are a Senior Machine Learning Engineer specializing in regression analysis. 'nan' denotes unknown data. Please provide professional and detailed answers.",
+            "model": "Random Forest Regression",
+            "task": "Regression Analysis",
+            "basic_idea": "The model predicts housing prices based on various features such as the number of rooms, location, and age of the property using linear regression techniques.",
+            "instruction": "Complete the analysis while optimizing the model's hyperparameters for better accuracy."
+        }
+    },
+    {
+        "role": "user",
+        "content": {
+            "max_trials": 162,
+            "completed_trials": 34,
+            "search_space": {
+                "n_estimators": [
+                    100,
+                    200,
+                    300
+                ],
+                "max_depth": [
+                    null,
+                    10,
+                    20
+                ],
+                "min_samples_split": [
+                    2,
+                    5,
+                    10
+                ],
+                "min_samples_leaf": [
+                    1,
+                    2,
+                    5
+                ],
+                "max_features": [
+                    "sqrt",
+                    "log2"
+                ]
+            },
+            "trials": [
+                {
+                    "params": {
+                        "max_depth": "20",
+                        "max_features": "sqrt",
+                        "min_samples_leaf": "5",
+                        "min_samples_split": "5",
+                        "n_estimators": "100"
+                    },
+                    "mean_score": 0.802
+                },
+                {
+                    "params": {
+                        "max_depth": "None",
+                        "max_features": "log2",
+                        "min_samples_leaf": "1",
+                        "min_samples_split": "5",
+                        "n_estimators": "100"
+                    },
+                    "mean_score": 0.834
+                },
+                {
+                    "params": {
+                        "max_depth": "10",
+                        "max_features": "log2",
+                        "min_samples_leaf": "2",
+                        "min_samples_split": "5",
+                        "n_estimators": "300"
+                    },
+                    "mean_score": 0.825
+                },
+                {
+                    "params": {
+                        "n_estimators": 200,
+                        "max_depth": null,
+                        "min_samples_split": 2,
+                        "min_samples_leaf": 1,
+                        "max_features": "log2"
+                    },
+                    "mean_score": 0.841
+                },
+                {
+                    "params": {
+                        "n_estimators": 200,
+                        "max_depth": 10,
+                        "min_samples_split": 5,
+                        "min_samples_leaf": 2,
+                        "max_features": "sqrt"
+                    },
+                    "mean_score": 0.826
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": null,
+                        "min_samples_split": 10,
+                        "min_samples_leaf": 1,
+                        "max_features": "log2"
+                    },
+                    "mean_score": 0.824
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": null,
+                        "min_samples_split": 2,
+                        "min_samples_leaf": 1,
+                        "max_features": "log2"
+                    },
+                    "mean_score": 0.84
+                },
+                {
+                    "params": {
+                        "n_estimators": 200,
+                        "max_depth": null,
+                        "min_samples_split": 5,
+                        "min_samples_leaf": 1,
+                        "max_features": "log2"
+                    },
+                    "mean_score": 0.833
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": null,
+                        "min_samples_split": 2,
+                        "min_samples_leaf": 1,
+                        "max_features": "sqrt"
+                    },
+                    "mean_score": 0.84
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": null,
+                        "min_samples_split": 2,
+                        "min_samples_leaf": 2,
+                        "max_features": "log2"
+                    },
+                    "mean_score": 0.829
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": 10,
+                        "min_samples_split": 5,
+                        "min_samples_leaf": 1,
+                        "max_features": "sqrt"
+                    },
+                    "mean_score": 0.833
+                },
+                {
+                    "params": {
+                        "n_estimators": 200,
+                        "max_depth": null,
+                        "min_samples_split": 10,
+                        "min_samples_leaf": 1,
+                        "max_features": "log2"
+                    },
+                    "mean_score": 0.825
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": null,
+                        "min_samples_split": 5,
+                        "min_samples_leaf": 1,
+                        "max_features": "log2"
+                    },
+                    "mean_score": 0.833
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": null,
+                        "min_samples_split": 5,
+                        "min_samples_leaf": 2,
+                        "max_features": "sqrt"
+                    },
+                    "mean_score": 0.827
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": null,
+                        "min_samples_split": 2,
+                        "min_samples_leaf": 1,
+                        "max_features": "log2"
+                    },
+                    "mean_score": 0.84
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": null,
+                        "min_samples_split": 2,
+                        "min_samples_leaf": 1,
+                        "max_features": "log2"
+                    },
+                    "mean_score": 0.84
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": null,
+                        "min_samples_split": 10,
+                        "min_samples_leaf": 1,
+                        "max_features": "log2"
+                    },
+                    "mean_score": 0.824
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": null,
+                        "min_samples_split": 10,
+                        "min_samples_leaf": 1,
+                        "max_features": "sqrt"
+                    },
+                    "mean_score": 0.824
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": null,
+                        "min_samples_split": 5,
+                        "min_samples_leaf": 2,
+                        "max_features": "sqrt"
+                    },
+                    "mean_score": 0.827
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": null,
+                        "min_samples_split": 10,
+                        "min_samples_leaf": 1,
+                        "max_features": "sqrt"
+                    },
+                    "mean_score": 0.824
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": null,
+                        "min_samples_split": 5,
+                        "min_samples_leaf": 1,
+                        "max_features": "log2"
+                    },
+                    "mean_score": 0.833
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": null,
+                        "min_samples_split": 2,
+                        "min_samples_leaf": 2,
+                        "max_features": "sqrt"
+                    },
+                    "mean_score": 0.829
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": null,
+                        "min_samples_split": 10,
+                        "min_samples_leaf": 2,
+                        "max_features": "log2"
+                    },
+                    "mean_score": 0.817
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": null,
+                        "min_samples_split": 2,
+                        "min_samples_leaf": 1,
+                        "max_features": "log2"
+                    },
+                    "mean_score": 0.84
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": null,
+                        "min_samples_split": 5,
+                        "min_samples_leaf": 1,
+                        "max_features": "sqrt"
+                    },
+                    "mean_score": 0.833
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": 20,
+                        "min_samples_split": 5,
+                        "min_samples_leaf": 2,
+                        "max_features": "log2"
+                    },
+                    "mean_score": 0.827
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": null,
+                        "min_samples_split": 2,
+                        "min_samples_leaf": 1,
+                        "max_features": "log2"
+                    },
+                    "mean_score": 0.84
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": null,
+                        "min_samples_split": 5,
+                        "min_samples_leaf": 1,
+                        "max_features": "log2"
+                    },
+                    "mean_score": 0.833
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": null,
+                        "min_samples_split": 10,
+                        "min_samples_leaf": 1,
+                        "max_features": "log2"
+                    },
+                    "mean_score": 0.824
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": null,
+                        "min_samples_split": 2,
+                        "min_samples_leaf": 2,
+                        "max_features": "log2"
+                    },
+                    "mean_score": 0.829
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": 20,
+                        "min_samples_split": 5,
+                        "min_samples_leaf": 2,
+                        "max_features": "log2"
+                    },
+                    "mean_score": 0.827
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": 10,
+                        "min_samples_split": 2,
+                        "min_samples_leaf": 5,
+                        "max_features": "log2"
+                    },
+                    "mean_score": 0.8
+                },
+                {
+                    "params": {
+                        "n_estimators": 300,
+                        "max_depth": null,
+                        "min_samples_split": 5,
+                        "min_samples_leaf": 2,
+                        "max_features": "log2"
+                    },
+                    "mean_score": 0.827
+                }
+            ],
+            "instructions": [
+                {
+                    "task": "Analysis of Current Trials",
+                    "description": "1. Summarize performance metrics\n2. Evaluate performance trends for hyper-parameters.\n3. Highlight promising hyper-parameter combinations."
+                },
+                {
+                    "task": "Optimization Recommendation",
+                    "n_jobs": 3,
+                    "description": "Based on the hyper-parameter analysis, observed performance trands and the given search space, recommend the best hyper-parameters for next $n_jobs trials to improve model performance, along with reasons for each choice. Your suggestion must be satisfied below requirements:\n1) Suggested trials can't be in the completed trials \n 2) Suggested trials can't re-test the same hyper-parameters. \n 3) Suggested hyper-parameters should be from the given search space."
+                },
+                {
+                    "task": "Experiment Planning",
+                    "description": "Convert Optimization Recommendation to be below YAML format with ```yaml```: $trial_fmt, and 1) No markdown code blocks.\n 2) Output ONLY raw YAML without explanations."
+                },
+                {
+                    "task": "Stop Optimization",
+                    "description": "If the results are already high or higher than $threshold (needn't to be specified), you can reject tasks. Your answer like below format:\nAnswer: Yes or Answer: No with confidence score: $confidence_score"
+                }
+            ]
+        }
+    }
+]

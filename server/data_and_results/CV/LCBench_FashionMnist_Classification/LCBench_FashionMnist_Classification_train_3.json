@@ -1,0 +1,88 @@
+[
+    {
+        "role": "system",
+        "content": {
+            "description": "You are a Senior Computer Vision Researcher specializing in neural networks. 'nan' denotes unknown data. Provide professional and detailed answers for Fashion-MNIST classification.",
+            "model": "neural network",
+            "task": "Image Classification on Fashion-MNIST",
+            "basic_idea": "Leverage neural networks to extract spatial features from Fashion-MNIST images (28x28x1) and classify them into 10 categories.",
+            "instruction": "Design, implement, and optimize the model for Fashion-MNIST classification under limited computational trials."
+        }
+    },
+    {
+        "role": "user",
+        "content": {
+            "max_trials": 2000,
+            "completed_trials": 3,
+            "type": "trial",
+            "search_space": {
+                "batch_size": "range(16, 512)",
+                "learning_rate": "range(0.0001, 0.1)",
+                "momentum": "range(0.1, 0.99)",
+                "weight_decay": "range(1e-5, 0.1)",
+                "num_layers": "range(1, 4)",
+                "max_units": "range(64, 1024)",
+                "dropout": "range(0.0, 1.0)"
+            },
+            "trials": [
+                {
+                    "number": 820,
+                    "params": {
+                        "batch_size": "494",
+                        "learning_rate": "0.0009728868244350338",
+                        "momentum": "0.5242654373897977",
+                        "weight_decay": "0.006555437986605685",
+                        "num_layers": "3",
+                        "max_units": "213",
+                        "dropout": "0.19608926533204352"
+                    },
+                    "validation accuracy": 63.19292068481445
+                },
+                {
+                    "number": 1444,
+                    "params": {
+                        "batch_size": "277",
+                        "learning_rate": "0.006022407145923392",
+                        "momentum": "0.15654493893785848",
+                        "weight_decay": "0.08602307385353301",
+                        "num_layers": "2",
+                        "max_units": "761",
+                        "dropout": "0.9846267585408929"
+                    },
+                    "validation accuracy": 74.97738647460938
+                },
+                {
+                    "number": 1535,
+                    "params": {
+                        "batch_size": "34",
+                        "learning_rate": "0.027694513611783437",
+                        "momentum": "0.44739995454169945",
+                        "weight_decay": "0.04398464850332192",
+                        "num_layers": "True",
+                        "max_units": "66",
+                        "dropout": "0.585104284168454"
+                    },
+                    "validation accuracy": 81.61260986328125
+                }
+            ],
+        "instructions": [
+            {
+                "task": "Analysis of Current Trials",
+                "description": "1. Summarize performance metrics\n2. Evaluate performance trends for hyper-parameters.\n3. Highlight promising hyper-parameter combinations."
+            },
+            {
+                "task": "Optimization Recommendation",
+                "description": "Based on the hyper-parameter analysis, recommend hyper-parameters for next $n_jobs trials based on the provided search space, along with reasons for each choice. Your suggestion must be satisfied below requirements:\n1) Suggested trials can't be in the completed trials \n 2) Suggested trials can't re-test the same hyper-parameters. \n 3) Suggested hyper-parameters should be from the given search space."
+            },
+            {
+                "task": "Experiment Planning",
+                "description": "Convert Optimization Recommendation to be below YAML format with ```yaml```: $trial_fmt, and 1) No markdown code blocks.\n 2) Output ONLY raw YAML without explanations."
+            },
+            {
+                "task": "Stop Optimization",
+                "description": "Evaluate whether optimization should stop. Only output 'Answer: Yes' if ALL the following conditions are true:\n- The best achieved result is at least 10% better than the initial baseline.\n- The confidence that additional trials will not yield meaningful improvements is high.\nOtherwise, output 'Answer: No with confidence score: <float between 0 and 1>'.\n\nIn either case, provide a short reason (1-2 sentences max) to justify the decision."
+            }
+        ]
+    }
+}
+]

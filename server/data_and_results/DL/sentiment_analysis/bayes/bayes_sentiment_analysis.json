@@ -1,0 +1,212 @@
+[
+    {
+        "role": "system",
+        "content": {
+            "description": "You are a Senior Computer Vision Researcher specializing in Long Short Term Memory. 'nan' denotes unknown data. Please provide professional and detailed answers.",
+            "model": "Long Short Term Memory (Performance Analysis of Hyperparameters on a  Sentiment Analysis Model)",
+            "task": "Sentiment Analysis",
+            "basic_idea": "The representation of sentence in a sequence form was conducted by using the LSTM network.",
+            "search_space": {
+                "activation": [
+                    "Softmax",
+                    "Softplus",
+                    "Sigmoid",
+                    "Relu",
+                    "hard_sigmoid"
+                ],
+                "optimizer": [
+                    "Adam",
+                    "Adagrad",
+                    "Nadam",
+                    "Adamax"
+                ]
+            },
+            "instrustion": "Complete instructions under limited trials"
+        }
+    },
+    {
+        "role": "user",
+        "content": {
+            "max_trials": 20,
+            "completed_trials": 20,
+            "best_trials_number": 0,
+            "trials": [
+                {
+                    "number": 0,
+                    "params": {
+                        "activation": "Relu",
+                        "optimizer": "Nadam"
+                    },
+                    "training accuracy": 0.9
+                },
+                {
+                    "number": 1,
+                    "params": {
+                        "activation": "hard_sigmoid",
+                        "optimizer": "Adamax"
+                    },
+                    "training accuracy": 0.91
+                },
+                {
+                    "number": 2,
+                    "params": {
+                        "activation": "hard_sigmoid",
+                        "optimizer": "Adam"
+                    },
+                    "training accuracy": 0.89
+                },
+                {
+                    "number": 3,
+                    "params": {
+                        "activation": "Softmax",
+                        "optimizer": "Adagrad"
+                    },
+                    "training accuracy": 0.92
+                },
+                {
+                    "number": 4,
+                    "params": {
+                        "activation": "Sigmoid",
+                        "optimizer": "Adamax"
+                    },
+                    "training accuracy": 0.89
+                },
+                {
+                    "number": 5,
+                    "params": {
+                        "activation": "Softmax",
+                        "optimizer": "Adamax"
+                    },
+                    "training accuracy": 0.94
+                },
+                {
+                    "number": 6,
+                    "params": {
+                        "activation": "Sigmoid",
+                        "optimizer": "Adam"
+                    },
+                    "training accuracy": 0.93
+                },
+                {
+                    "number": 7,
+                    "params": {
+                        "activation": "Softplus",
+                        "optimizer": "Adagrad"
+                    },
+                    "training accuracy": 0.92
+                },
+                {
+                    "number": 8,
+                    "params": {
+                        "activation": "Sigmoid",
+                        "optimizer": "Adagrad"
+                    },
+                    "training accuracy": 0.87
+                },
+                {
+                    "number": 9,
+                    "params": {
+                        "activation": "Softplus",
+                        "optimizer": "Nadam"
+                    },
+                    "training accuracy": 0.9
+                },
+                {
+                    "number": 10,
+                    "params": {
+                        "activation": "Relu",
+                        "optimizer": "Adam"
+                    },
+                    "training accuracy": 0.93
+                },
+                {
+                    "number": 11,
+                    "params": {
+                        "activation": "Relu",
+                        "optimizer": "Adamax"
+                    },
+                    "training accuracy": 0.91
+                },
+                {
+                    "number": 12,
+                    "params": {
+                        "activation": "hard_sigmoid",
+                        "optimizer": "Adagrad"
+                    },
+                    "training accuracy": 0.89
+                },
+                {
+                    "number": 13,
+                    "params": {
+                        "activation": "Softplus",
+                        "optimizer": "Adam"
+                    },
+                    "training accuracy": 0.91
+                },
+                {
+                    "number": 14,
+                    "params": {
+                        "activation": "Sigmoid",
+                        "optimizer": "Nadam"
+                    },
+                    "training accuracy": 0.87
+                },
+                {
+                    "number": 15,
+                    "params": {
+                        "activation": "Softplus",
+                        "optimizer": "Adamax"
+                    },
+                    "training accuracy": 0.91
+                },
+                {
+                    "number": 16,
+                    "params": {
+                        "activation": "Relu",
+                        "optimizer": "Adagrad"
+                    },
+                    "training accuracy": 0.91
+                },
+                {
+                    "number": 17,
+                    "params": {
+                        "activation": "hard_sigmoid",
+                        "optimizer": "Nadam"
+                    },
+                    "training accuracy": 0.92
+                },
+                {
+                    "number": 18,
+                    "params": {
+                        "activation": "Softmax",
+                        "optimizer": "Adam"
+                    },
+                    "training accuracy": 0.96
+                },
+                {
+                    "number": 19,
+                    "params": {
+                        "activation": "Softmax",
+                        "optimizer": "Nadam"
+                    },
+                    "training accuracy": 0.93
+                }
+            ]
+        },
+        "instructions": [
+            {
+                "task": "Stop optimizer",
+                "description": "You needn't to test all the hyper-parameters in the search space. If the PSNR is already high, you can reject tasks: optimizer recommendation and experiment planning."
+            },
+            {
+                "task": "optimizer Recommendation",
+                "n_jobs": 3,
+                "description": "Evaluate the performance of different hyper-parameters based on the analysis and suggest next hyper-parameters for the next $n_jobs trials from the given search space. Note that the trial can't re-test the same hyper-parameters."
+            },
+            {
+                "task": "Experiment Planning",
+                "description": "Convert optimizer Recommendation to YAML format."
+            }
+        ]
+    }
+]

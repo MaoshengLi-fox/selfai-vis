@@ -1,0 +1,152 @@
+[
+    {
+        "role": "system",
+        "content": {
+            "description": "You are a Senior Computer Vision Researcher specializing in 3D Medical Image Segmentation for Brain Tumor MRI.",
+            "model": "nnUNet",
+            "task": "Hyperparameter Tuning",
+            "basic_idea": "Test the effects of learning rate, weight decay, and oversampling rate on nnUNet performance.",
+            "instruction": "Summarize model configurations and validation scores from hyperparameter sweeps."
+        }
+    },
+    {
+        "role": "user",
+        "content": {
+            "max_trials": 18,
+            "completed_trials": 9,
+            "search_space": {
+                "Learning Rate": [
+                    0.01,
+                    0.001,
+                    0.0001
+                ],
+                "Weight Decay": [
+                    3e-05,
+                    0.0003,
+                    0.003
+                ],
+                "Oversampling Foreground Percent": [
+                    0.33,
+                    0.5
+                ],
+                "Epochs": [
+                    100
+                ]
+            },
+            "trials": [
+                {
+                    "number": 16,
+                    "params": {
+                        "model": "nnUNet",
+                        "Learning Rate": "0.0001",
+                        "Weight Decay": "0.003",
+                        "Oversampling Foreground Percent": "0.5",
+                        "Epochs": "100"
+                    },
+                    "Dice": 79.94
+                },
+                {
+                    "number": 1,
+                    "params": {
+                        "model": "nnUNet",
+                        "Learning Rate": "0.01",
+                        "Weight Decay": "0.0003",
+                        "Oversampling Foreground Percent": "0.5",
+                        "Epochs": "100"
+                    },
+                    "Dice": 81.48
+                },
+                {
+                    "number": 5,
+                    "params": {
+                        "model": "nnUNet",
+                        "Learning Rate": "0.01",
+                        "Weight Decay": "0.003",
+                        "Oversampling Foreground Percent": "0.5",
+                        "Epochs": "100"
+                    },
+                    "Dice": 60.0
+                },
+                {
+                    "number": 3,
+                    "params": {
+                        "Learning Rate": 0.01,
+                        "Weight Decay": "3e-05",
+                        "Oversampling Foreground Percent": 0.5,
+                        "Epochs": 100
+                    },
+                    "Dice": 82.0
+                },
+                {
+                    "number": 8,
+                    "params": {
+                        "Learning Rate": 0.001,
+                        "Weight Decay": 0.0003,
+                        "Oversampling Foreground Percent": 0.5,
+                        "Epochs": 100
+                    },
+                    "Dice": 82.27
+                },
+                {
+                    "number": 15,
+                    "params": {
+                        "Learning Rate": 0.0001,
+                        "Weight Decay": 0.0003,
+                        "Oversampling Foreground Percent": 0.5,
+                        "Epochs": 100
+                    },
+                    "Dice": 81.4
+                },
+                {
+                    "number": 6,
+                    "params": {
+                        "Learning Rate": 0.001,
+                        "Weight Decay": "3e-05",
+                        "Oversampling Foreground Percent": 0.33,
+                        "Epochs": 100
+                    },
+                    "Dice": 82.1
+                },
+                {
+                    "number": 9,
+                    "params": {
+                        "Learning Rate": 0.001,
+                        "Weight Decay": 0.0003,
+                        "Oversampling Foreground Percent": 0.33,
+                        "Epochs": 100
+                    },
+                    "Dice": 82.33
+                },
+                {
+                    "number": 13,
+                    "params": {
+                        "Learning Rate": 0.0001,
+                        "Weight Decay": "3e-05",
+                        "Oversampling Foreground Percent": 0.5,
+                        "Epochs": 100
+                    },
+                    "Dice": 78.31
+                }
+            ],
+            "instructions": [
+                {
+                    "task": "Analysis of Current Trials",
+                    "description": "1. Summarize performance metrics\n2. Evaluate performance trends for hyper-parameters.\n3. Highlight promising hyper-parameter combinations."
+                },
+                {
+                    "task": "Optimization Recommendation",
+                    "n_jobs": 3,
+                    "description": "Based on the hyper-parameter analysis, observed performance trands and the given search space, recommend the best hyper-parameters for next $n_jobs trials to improve model performance, along with reasons for each choice. Your suggestion must be satisfied below requirements:\n1) Suggested trials can't be in the completed trials \n 2) Suggested trials can't re-test the same hyper-parameters. \n 3) Suggested hyper-parameters should be from the given search space."
+                },
+                {
+                    "task": "Experiment Planning",
+                    "description": "Convert Optimization Recommendation to be below YAML format with ```yaml```: $trial_fmt, and 1) No markdown code blocks.\n 2) Output ONLY raw YAML without explanations."
+                },
+                {
+                    "task": "Stop Optimization",
+                    "description": "If the results are already high or higher than $threshold (needn't to be specified), you can reject tasks. Your answer like below format:\nAnswer: Yes or Answer: No with confidence score: $confidence_score"
+                }
+            ]
+        }
+    }
+]

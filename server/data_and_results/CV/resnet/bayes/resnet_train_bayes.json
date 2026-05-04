@@ -1,0 +1,135 @@
+[
+    {
+        "role": "system",
+        "content": {
+            "description": "ResNet ablation grid (depth, shortcut, block, lr)",
+            "model": "ResNet-family",
+            "task": "Image Classification",
+            "basic_idea": "Test how depth, shortcut formulation and block design affect optimisation/performance of residual networks.",
+            "instruction": "Train each combination with SGD (momentum 0.9, wd 1e-4)",
+            "link": "https://arxiv.org/abs/1512.03385"
+        }
+    },
+    {
+        "role": "user",
+        "content": {
+            "completed_trials": 9,
+            "max_trials": 9,
+            "structure_description": {
+                "A_identity": "all shortcuts use identity mapping",
+                "B_proj_dimchange": "projection shortcuts are used for increasing dimensions, and other shortcuts are identity",
+                "C_proj_all": "all shortcuts are projections"
+            },
+            "search_space": {
+                "depth_layers": [
+                    18,
+                    34,
+                    50,
+                    101,
+                    152
+                ],
+                "block_type": [
+                    "basic",
+                    "bottleneck"
+                ],
+                "shortcut_type": [
+                    "A_identity",
+                    "B_proj_dimchange",
+                    "C_proj_all"
+                ]
+            },
+            "trials": [
+                {
+                    "number": 0,
+                    "params": {
+                        "architecture": "ResNet-18 A",
+                        "depth_layers": "18",
+                        "block_type": "basic",
+                        "shortcut_type": "A_identity"
+                    },
+                    "top1_error_10crop": 27.88
+                },
+                {
+                    "number": 1,
+                    "params": {
+                        "architecture": "plain-34",
+                        "depth_layers": "34",
+                        "block_type": "basic",
+                        "shortcut_type": "None"
+                    },
+                    "top1_error_10crop": 28.54
+                },
+                {
+                    "number": 2,
+                    "params": {
+                        "architecture": "ResNet-101",
+                        "depth_layers": "101",
+                        "block_type": "bottleneck",
+                        "shortcut_type": "B_proj_dimchange"
+                    },
+                    "top1_error_10crop": 21.75
+                },
+                {
+                    "number": 3,
+                    "params": {
+                        "architecture": "plain-18",
+                        "depth_layers": "18",
+                        "block_type": "basic",
+                        "shortcut_type": "None"
+                    },
+                    "top1_error_10crop": 27.94
+                },
+                {
+                    "number": 4,
+                    "params": {
+                        "architecture": "ResNet-50",
+                        "depth_layers": "50",
+                        "block_type": "bottleneck",
+                        "shortcut_type": "B_proj_dimchange"
+                    },
+                    "top1_error_10crop": 22.85
+                },
+                {
+                    "number": 5,
+                    "params": {
+                        "architecture": "ResNet-34 C",
+                        "depth_layers": "34",
+                        "block_type": "basic",
+                        "shortcut_type": "C_proj_all"
+                    },
+                    "top1_error_10crop": 24.19
+                },
+                {
+                    "number": 6,
+                    "params": {
+                        "architecture": "ResNet-34 A",
+                        "depth_layers": "34",
+                        "block_type": "basic",
+                        "shortcut_type": "A_identity"
+                    },
+                    "top1_error_10crop": 25.03
+                },
+                {
+                    "number": 7,
+                    "params": {
+                        "architecture": "ResNet-152",
+                        "depth_layers": "152",
+                        "block_type": "bottleneck",
+                        "shortcut_type": "B_proj_dimchange"
+                    },
+                    "top1_error_10crop": 21.43
+                },
+                {
+                    "number": 8,
+                    "params": {
+                        "architecture": "ResNet-34 B",
+                        "depth_layers": "34",
+                        "block_type": "basic",
+                        "shortcut_type": "B_proj_dimchange"
+                    },
+                    "top1_error_10crop": 24.52
+                }
+            ]
+        }
+    }
+]

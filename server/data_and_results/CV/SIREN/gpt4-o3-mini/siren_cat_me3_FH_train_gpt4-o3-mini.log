@@ -1,0 +1,453 @@
+----------------------------------------------------------------------------------------------------
+## Round 1
+----------------------------------------------------------------------------------------------------
+## Round 1
+----------------------------------------------------------------------------------------------------
+## Round 1
+----------------------------------------------------------------------------------------------------
+## Round 1
+----------------------------------------------------------------------------------------------------
+## Round 1
+----------------------------------------------------------------------------------------------------
+## Round 1
+----------------------------------------------------------------------------------------------------
+## Round 1
+----------------------------------------------------------------------------------------------------
+## Round 1
+----------------------------------------------------------------------------------------------------
+## Round 1
+----------------------------------------------------------------------------------------------------
+## Round 1
+----------------------------------------------------------------------------------------------------
+## Round 1
+----------------------------------------------------------------------------------------------------
+## Round 1
+----------------------------------------------------------------------------------------------------
+## Round 1
+----------------------------------------------------------------------------------------------------
+## Round 1
+----------------------------------------------------------------------------------------------------
+## Round 1
+----------------------------------------------------------------------------------------------------
+## Round 1
+----------------------------------------------------------------------------------------------------
+## Round 1
+----------------------------------------------------------------------------------------------------
+## Round 1
+----------------------------------------------------------------------------------------------------
+## Round 1
+----------------------------------------------------------------------------------------------------
+## Round 1
+----------------------------------------------------------------------------------------------------
+## Round 1
+1. **Analysis of Current Trials**:
+   - **Summarize performance metrics**: 
+     - Trial 1: k2 = 0.001, lr = 0.01, PSNR = 1.4
+     - Trial 2: k2 = 0.1, lr = 0.1, PSNR = 3.75
+     - Trial 3: k2 = 0.1, lr = 0.0001, PSNR = 15.59
+   - **Evaluate performance trends for hyper-parameters**:
+     - The combination of k2 = 0.1 consistently yields higher PSNR values than lower k2 values.
+     - The learning rate (lr) of 0.0001 also significantly improves performance, suggesting that lower learning rates may help capture finer details.
+   - **Highlight promising hyper-parameter combinations**:
+     - The combination of k2 = 0.1 and lr = 0.0001 shows the best performance with a PSNR of 15.59.
+
+2. **Optimization Recommendation**:
+   - Suggested trials:
+     1. k2 = 0.0005, lr = 0.1
+        - Reason: Exploring a middle-ground value for k2 (0.0005) with a higher learning rate (0.1) to see if improved learning stability can be achieved without drastically decreasing performance.
+     2. k2 = 0.1, lr = 0.01
+        - Reason: This combination was previously tested with lower performance, providing a chance to re-evaluate k2 at a known effective learning rate (0.01).
+     3. k2 = 0.0001, lr = 0.001
+        - Reason: This pair is aimed at testing the lower bounds of k2 while keeping a moderate learning rate to investigate any potential salvageable learning from previous results.
+
+3. **Experiment Planning**:
+   - trials:
+     - k2: 0.0005
+       lr: 0.1
+     - k2: 0.1
+       lr: 0.01
+     - k2: 0.0001
+       lr: 0.001
+
+4. **Stop Optimization**:
+   Answer: Yes with confidence score: 0.85
+----------------------------------------------------------------------------------------------------
+## Round 1
+1. **Analysis of Current Trials**:
+   - **Performance Metrics**:
+     - Trial 1: (k2: 0.001, lr: 0.01) => PSNR: 1.4
+     - Trial 2: (k2: 0.1, lr: 0.1) => PSNR: 3.75
+     - Trial 3: (k2: 0.1, lr: 0.0001) => PSNR: 15.59
+   - **Performance Trends**:
+     - Increasing k2 values (from 0.001 to 0.1) show significant improvement in PSNR.
+     - Higher learning rates (like lr: 0.1) did not yield the best results, while lower rates (like lr: 0.0001) paired with k2: 0.1 resulted in the highest PSNR.
+   - **Promising Hyper-parameter Combinations**:
+     - (k2: 0.1, lr: 0.0001) shows the most promise with a PSNR of 15.59, indicating a strong potential for further optimization.
+
+2. **Optimization Recommendation**:
+   - Suggested Trials:
+     1. **Trial 4**: (k2: 0.01, lr: 0.1)
+        - Reason: This pair explores a middle ground for k2 while testing a higher learning rate that previously returned moderate results.
+     2. **Trial 5**: (k2: 0.0005, lr: 0.01)
+        - Reason: This combination tests a lower k2 alongside a previously tested learning rate that gave a slightly better PSNR. 
+     3. **Trial 6**: (k2: 0.0001, lr: 0.001)
+        - Reason: Testing very low k2 with a mid-range learning rate, allowing examination of sensitivity in PSNR outcomes.
+
+3. **Experiment Planning**:
+   trials:
+   - k2: 0.01
+     lr: 0.1
+   - k2: 0.0005
+     lr: 0.01
+   - k2: 0.0001
+     lr: 0.001
+
+4. **Stop Optimization**:
+   Answer: No with confidence score: 0.85
+----------------------------------------------------------------------------------------------------
+## Round 1
+1. **Analysis of Current Trials:**
+
+   - **Performance Metrics Summary:**
+     - Trial 1: (k2: 0.001, lr: 0.01) - PSNR: 1.4
+     - Trial 2: (k2: 0.1, lr: 0.1) - PSNR: 3.75
+     - Trial 3: (k2: 0.1, lr: 0.0001) - PSNR: 15.59
+
+   - **Performance Trends:**
+     - There seems to be a trend where increasing the learning rate (lr) while using k2 at 0.1 improves PSNR significantly (Trial 2 vs. Trial 1).
+     - Trial 3 shows that a much smaller learning rate (0.0001) with the same k2 (0.1) leads to a much better PSNR than the previous trials. It suggests that lower learning rates might be beneficial when coupled with a suitable k2.
+
+   - **Promising Hyper-parameter Combinations:**
+     - The combination (k2: 0.1, lr: 0.0001) from Trial 3 shows the highest PSNR and is a very promising hyper-parameter set.
+     - (k2: 0.1, lr: 0.1) from Trial 2 also provides moderate PSNR and is worth further exploration.
+
+2. **Optimization Recommendation:**
+   - Suggested hyper-parameters for next 3 trials:
+     1. (k2: 0.01, lr: 0.1): This combo leverages a medium learning rate which previously showed promise with a lower k2 value.
+     2. (k2: 0.0005, lr: 0.001): Exploring a combination of a lower k2 with a lower learning rate might yield insights into the model’s sensitivity.
+     3. (k2: 0.0001, lr: 0.1): Testing a very small k2 with a higher learning rate could indicate whether a more aggressive optimization is possible.
+
+3. **Experiment Planning in YAML format:**
+```yaml
+trials:
+- k2: 0.01
+  lr: 0.1
+- k2: 0.0005
+  lr: 0.001
+- k2: 0.0001
+  lr: 0.1
+```
+
+4. **Stop Optimization:**
+Answer: No with confidence score: 0.85
+## Round 2
+### Analysis of Current Trials
+1. **Summarize performance metrics:**
+   - The PSNR (Peak Signal-to-Noise Ratio) results from the trials are as follows:
+     - Trial 1: k2=0.001, lr=0.01, PSNR=1.4
+     - Trial 2: k2=0.1, lr=0.1, PSNR=3.75
+     - Trial 3: k2=0.1, lr=0.0001, PSNR=15.59
+     - Trial 4: k2=0.01, lr=0.1, PSNR=3.82
+     - Trial 5: k2=0.0005, lr=0.001, PSNR=7.33
+     - Trial 6: k2=0.0001, lr=0.1, PSNR=3.98
+   - Notably, Trial 3 shows the highest PSNR of 15.59.
+
+2. **Evaluate performance trends for hyper-parameters:**
+   - Increasing 'k2' seems to yield lower PSNR values, particularly notable for k2 values greater than 0.001.
+   - Among the learning rates, the lower rates (0.0001) tend to achieve better PSNR results rather than higher ones (such as 0.1).
+
+3. **Highlight promising hyper-parameter combinations:**
+   - The combination of **k2=0.1** and **lr=0.0001** proved to be the most successful (Trial 3).
+   - Other promising combinations might include **k2=0.0005** paired with either **lr=0.001** or **lr=0.1**, as they yielded reasonable PSNR results.
+
+### Optimization Recommendation
+- Based on the analysis, it is recommended to test the following hyper-parameter combinations for the next trials:
+
+1. **Trial 1: (k2=0.0005, lr=0.0001)**
+   - Reason: This combination tests a low learning rate with a moderate k2 value that has shown reasonable PSNR in previous trials.
+   
+2. **Trial 2: (k2=0.0001, lr=0.01)**
+   - Reason: This option allows for a moderate learning rate with the lowest k2 value tested, potentially harnessing gains seen in previous low k2 configurations.
+
+3. **Trial 3: (k2=0.1, lr=0.001)**
+   - Reason: This combination explores the effects of a higher k2 dose while utilizing a lower learning rate than previously tested with the same k2.
+
+### Experiment Planning
+```yaml
+trials:
+- k2: 0.0005
+  lr: 0.0001
+- k2: 0.0001
+  lr: 0.01
+- k2: 0.1
+  lr: 0.001
+```
+
+### Stop Optimization
+Answer: No with confidence score: 0.85
+## Round 3
+1. **Analysis of Current Trials**:
+   - Performance Metrics Summary:
+     - The PSNR values for the completed trials ranged from 1.37 to 15.59, indicating varying levels of performance based on the chosen hyper-parameters.
+   - Performance Trends for Hyper-parameters:
+     - The learning rate (lr) of 0.0001 coupled with k2 at 0.1 yielded a significantly higher PSNR (15.59), indicating a promising balance.
+     - Higher values of k2 (0.1) combined with lower learning rates (0.0001) seem more favorable compared to higher learning rates with lower k2 values.
+   - Promising Hyper-parameter Combinations:
+     - (k2: 0.1, lr: 0.0001) was the most successful combination, suggesting that longer training with lower learning rates may benefit performance.
+
+2. **Optimization Recommendation**:
+   - Suggested Trials:
+     1. (k2: 0.0005, lr: 0.01) - Reason: This combination allows testing a middle learning rate with a lower k2, which may yield better PSNR based on the previous performance of related parameters.
+     2. (k2: 0.0001, lr: 0.001) - Reason: Testing a low k2 with a moderate learning rate will further explore performance with adjustments in k2 facilitating potential enhancements.
+     3. (k2: 0.01, lr: 0.0005) - Reason: Altering both hyper-parameters allows for a different balance which could also result in better performance based on trends.
+
+3. **Experiment Planning**:
+```yaml
+trials:
+- k2: 0.0005
+  lr: 0.01
+- k2: 0.0001
+  lr: 0.001
+- k2: 0.01
+  lr: 0.0005
+```
+
+4. **Stop Optimization**:
+Answer: No with confidence score: 0.85
+## Round 4
+1. **Analysis of Current Trials:**
+   - **Summary of Performance Metrics:**
+     - The PSNR values recorded across the trials range from 1.37 to 15.59. 
+     - The trials with the highest PSNR performance include:
+       - `k2: 0.1`, `lr: 0.0001` with PSNR of 15.59
+       - `k2: 0.0001`, `lr: 0.001` with PSNR of 15.36
+       - These settings indicate that low learning rates combined with an appropriate `k2` value yield better performance.
+ 
+   - **Performance Trends for Hyper-parameters:**
+     - Lower learning rates generally lead to higher PSNR values, especially when paired with the appropriate `k2` values.
+     - The combinations of `k2` being `0.1` or `0.0001`, when used with lower learning rates (`0.001` and `0.0001`), have shown promising results.
+
+   - **Promising Hyper-parameter Combinations:**
+     - The top-performing combination seen is `k2: 0.1` with `lr: 0.0001` as it achieved the highest PSNR of 15.59.
+     - Another strong combination is `k2: 0.0001` with `lr: 0.001`, which also performed well with a PSNR of 15.36.
+
+2. **Optimization Recommendation:**
+   - Suggested hyper-parameters for the next trials based on analysis:
+     - **Trial 1:**
+       - `k2: 0.01`, `lr: 0.001`
+       - Reason: This combination involves a moderate `k2` which has shown previously to yield better outcomes with a relatively low learning rate.
+    
+     - **Trial 2:**
+       - `k2: 0.0001`, `lr: 0.1`
+       - Reason: This setting has previously shown promising results and may balance the learning rate with an effective `k2`.
+
+     - **Trial 3:**
+       - `k2: 0.1`, `lr: 0.001`
+       - Reason: It retains a high `k2` while utilizing a low learning rate, which may push performance further.
+
+3. **Experiment Planning:**
+```yaml
+trials:
+- k2: 0.01
+  lr: 0.001
+- k2: 0.0001
+  lr: 0.1
+- k2: 0.1
+  lr: 0.001
+```
+
+4. **Stop Optimization:**
+Answer: No with confidence score: 0.85
+## Round 5
+### Analysis of Current Trials
+1. **Summarize Performance Metrics**:
+   - The trials produced a range of PSNR values from a minimum of 1.37 to a maximum of 15.59.
+   - Notably, trials with `k2 = 0.0001` and varying learning rates (0.0001 and 0.01) yielded high PSNR scores of 15.36 and 15.59, indicating strong performance.
+
+2. **Evaluate Performance Trends for Hyper-Parameters**:
+   - Higher values of `k2` (0.1) generally resulted in lower PSNR scores, suggesting that smaller `k2` values are likely better.
+   - There appears to be no consistent trend with learning rates; however, low learning rates (0.0001 and 0.001) are associated with some of the highest PSNRs, especially when paired with `k2 = 0.0001`.
+
+3. **Highlight Promising Hyper-Parameter Combinations**:
+   - The combination of `k2 = 0.0001` with `lr = 0.0001` and `lr = 0.01` shows promise, yielding high PSNR values.
+   - `k2 = 0.0005` with `lr = 0.001` also shows moderate performance but isn't as strong as the previous combinations.
+
+### Optimization Recommendation
+Based on the evaluation of the trials and their performance metrics, the following hyper-parameter combinations are recommended for the next trials:
+
+1. **Trial 1**: 
+   - `k2 = 0.0001`, `lr = 0.1`
+   - Reason: This combination has previously shown a high performance in earlier trials and should be retested as it offers potential for optimization.
+
+2. **Trial 2**:
+   - `k2 = 0.01`, `lr = 0.01`
+   - Reason: `k2 = 0.01` has been used without high results in current trials, but in combination with a moderate learning rate may yield better results.
+
+3. **Trial 3**:
+   - `k2 = 0.0005`, `lr = 0.1`
+   - Reason: Re-testing with a high learning rate could exploit the potential found with this k2 value, aiming for higher PSNR performance.
+
+### Experiment Planning
+```yaml
+trials:
+- k2: 0.0001
+  lr: 0.1
+- k2: 0.01
+  lr: 0.01
+- k2: 0.0005
+  lr: 0.1
+```
+
+### Stop Optimization
+Answer: No with confidence score: 0.85
+## Round 6
+1. **Analysis of Current Trials**
+   - **Performance Metrics Summary**:
+     - Best PSNR achieved: 15.59
+     - Median PSNR of completed trials: 3.75
+     - Performance variation: Different k2 and lr settings resulted in a wide range of PSNR values.
+   
+   - **Performance Trends**:
+     - Lower learning rates (lr) generally have higher PSNR values when combined with a suitable k2.
+     - Increasing k2 values did not consistently correlate with improved PSNR, indicating varying sensitivity to this parameter.
+     - A combination of lr = 0.0001 and suitable k2 values showed the best PSNR.
+
+   - **Promising Hyper-parameter Combinations**:
+     - lr = 0.0001 with k2 = 0.0001 resulted in a high PSNR of 15.36.
+     - The combination of lr = 0.01 and k2 = 0.1 also achieved reasonable PSNR values (3.75).
+
+2. **Optimization Recommendation**
+   - Recommended Trials:
+     - **Trial 1**: k2 = 0.0001, lr = 0.0005
+       - Reason: combination of a low learning rate (0.0005) with a low k2 (0.0001) previously achieved high performance (PSNR 15.36).
+     - **Trial 2**: k2 = 0.1, lr = 0.0001
+       - Reason: Only tried with lr = 0.1 and shows promise at lower k2 with better learning rates.
+     - **Trial 3**: k2 = 0.01, lr = 0.0001
+       - Reason: This combination uses the lowest learning rate, and low k2 found moderate success in earlier trials.
+
+3. **Experiment Planning** 
+```yaml
+trials:
+- k2: 0.0001
+  lr: 0.0005
+- k2: 0.1
+  lr: 0.0001
+- k2: 0.01
+  lr: 0.0001
+```
+4. **Stop Optimization** 
+Answer: No with confidence score: 0.85
+## Round 7
+### Analysis of Current Trials
+
+1. **Summarize performance metrics:**
+   - The reported PSNR values vary significantly, with the highest being 15.66 from hyper-parameters `k2: 0.0001` and `lr: 0.0005`. 
+   - The lowest PSNR observed is 1.37, with multiple combinations resulting in this score.
+
+2. **Evaluate performance trends for hyper-parameters:**
+   - Lower learning rates seem to yield higher PSNR values, especially with specific values of `k2`. 
+   - The most successful combination involves `k2: 0.0001` and a very low learning rate, suggesting that smaller values of `k2` can contribute significantly to performance when paired with appropriately low `lr`.
+
+3. **Highlight promising hyper-parameter combinations:**
+   - A combination of `k2: 0.0001` and `lr: 0.0005` is promising as it achieved the highest PSNR value of 15.66.
+   - Another noteworthy combination is `k2: 0.0001` with `lr: 0.001`, which yielded a PSNR of 15.36.
+
+### Optimization Recommendation
+
+1. **Suggested Trials:**
+   - **Trial 1:** `k2: 0.0001`, `lr: 0.01` since it might leverage the low `k2` advantage while testing a higher learning rate.
+   - **Trial 2:** `k2: 0.01`, `lr: 0.0005` that can assess how a mid-range `k2` performs with a low `lr`.
+   - **Trial 3:** `k2: 0.0005`, `lr: 0.1` to evaluate if a larger `lr` can achieve favorable PSNR under a moderate `k2`.
+
+### Experiment Planning
+
+```yaml
+trials:
+- k2: 0.0001
+  lr: 0.01
+- k2: 0.01
+  lr: 0.0005
+- k2: 0.0005
+  lr: 0.1
+```
+
+### Stop Optimization
+
+Answer: No with confidence score: 0.85
+## Round 8
+**Analysis of Current Trials:**
+
+1. **Summarize performance metrics**:  
+   The PSNR values for the trials ranged from a low of 1.37 to a high of 15.66, indicating considerable variability in performance. 
+
+2. **Evaluate performance trends for hyper-parameters**:  
+   - The learning rate (lr) of 0.0001 combined with k2 values of 0.0001 and 0.0005 produced the highest PSNR values (15.66 and 15.36 respectively).
+   - Higher values for k2 (0.1 and 0.01) did not yield impressive results, with the best PSNR from k2=0.1 being only 3.75.
+
+3. **Highlight promising hyper-parameter combinations**:  
+   The most promising combinations based on trials are:
+   - k2 = 0.0001, lr = 0.0001 (PSNR = 15.66)
+   - k2 = 0.0005, lr = 0.0001 (PSNR = 8.11)
+   - k2 = 0.0005, lr = 0.001 (PSNR = 7.33)
+
+**Optimization Recommendation:**
+
+1. Suggested trials based on the analysis:
+   - k2 = 0.1, lr = 0.0001: This combination considers a lower learning rate with a k2 that prior trials suggest might improve the PSNR.
+   - k2 = 0.001, lr = 0.1: A high learning rate with a k2 that has previously shown good results.
+   - k2 = 0.01, lr = 0.0005: This aims to blend reasonable values for both hyper-parameters considering their performance in the previous trials.
+
+**Experiment Planning:**
+
+```yaml
+trials:
+- k2: 0.1
+  lr: 0.0001
+- k2: 0.001
+  lr: 0.1
+- k2: 0.01
+  lr: 0.0005
+```
+
+**Stop Optimization:**
+
+Answer: No with confidence score: 0.85
+## Round 9
+### Analysis of Current Trials
+
+1. **Summarize performance metrics**: 
+   - The PSNR (Peak Signal-to-Noise Ratio) values achieved in the completed trials range from a low of 1.37 to a high of 15.66. 
+   - The best-performing hyper-parameter combination found is `k2: 0.0001` and `lr: 0.0005`, which resulted in a PSNR of 15.66.
+
+2. **Evaluate performance trends for hyper-parameters**: 
+   - Higher values of `k2` (e.g., 0.1, 0.01) seem to correlate with lower PSNR values overall.
+   - The learning rate (`lr`) of 0.0001 appears to yield high PSNR values across several trials, especially when paired with a lower `k2`. 
+   - A combination of `k2: 0.0001` with various `lr` values has proven effective, suggesting that lower `k2` might be beneficial regardless of `lr`.
+
+3. **Highlight promising hyper-parameter combinations**: 
+   - The combination of `k2: 0.0001` and `lr: 0.0005`, achieving a PSNR of 15.66, stands out as a strong candidate for future trials. 
+   - The pairs involving lower `k2` values with `lr: 0.0001` also showed promise, most notably with `k2: 0.0001` which produced competitive results.
+
+### Optimization Recommendation
+
+Based on the analysis of the hyper-parameters and their performance, the following trials are recommended:
+
+1. **Trial 1**: `k2: 0.0001`, `lr: 0.1` (this combination was completed, and a new learning rate might further optimize the PSNR)
+2. **Trial 2**: `k2: 0.01`, `lr: 0.0001` (testing a higher `k2` with the most effective learning rate observed)
+3. **Trial 3**: `k2: 0.0005`, `lr: 0.0005` (experimenting with a middle ground for both parameters based on effective prior results)
+
+### Experiment Planning
+
+```yaml
+trials:
+- k2: 0.0001
+  lr: 0.1
+- k2: 0.01
+  lr: 0.0001
+- k2: 0.0005
+  lr: 0.0005
+```
+
+### Stop Optimization
+
+Answer: Yes with confidence score: 0.85

@@ -1,0 +1,390 @@
+[
+    {
+        "role": "system",
+        "content": {
+            "description": "You are a Senior Computer Vision Researcher specializing in 3D Medical Image Segmentation.",
+            "model": "nnUNet Revisited",
+            "task": "Benchmarking for BTCV dataset.",
+            "basic_idea": "Compare CNN-, Transformer-, and Mamba-based architectures using standardized hyperparameters and datasets within nnUNet and Auto3DSeg frameworks.",
+            "Structure_Description": {
+                "nnU-Net (org.)": "A self-configuring U-Net framework that adapts its architecture and training pipeline to any given medical imaging dataset.",
+                "nnU-Net ResEnc M": "A medium-sized nnU-Net variant incorporating residual encoder blocks for moderate GPU memory.",
+                "nnU-Net ResEnc L": "A large nnU-Net variant using residual encoders, designed for high-memory GPU usage.",
+                "ResEnc L (iso spacing)": "ResEnc L trained with isotropic spacing (1x1x1) for spatial uniformity.",
+                "MedNeXt L k3": "ConvNeXt-based 3D CNN using 3x3x3 convolutions for scalable segmentation.",
+                "MedNeXt L k5": "A variation of MedNeXt using 5x5x5 kernels for broader contextual capture.",
+                "STU-Net S": "Small version of a scalable U-Net optimized for low-resource settings.",
+                "STU-Net B": "Base variant of STU-Net balancing depth and efficiency.",
+                "STU-Net L": "Large version of STU-Net with enhanced capacity for complex tasks.",
+                "SwinUNETR": "A U-Net backbone using Swin Transformers to model local and global context.",
+                "SwinUNETR V2": "Enhanced SwinUNETR with stagewise convolutional integration.",
+                "nnFormer": "A hybrid transformer model with interleaved CNN and transformer layers.",
+                "CoTr": "Combines CNNs for local encoding and transformers for global modeling.",
+                "U-Mamba Bot": "Uses Mamba modules only in the bottleneck of a U-Net.",
+                "U-Mamba Enc": "Uses Mamba modules throughout the encoder to enhance hierarchy learning.",
+                "No-Mamba Base": "Baseline U-Net without Mamba, used for comparative evaluation.",
+                "A3DS SegResNet": "Auto3DSeg-based residual network optimized for segmentation.",
+                "A3DS DiNTS": "Auto3DSeg model generated through neural architecture search.",
+                "A3DS SwinUNETR": "Auto3DSeg variant of SwinUNETR fine-tuned for 3D segmentation."
+            },
+            "instruction": "Complete instructions under limited trials.",
+            "link": "https://arxiv.org/abs/2404.09556"
+        }
+    },
+    {
+        "role": "user",
+        "content": {
+            "max_trials": 19,
+            "completed_trials": 19,
+            "search_space": {
+                "Structure": [
+                    "nnU-Net (org.)",
+                    "nnU-Net ResEnc M",
+                    "nnU-Net ResEnc L",
+                    "ResEnc L (iso spacing)",
+                    "MedNeXt L k3",
+                    "MedNeXt L k5",
+                    "STU-Net S",
+                    "STU-Net B",
+                    "STU-Net L",
+                    "SwinUNETR",
+                    "SwinUNETR V2",
+                    "nnFormer",
+                    "CoTr",
+                    "U-Mamba Bot",
+                    "U-Mamba Enc",
+                    "No-Mamba Base",
+                    "A3DS SegResNet",
+                    "A3DS DiNTS",
+                    "A3DS SwinUNETR"
+                ],
+                "Architecture": [
+                    "Vanilla U-Net (CNN)",
+                    "ResNet U-Net (CNN)",
+                    "ConvNeXt (CNN)",
+                    "Scaled U-Net (CNN)",
+                    "Transformer",
+                    "Hybrid CNN + TF",
+                    "U-Net + Mamba",
+                    "CNN",
+                    "CNN (Auto3DSeg)",
+                    "NAS (Auto3DSeg)"
+                ],
+                "Patch Size": [
+                    "128x128x128",
+                    "80x256x256",
+                    "192x192x192",
+                    "144x224x224",
+                    "2x2x2"
+                ],
+                "Spacing": [
+                    "1x0.78x0.78",
+                    "3x0.76x0.76",
+                    "1x1x1"
+                ],
+                "Batch Size": [
+                    2
+                ],
+                "Epochs": [
+                    800,
+                    1000
+                ],
+                "Optimizer": [
+                    "SGD",
+                    "Adam",
+                    "AdamW"
+                ],
+                "Weight Decay": [
+                    3e-05
+                ]
+            },
+            "trials": [
+                {
+                    "number": 0,
+                    "params": {
+                        "Structure": "SwinUNETR V2",
+                        "Architecture": "Transformer",
+                        "Patch Size": "2x2x2",
+                        "Spacing": "1x1x1",
+                        "Batch Size": "2",
+                        "Epochs": "1000",
+                        "Optimizer": "Adam",
+                        "Weight Decay": "3e-05"
+                    },
+                    "Dice": 80.85
+                },
+                {
+                    "number": 1,
+                    "params": {
+                        "Structure": "U-Mamba Bot",
+                        "Architecture": "U-Net + Mamba",
+                        "Patch Size": "128x128x128",
+                        "Spacing": "1x1x1",
+                        "Batch Size": "2",
+                        "Epochs": "1000",
+                        "Optimizer": "SGD",
+                        "Weight Decay": "3e-05"
+                    },
+                    "Dice": 83.51
+                },
+                {
+                    "number": 2,
+                    "params": {
+                        "Structure": "A3DS SwinUNETR",
+                        "Architecture": "Transformer",
+                        "Patch Size": "144x224x224",
+                        "Spacing": "1x0.78x0.78",
+                        "Batch Size": "2",
+                        "Epochs": "800",
+                        "Optimizer": "Adam",
+                        "Weight Decay": "3e-05"
+                    },
+                    "Dice": 76.54
+                },
+                {
+                    "number": 3,
+                    "params": {
+                        "Structure": "MedNeXt L k3",
+                        "Architecture": "ConvNeXt (CNN)",
+                        "Patch Size": "128x128x128",
+                        "Spacing": "1x1x1",
+                        "Batch Size": "2",
+                        "Epochs": "1000",
+                        "Optimizer": "AdamW",
+                        "Weight Decay": "3e-05"
+                    },
+                    "Dice": 84.7
+                },
+                {
+                    "number": 4,
+                    "params": {
+                        "Structure": "U-Mamba Enc",
+                        "Architecture": "U-Net + Mamba",
+                        "Patch Size": "128x128x128",
+                        "Spacing": "1x1x1",
+                        "Batch Size": "2",
+                        "Epochs": "1000",
+                        "Optimizer": "SGD",
+                        "Weight Decay": "3e-05"
+                    },
+                    "Dice": 82.41
+                },
+                {
+                    "number": 5,
+                    "params": {
+                        "Structure": "nnU-Net ResEnc L",
+                        "Architecture": "ResNet U-Net (CNN)",
+                        "Patch Size": "80x256x256",
+                        "Spacing": "3x0.76x0.76",
+                        "Batch Size": "2",
+                        "Epochs": "1000",
+                        "Optimizer": "SGD",
+                        "Weight Decay": "3e-05"
+                    },
+                    "Dice": 83.35
+                },
+                {
+                    "number": 6,
+                    "params": {
+                        "Structure": "CoTr",
+                        "Architecture": "Hybrid CNN + TF",
+                        "Patch Size": "128x128x128",
+                        "Spacing": "1x1x1",
+                        "Batch Size": "2",
+                        "Epochs": "1000",
+                        "Optimizer": "SGD",
+                        "Weight Decay": "3e-05"
+                    },
+                    "Dice": 81.95
+                },
+                {
+                    "number": 7,
+                    "params": {
+                        "Structure": "A3DS SegResNet",
+                        "Architecture": "CNN (Auto3DSeg)",
+                        "Patch Size": "144x224x224",
+                        "Spacing": "1x0.78x0.78",
+                        "Batch Size": "2",
+                        "Epochs": "800",
+                        "Optimizer": "Adam",
+                        "Weight Decay": "3e-05"
+                    },
+                    "Dice": 80.69
+                },
+                {
+                    "number": 8,
+                    "params": {
+                        "Structure": "No-Mamba Base",
+                        "Architecture": "CNN",
+                        "Patch Size": "128x128x128",
+                        "Spacing": "1x1x1",
+                        "Batch Size": "2",
+                        "Epochs": "1000",
+                        "Optimizer": "SGD",
+                        "Weight Decay": "3e-05"
+                    },
+                    "Dice": 83.69
+                },
+                {
+                    "number": 9,
+                    "params": {
+                        "Structure": "nnU-Net (org.)",
+                        "Architecture": "Vanilla U-Net (CNN)",
+                        "Patch Size": "128x128x128",
+                        "Spacing": "1x0.78x0.78",
+                        "Batch Size": "2",
+                        "Epochs": "1000",
+                        "Optimizer": "SGD",
+                        "Weight Decay": "3e-05"
+                    },
+                    "Dice": 83.08
+                },
+                {
+                    "number": 10,
+                    "params": {
+                        "Structure": "SwinUNETR",
+                        "Architecture": "Transformer",
+                        "Patch Size": "2x2x2",
+                        "Spacing": "1x1x1",
+                        "Batch Size": "2",
+                        "Epochs": "1000",
+                        "Optimizer": "Adam",
+                        "Weight Decay": "3e-05"
+                    },
+                    "Dice": 78.89
+                },
+                {
+                    "number": 11,
+                    "params": {
+                        "Structure": "STU-Net B",
+                        "Architecture": "Scaled U-Net (CNN)",
+                        "Patch Size": "128x128x128",
+                        "Spacing": "1x1x1",
+                        "Batch Size": "2",
+                        "Epochs": "1000",
+                        "Optimizer": "SGD",
+                        "Weight Decay": "3e-05"
+                    },
+                    "Dice": 83.05
+                },
+                {
+                    "number": 12,
+                    "params": {
+                        "Structure": "STU-Net S",
+                        "Architecture": "Scaled U-Net (CNN)",
+                        "Patch Size": "128x128x128",
+                        "Spacing": "1x1x1",
+                        "Batch Size": "2",
+                        "Epochs": "1000",
+                        "Optimizer": "SGD",
+                        "Weight Decay": "3e-05"
+                    },
+                    "Dice": 82.92
+                },
+                {
+                    "number": 13,
+                    "params": {
+                        "Structure": "nnFormer",
+                        "Architecture": "Transformer",
+                        "Patch Size": "128x128x128",
+                        "Spacing": "1x1x1",
+                        "Batch Size": "2",
+                        "Epochs": "1000",
+                        "Optimizer": "SGD",
+                        "Weight Decay": "3e-05"
+                    },
+                    "Dice": 80.86
+                },
+                {
+                    "number": 14,
+                    "params": {
+                        "Structure": "STU-Net L",
+                        "Architecture": "Scaled U-Net (CNN)",
+                        "Patch Size": "128x128x128",
+                        "Spacing": "1x1x1",
+                        "Batch Size": "2",
+                        "Epochs": "1000",
+                        "Optimizer": "SGD",
+                        "Weight Decay": "3e-05"
+                    },
+                    "Dice": 83.36
+                },
+                {
+                    "number": 15,
+                    "params": {
+                        "Structure": "ResEnc L (iso spacing)",
+                        "Architecture": "ResNet U-Net (CNN)",
+                        "Patch Size": "192x192x192",
+                        "Spacing": "1x1x1",
+                        "Batch Size": "2",
+                        "Epochs": "1000",
+                        "Optimizer": "SGD",
+                        "Weight Decay": "3e-05"
+                    },
+                    "Dice": 84.01
+                },
+                {
+                    "number": 16,
+                    "params": {
+                        "Structure": "MedNeXt L k5",
+                        "Architecture": "ConvNeXt (CNN)",
+                        "Patch Size": "128x128x128",
+                        "Spacing": "1x1x1",
+                        "Batch Size": "2",
+                        "Epochs": "1000",
+                        "Optimizer": "AdamW",
+                        "Weight Decay": "3e-05"
+                    },
+                    "Dice": 85.04
+                },
+                {
+                    "number": 17,
+                    "params": {
+                        "Structure": "A3DS DiNTS",
+                        "Architecture": "NAS (Auto3DSeg)",
+                        "Patch Size": "144x224x224",
+                        "Spacing": "1x0.78x0.78",
+                        "Batch Size": "2",
+                        "Epochs": "800",
+                        "Optimizer": "Adam",
+                        "Weight Decay": "3e-05"
+                    },
+                    "Dice": 78.18
+                },
+                {
+                    "number": 18,
+                    "params": {
+                        "Structure": "nnU-Net ResEnc M",
+                        "Architecture": "ResNet U-Net (CNN)",
+                        "Patch Size": "128x128x128",
+                        "Spacing": "1x0.78x0.78",
+                        "Batch Size": "2",
+                        "Epochs": "1000",
+                        "Optimizer": "SGD",
+                        "Weight Decay": "3e-05"
+                    },
+                    "Dice": 83.31
+                }
+            ],
+            "instructions": [
+                {
+                    "task": "Analysis of Current Trials",
+                    "description": "1. Summarize performance metrics\n2. Evaluate performance trends for hyper-parameters.\n3. Highlight promising hyper-parameter combinations."
+                },
+                {
+                    "task": "Optimization Recommendation",
+                    "n_jobs": 3,
+                    "description": "Based on the hyper-parameter analysis, observed performance trands and the given search space, recommend the best hyper-parameters for next $n_jobs trials to improve model performance, along with reasons for each choice. Your suggestion must be satisfied below requirements:\n1) Suggested trials can't be in the completed trials \n 2) Suggested trials can't re-test the same hyper-parameters. \n 3) Suggested hyper-parameters should be from the given search space."
+                },
+                {
+                    "task": "Experiment Planning",
+                    "description": "Convert Optimization Recommendation to be below YAML format with ```yaml```: $trial_fmt, and 1) No markdown code blocks.\n 2) Output ONLY raw YAML without explanations."
+                },
+                {
+                    "task": "Stop Optimization",
+                    "description": "If the results are already high or higher than $threshold (needn't to be specified), you can reject tasks. Your answer like below format:\nAnswer: Yes or Answer: No with confidence score: $confidence_score"
+                }
+            ]
+        }
+    }
+]
