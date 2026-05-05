@@ -6,10 +6,7 @@ sys.path.append(os.path.dirname(__file__))
 import datetime
 import httpx
 import openai
-try:
-    import anthropic
-except ImportError:
-    anthropic = None
+import anthropic
 import logging
 import time
 import base64
@@ -24,19 +21,29 @@ import numpy as np
 from typing import Literal
 from filelock import FileLock
 from logging_utils import print_log, create_logger
-try:
-    import ollama
-    from ollama import ChatResponse, chat
-except ImportError:
-    ollama = None
-    ChatResponse = None
-
-    def chat(*args, **kwargs):
-        raise RuntimeError("ollama package is not installed")
+import ollama
+from ollama import ChatResponse, chat
 from PIL import Image
 
 
 base_logger = logging.getLogger(os.path.basename(__file__))
+STREAM_LOG_FILE_ENV = "SELF_AI_STREAM_LOG_FILE"
+
+
+def _stream_print(*values, sep=" ", end="\n", flush=True):
+    text = sep.join(str(v) for v in values)
+    print(text, end=end, flush=flush)
+
+    log_path = os.environ.get(STREAM_LOG_FILE_ENV, "").strip()
+    if not log_path:
+        return
+    try:
+        with open(log_path, "a", encoding="utf-8") as fp:
+            fp.write(text + end)
+            fp.flush()
+    except Exception:
+        # Never break model streaming because of log append failures.
+        return
 
 
 def _load_json_with_fallback(path: str):
@@ -277,8 +284,6 @@ def get_openai_client(api_key, base_url=None):
 
 
 def get_claude_client(api_key):
-    if anthropic is None:
-        raise RuntimeError("anthropic package is not installed")
     return anthropic.Anthropic(api_key=api_key)
 
 
@@ -293,8 +298,6 @@ def get_gemini_client(
 
 
 def get_ollama_client(base_url="http://localhost:11434/v1/"):
-    if ollama is None:
-        raise RuntimeError("ollama package is not installed")
     return openai.OpenAI(base_url=base_url)
 
 
@@ -349,7 +352,7 @@ class Agent_ollama_python:
             return responses
         else:
             self.messages.append({"role": "user", "content": json.dumps(message)})
-            print("question: \n", self.messages[1]["content"])
+            _stream_print("question: \n", self.messages[1]["content"])
             temperatures = [0.0]
 
             responses = {}
@@ -368,16 +371,16 @@ class Agent_ollama_python:
                     options={"temperature": temperature},
                     stream=True,
                 )
-            print("response: \n")
+            _stream_print("response: \n")
             content = ""
             for chunk in response:
                 # print(chunk.choices[0].delta.content, end="")
                 # delta_content = chunk.choices[0].delta.content
-                print(chunk["message"]["content"], end="", flush=True)
+                _stream_print(chunk["message"]["content"], end="")
                 delta_content = chunk["message"]["content"]
                 if delta_content is not None:
                     content += delta_content
-            print()
+            _stream_print()
             print_log(content, logger=self.logger)
             responses[temperature] = content  # response.choices[0].message.content
 
@@ -475,8 +478,7 @@ class Agent:
             return model, chat
 
         if source == "claude":
-            if anthropic is None:
-                raise RuntimeError("anthropic package is not installed")
+            import anthropic
 
             client = anthropic.Anthropic(api_key=os.environ.get("CLAUDE_API_KEY"))
             return client, None
@@ -522,8 +524,7 @@ class Agent:
                 client = Ollama(model=model_info, streaming=True, callbacks=[handler])
                 return client, None
             else:
-                if ollama is None:
-                    raise RuntimeError("ollama package is not installed")
+                import ollama
 
                 return ollama, None
 
@@ -643,9 +644,9 @@ class Agent:
         for chunk in resp:
             delta = chunk.choices[0].delta.content
             if delta is not None:
-                print(delta, end="", flush=True)
+                _stream_print(delta, end="")
                 content += delta
-        print()
+        _stream_print()
         return content
 
     def _stream_ollama(self, model, messages, temperature):
@@ -661,9 +662,9 @@ class Agent:
         for chunk in resp:
             delta = chunk["message"]["content"]
             if delta is not None:
-                print(delta, end="", flush=True)
+                _stream_print(delta, end="")
                 content += delta
-        print()
+        _stream_print()
         return content
 
     def _stream_claude(self, client, model, system_prompt, user_messages, temperature):
@@ -681,9 +682,9 @@ class Agent:
             content = ""
             for text in stream.text_stream:
                 if text is not None:
-                    print(text, end="", flush=True)
+                    _stream_print(text, end="")
                     content += text
-        print()
+        _stream_print()
         return content
 
     def _stream_deepseek(self, client, model, messages, temperature):
@@ -701,19 +702,19 @@ class Agent:
             timeout=httpx.Timeout(10.0, read=20.0),
         )
 
-        print("<think> ", end="", flush=True)
+        _stream_print("<think> ", end="")
         for chunk in resp:
             delta_reason = getattr(chunk.choices[0].delta, "reasoning_content", None)
             if delta_reason is not None:
-                print(delta_reason, end="", flush=True)
+                _stream_print(delta_reason, end="")
                 reasoning_content += delta_reason
 
             delta = chunk.choices[0].delta.content
             if delta is not None:
-                print(delta, end="", flush=True)
+                _stream_print(delta, end="")
                 content += delta
 
-        print()
+        _stream_print()
         if "answer:" not in content.lower():
             content = "Answer:" + content
 
@@ -761,7 +762,7 @@ class Agent:
             )
             if cached_content is not None:
                 self.messages.append({"role": "assistant", "content": cached_content})
-                print(cached_content)
+                _stream_print(cached_content)
                 return cached_content
 
         # 2) append user message
@@ -788,8 +789,8 @@ class Agent:
         last_content = None
 
         for temperature in temperatures:
-            print("#####")
-            print(
+            _stream_print("#####")
+            _stream_print(
                 f"## {self.role} ({self.meta} - {self.model_info}): ",
                 end="",
                 flush=True,
@@ -910,7 +911,7 @@ class Agent:
             ):
                 msg[1]["content"][0]["text"] = self.vision_prompt
 
-            print(
+            _stream_print(
                 f"## {self.role} ( {self.meta} - image analyzed by gpt-4.1-mini): ",
                 end="",
                 flush=True,
@@ -948,7 +949,7 @@ class Agent:
                 }
             )
 
-            print(
+            _stream_print(
                 f"## {self.role} ( {self.meta} - image analyzed by gpt-4.1-mini): ",
                 end="",
                 flush=True,
@@ -983,7 +984,6 @@ def test_ollama():
 
 
 def test_agent():
-    os.environ["OPENAI_API_KEY"] = os.environ.get("OPENAI_API_KEY", "")
     model_name = "gpt-4o-mini"
     os.environ["MODEL_INFO"] = model_name
     os.environ["SOURCE"] = "ollama"

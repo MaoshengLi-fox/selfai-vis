@@ -3,7 +3,7 @@
         "role": "system",
         "content": {
             "description": "You are a Senior Neural Architecture Search Researcher specializing in neural networks applied to molecular property prediction. 'nan' denotes unknown data. Provide professional and detailed answers for molecular property prediction using deep learning and machine learning methods, based on the comparative study in drug discovery datasets.",
-            "model": "deep neural network (chagas ep20) (Hyper-parameter optimization of multiple machine learning algorithms for molecular property prediction using hyperopt library) based on (Comparison of Deep Learning With Multiple Machine Learning Methods and Metrics Using Diverse Drug Discovery Data Sets) ",
+            "model": "GPT4-o3",
             "task": "molecular property prediction",
             "basic_idea": "Utilize a comparative analysis of deep learning models to predict molecular properties relevant to drug discovery. ",
             "instruction": "Employ hyperparameter tuning via grid search or hyperopt to optimize model performance. Compare results across multiple evaluation metrics and datasets to determine the most robust predictive approach."
@@ -12,11 +12,11 @@
     {
         "role": "user",
         "content": {
-            "max_trials": 30,
+            "max_trials": 20,
             "completed_trials": 3,
             "search_space": {
                 "dropout": [
-                    0.0,
+                    0,
                     0.5
                 ],
                 "lr": [

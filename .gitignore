@@ -9,3 +9,6 @@ __pycache__/
 server/data and results/
 server/data and results.zip
 server/selfai.zip
+
+# Local environment secrets
+server/.env

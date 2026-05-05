@@ -1,7 +1,4 @@
-try:
-    from torch import distributed as dist
-except ImportError:
-    dist = None
+from torch import distributed as dist
 import logging
 import os
 import functools

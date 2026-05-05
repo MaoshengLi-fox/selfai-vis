@@ -501,7 +501,7 @@ if __name__ == "__main__":
 
     model_name_list = ["gpt-4.1-mini"][0]
 
-    os.environ["OPENAI_API_KEY"] = os.environ.get("OPENAI_API_KEY", "")
+    # API keys should be provided via environment variables.
     with open(f"{os.environ["work_dir"]}/{dataset}_gt.json", "r") as f:
         data = json.load(f)
     trials = data[1]["content"]["trials"]

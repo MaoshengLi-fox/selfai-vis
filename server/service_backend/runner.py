@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import json
 import os
+import re
+import shutil
 import sys
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Any
 
-from .schemas import MainSelfAIRequest, OptimizationRequest
+from .schemas import DemoOptimizeRequest, MainSelfAIRequest, OptimizationRequest
 
 
 METRIC_DICT: dict[str, str] = {
@@ -98,6 +100,7 @@ def run_optimization_job(req: OptimizationRequest) -> dict[str, Any]:
         search_type=req.search_type,
     )
     args.log_file = str(work_dir / f"{args.experimental_desc}.log")
+    os.environ["SELF_AI_STREAM_LOG_FILE"] = args.log_file
 
     cache_name = req.cache_name or f"{train_path.stem}_{req.model_info.replace(':', '_')}_record"
     cache = CachedBase()
@@ -112,7 +115,7 @@ def run_optimization_job(req: OptimizationRequest) -> dict[str, Any]:
 
     main_selfai.interact(args, logger=logger)
 
-    final_train_path = _find_final_train_path(train_path)
+    final_train_path = _find_final_train_path(train_path, work_dir)
     summary = _build_result_summary(final_train_path, req.n_jobs)
     summary["job_info"] = {
         "gt_json_path": str(gt_path),
@@ -125,6 +128,81 @@ def run_optimization_job(req: OptimizationRequest) -> dict[str, Any]:
         "work_dir": str(work_dir),
     }
     return summary
+
+
+def run_demo_optimize(req: DemoOptimizeRequest) -> dict[str, Any]:
+    selected_model = (req.modelName or req.model or "").strip()
+    if not selected_model:
+        raise ValueError("`modelName` (or `model`) is required")
+
+    repo_root = Path(__file__).resolve().parents[1]
+    data_root = repo_root / "data_and_results"
+    task_dir = (data_root / req.category / req.taskName).resolve()
+    model_dir = (task_dir / selected_model).resolve()
+
+    if not task_dir.exists() or data_root not in task_dir.parents:
+        raise FileNotFoundError(f"Task directory not found: {task_dir}")
+    if not model_dir.exists() or data_root not in model_dir.parents:
+        raise FileNotFoundError(f"Model directory not found: {model_dir}")
+
+    gt_path = _resolve_gt_path(task_dir)
+    train_path = _resolve_task_train_json(task_dir)
+
+    train_data = json.loads(train_path.read_text(encoding="utf-8"))
+    if not isinstance(train_data, list) or len(train_data) < 2:
+        raise ValueError(f"Invalid train json format: {train_path}")
+
+    content = train_data[1].get("content", {})
+    if not isinstance(content, dict):
+        raise ValueError(f"Invalid train json content structure: {train_path}")
+
+    content["max_trials"] = req.max_trials
+    content["search_space"] = req.search_space
+    content["completed_trials"] = min(
+        int(content.get("completed_trials", 0) or 0),
+        int(req.max_trials),
+        len(content.get("trials", [])),
+    )
+    if isinstance(train_data[0], dict) and isinstance(train_data[0].get("content"), dict):
+        train_data[0]["content"]["model"] = selected_model
+    train_path.write_text(
+        json.dumps(train_data, ensure_ascii=False, indent=4),
+        encoding="utf-8",
+    )
+
+    model_info = _infer_model_info_from_model_dir(model_dir, selected_model)
+    source = _infer_source(model_info)
+    optimize_req = OptimizationRequest(
+        gt_json_path=str(gt_path),
+        train_json_path=str(train_path),
+        work_dir=str(model_dir),
+        model_info=model_info,
+        source=source,
+        n_jobs=req.n_jobs,
+        completed_trials=max(1, int(content.get("completed_trials", 1) or 1)),
+        fmt="json",
+        search_type="trial",
+        cache_mode="all",
+        cache_path="",
+        saved_as_path="",
+        debug=False,
+        auto_debug=False,
+    )
+
+    summary = run_optimization_job(optimize_req)
+
+    from .demo_loader import load_demo_experiments
+
+    matched = None
+    for item in load_demo_experiments():
+        if (
+            item.get("category") == req.category
+            and item.get("taskName") == req.taskName
+            and item.get("modelName") == selected_model
+        ):
+            matched = item
+            break
+    return {"summary": summary, "experiment": matched}
 
 
 def _load_selfai_runtime_modules():
@@ -226,21 +304,34 @@ def _guess_metric(gt_path: Path) -> str:
     return metric_keys[0]
 
 
-def _find_final_train_path(original_train_path: Path) -> Path:
+def _find_final_train_path(original_train_path: Path, work_dir: Path | None = None) -> Path:
     stem = original_train_path.stem
-    parent = original_train_path.parent
-    candidates = [
-        original_train_path,
-        parent / f"{stem}_y.json",
-        parent / f"{stem}_n.json",
-        parent / f"{stem}_stop.json",
-    ]
+    parents = [original_train_path.parent]
+    if work_dir is not None and work_dir not in parents:
+        parents.append(work_dir)
+
+    candidates: list[Path] = [original_train_path]
+    for parent in parents:
+        candidates.extend(
+            [
+                parent / f"{stem}_y.json",
+                parent / f"{stem}_n.json",
+                parent / f"{stem}_stop.json",
+            ]
+        )
     existing = [p for p in candidates if p.exists()]
     if not existing:
         raise FileNotFoundError(
             f"No output train json found after run. Checked: {[str(p) for p in candidates]}"
         )
-    return max(existing, key=lambda p: p.stat().st_mtime)
+
+    def _priority(path: Path) -> int:
+        name = path.name
+        if name.endswith("_stop.json") or name.endswith("_y.json") or name.endswith("_n.json"):
+            return 1
+        return 0
+
+    return max(existing, key=lambda p: (_priority(p), p.stat().st_mtime))
 
 
 def _build_result_summary(train_path: Path, n_jobs: int) -> dict[str, Any]:
@@ -257,3 +348,115 @@ def _build_result_summary(train_path: Path, n_jobs: int) -> dict[str, Any]:
         "total_trials": len(trials),
         "latest_trials": recent,
     }
+
+
+def _resolve_gt_path(task_dir: Path) -> Path:
+    candidates = sorted(task_dir.glob("*_gt.json"), key=lambda p: p.stat().st_mtime, reverse=True)
+    if not candidates:
+        raise FileNotFoundError(f"No *_gt.json found under: {task_dir}")
+    return candidates[0]
+
+
+def _resolve_editable_train_json(model_dir: Path) -> Path:
+    candidates = [
+        p
+        for p in model_dir.glob("*_train_*.json")
+        if "_record.json" not in p.name
+    ]
+    if not candidates:
+        candidates = [
+            p
+            for p in model_dir.glob("*.json")
+            if "_record.json" not in p.name
+        ]
+    if not candidates:
+        raise FileNotFoundError(f"No train json found under: {model_dir}")
+
+    base_candidates = [
+        p for p in candidates if not re.search(r"_(y|n|stop)\.json$", p.name)
+    ]
+    if base_candidates:
+        return max(base_candidates, key=lambda p: p.stat().st_mtime)
+
+    latest = max(candidates, key=lambda p: p.stat().st_mtime)
+    base_name = re.sub(r"_(y|n|stop)\.json$", ".json", latest.name)
+    base_path = model_dir / base_name
+    shutil.copy2(latest, base_path)
+    return base_path
+
+
+def _resolve_task_train_json(task_dir: Path) -> Path:
+    candidates = [
+        p
+        for p in task_dir.glob("*_train_*.json")
+        if p.is_file() and "_record.json" not in p.name
+    ]
+    if not candidates:
+        raise FileNotFoundError(f"No task-level train json found under: {task_dir}")
+
+    preferred = [p for p in candidates if re.search(r"_train_3\.json$", p.name)]
+    if preferred:
+        return preferred[0]
+    return max(candidates, key=lambda p: p.stat().st_mtime)
+
+
+def _infer_model_info_from_model_dir(model_dir: Path, model_name: str) -> str:
+    model_candidates = [
+        p
+        for p in model_dir.glob("*_train_*.json")
+        if p.is_file() and "_record.json" not in p.name
+    ]
+    if model_candidates:
+        ref_path = max(model_candidates, key=lambda p: p.stat().st_mtime)
+        inferred = _infer_model_info(ref_path, model_name)
+        if inferred and inferred != "3":
+            return inferred
+
+    return _normalize_model_name(model_name)
+
+
+def _infer_model_info(train_path: Path, model_name: str) -> str:
+    stem = train_path.stem
+    marker = "_train_"
+    if marker not in stem:
+        return model_name
+
+    token = stem.split(marker, 1)[1]
+    for suffix in ("_llm_es", "_llm", "_bayes", "_y", "_n", "_stop"):
+        if token.endswith(suffix):
+            token = token[: -len(suffix)]
+
+    if re.match(r".+_\d+[a-zA-Z]?$", token):
+        token = token.rsplit("_", 1)[0] + ":" + token.rsplit("_", 1)[1]
+    if token.isdigit():
+        return _normalize_model_name(model_name)
+    return token or _normalize_model_name(model_name)
+
+
+def _infer_source(model_info: str) -> str:
+    mi = (model_info or "").lower()
+    if "gpt" in mi:
+        return "openai"
+    if "claude" in mi:
+        return "claude"
+    if "deepseek" in mi and "deepseek-r1" not in mi:
+        return "deepseek"
+    return "ollama"
+
+
+def _normalize_model_name(model_name: str) -> str:
+    name = (model_name or "").strip()
+    lower = name.lower()
+    mapping = {
+        "llm": "gpt-4o-mini",
+        "llm_es": "gpt-4o-mini",
+        "gpt4-o3-mini": "gpt-4o-mini",
+        "gpt4-o3": "gpt-4o",
+    }
+    if lower in mapping:
+        return mapping[lower]
+
+    if re.match(r".+_\d+[a-zA-Z]?$", name):
+        left, right = name.rsplit("_", 1)
+        return f"{left}:{right}"
+    return name

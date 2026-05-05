@@ -136,3 +136,17 @@ class DemoExperimentResponse(BaseModel):
     trials: list[DemoTrial] = Field(default_factory=list)
     logs: list[str] = Field(default_factory=list)
     conversation: list[DemoMessage] = Field(default_factory=list)
+    maxTrials: int | None = None
+    completedTrials: int | None = None
+    searchSpace: dict[str, Any] | None = None
+
+
+class DemoOptimizeRequest(BaseModel):
+    category: str
+    taskName: str
+    modelName: str | None = None
+    model: str | None = None
+    max_trials: int = Field(..., ge=1)
+    search_space: dict[str, Any] = Field(default_factory=dict)
+    command: str | None = None
+    n_jobs: int = Field(1, ge=1)

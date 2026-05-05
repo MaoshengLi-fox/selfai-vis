@@ -401,7 +401,7 @@ def chat_cognitive_rag(
             )
             logger.info("#" * 100)
             logger.info(
-                f"{num_round}-find_trials-stop-{cognitive_agent.role}: {cognitive_agent.messages[-2]["content"]}"
+                f"{num_round}-find_trials-stop-{cognitive_agent.role}: {cognitive_agent.messages[-2]['content']}"
             )
             logger.info("#" * 100)
             logger.info(
@@ -456,9 +456,33 @@ def chat_cognitive_rag(
         trial_param_name = [name for name in trial_param_name]
         missing_key = []
         if new_trials is not None:
+            # Normalize model outputs like:
+            # - [{...}]
+            # - {"recommended_trials": [{...}]}
+            # - {"trials": [{...}]}
+            # - {"trial": [{...}]}
+            if isinstance(new_trials, dict):
+                if all(k in new_trials for k in ("number", "params")):
+                    new_trials = [new_trials]
+                else:
+                    for key in ("recommended_trials", "trials", "trial"):
+                        if isinstance(new_trials.get(key), list):
+                            new_trials = new_trials[key]
+                            break
+                    else:
+                        list_value = next(
+                            (v for v in new_trials.values() if isinstance(v, list)),
+                            None,
+                        )
+                        new_trials = list_value if list_value is not None else []
+            elif not isinstance(new_trials, list):
+                new_trials = []
+
             # trial_hyper_params = [item for item in new_trials]
             success = True
             for item in new_trials:
+                if not isinstance(item, dict) or "params" not in item:
+                    continue
                 trial_key = set(item["params"].keys())
                 tmp_missing_key = list(trial_key - set(trial_param_name))
                 tmp_missing_key += list(set(trial_param_name) - trial_key)
@@ -473,7 +497,7 @@ def chat_cognitive_rag(
                 )
             else:
                 completed_trials_dicts = user[1]["content"]["trials"]
-                new_trial_hyper_params, error_trials, repeated_trials = filtered_trials(
+                filtered_out = filtered_trials(
                     new_trial_hyper_params,
                     gt_trials,
                     merged_gt_results,
@@ -482,6 +506,18 @@ def chat_cognitive_rag(
                     metric=args.metric,
                     logger=logger,
                 )
+                if filtered_out is None:
+                    new_trial_hyper_params = []
+                    error_trials = []
+                    repeated_trials = []
+                    if args.auto_debug:
+                        error += "\nFailed to parse or align recommended trials with expected parameter keys."
+                else:
+                    (
+                        new_trial_hyper_params,
+                        error_trials,
+                        repeated_trials,
+                    ) = filtered_out
 
                 if error_trials and args.auto_debug:
                     error += """\nRecommended trials are not in the search space.

@@ -6,7 +6,19 @@ import copy
 from collections import OrderedDict
 from tqdm import tqdm
 
-print_tqdm = tqdm.write
+def print_tqdm(message):
+    tqdm.write(message)
+    log_path = os.environ.get("SELF_AI_STREAM_LOG_FILE", "").strip()
+    if not log_path:
+        return
+    try:
+        with open(log_path, "a", encoding="utf-8") as fp:
+            fp.write(str(message))
+            if not str(message).endswith("\n"):
+                fp.write("\n")
+            fp.flush()
+    except Exception:
+        return
 import sys
 
 sys.path.append(r"C:\Projects\Xiao")
@@ -437,10 +449,15 @@ def interact(args, logger=None):
 
             print_tqdm(f"We can stop Optimization: {end_flag.replace('_', '')}\n")
             if not args.debug:
-                shutil.move(
-                    args.train_json_path,
-                    f"{args.train_json_path.replace('.json', '')}{end_flag}.json",
+                output_dir = (
+                    os.path.dirname(args.log_file)
+                    if hasattr(args, "log_file") and args.log_file
+                    else os.path.dirname(args.train_json_path)
                 )
+                os.makedirs(output_dir, exist_ok=True)
+                output_name = f"{os.path.splitext(os.path.basename(args.train_json_path))[0]}{end_flag}.json"
+                output_path = os.path.join(output_dir, output_name)
+                shutil.copy(args.train_json_path, output_path)
             break
 
 
@@ -590,9 +607,7 @@ def main(model_name_list, json_name_list):
     # model_name_list = []
 
     os.environ["MODEL_INFO"] = model_name_list[0]
-    os.environ["OPENAI_API_KEY"] = os.environ.get("OPENAI_API_KEY", "")
-    os.environ["DEEPSEEK_API_KEY"] = os.environ.get("DEEPSEEK_API_KEY", "")
-    os.environ["CLAUDE_API_KEY"] = os.environ.get("CLAUDE_API_KEY", "")
+    # API keys should be provided via environment variables.
 
     # work_dir = "/home/yutong.xie/xiaowu/huggingface/datasets/completion/MIA"
     # work_dir = r"/home/yutong.xie/xiaowu/huggingface/datasets/completion"

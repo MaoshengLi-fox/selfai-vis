@@ -126,6 +126,11 @@ def _build_experiment_payload(category: str, task_dir: Path, model_dir: Path, ru
         "trials": mapped_trials,
         "logs": _load_log_lines(run_file.parent, run_file.stem),
         "conversation": _load_conversation(run_file.parent, run_file.stem, task_name, model_name),
+        "maxTrials": max_trials,
+        "completedTrials": completed_trials,
+        "searchSpace": user_content.get("search_space", {})
+        if isinstance(user_content.get("search_space", {}), dict)
+        else {},
     }
 
 
@@ -137,7 +142,18 @@ def _latest_run_file(model_dir: Path) -> Path | None:
     ]
     if not candidates:
         return None
-    return max(candidates, key=lambda p: p.stat().st_mtime)
+
+    def _priority(path: Path) -> tuple[int, int, int, float]:
+        name = path.name
+        stem = path.stem
+        is_train3 = 1 if "_train_3" in stem else 0
+        is_terminal = 1 if (
+            name.endswith("_stop.json") or name.endswith("_y.json") or name.endswith("_n.json")
+        ) else 0
+        is_direct_child = 1 if path.parent == model_dir else 0
+        return (is_train3, is_terminal, is_direct_child, path.stat().st_mtime)
+
+    return max(candidates, key=_priority)
 
 
 def _read_json(path: Path) -> Any:
@@ -217,17 +233,26 @@ def _params_to_text(params: Any) -> str:
 
 def _load_log_lines(model_dir: Path, run_stem: str) -> list[str]:
     base = re.sub(r"_(y|n|stop)$", "", run_stem)
-    log_file = model_dir / f"{base}.log"
-    if not log_file.exists():
-        log_candidates = sorted(model_dir.glob("*.log"), key=lambda p: p.stat().st_mtime, reverse=True)
-        if not log_candidates:
-            return []
+    base_log = model_dir / f"{base}.log"
+    log_candidates = sorted(model_dir.glob("*.log"), key=lambda p: p.stat().st_mtime, reverse=True)
+    if not log_candidates and not base_log.exists():
+        return []
+
+    # Prefer train_3 logs for live demo runs when available.
+    train3_logs = [p for p in log_candidates if "_train_3" in p.stem]
+    if train3_logs:
+        log_file = train3_logs[0]
+    elif base_log.exists():
+        log_file = base_log
+    elif log_candidates:
         log_file = log_candidates[0]
+    else:
+        return []
     try:
         lines = [line.strip() for line in log_file.read_text(encoding="utf-8", errors="ignore").splitlines() if line.strip()]
     except Exception:
         return []
-    return lines[-12:]
+    return lines
 
 
 def _load_conversation(model_dir: Path, run_stem: str, task_name: str, model_name: str) -> list[dict[str, str]]:

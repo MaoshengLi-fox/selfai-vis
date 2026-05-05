@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 from datetime import datetime
+from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,6 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .demo_loader import load_demo_experiments
 from .job_manager import JobManager, JobRecord
 from .schemas import (
+    DemoOptimizeRequest,
     DemoExperimentResponse,
     HealthResponse,
     JobCreateResponse,
@@ -17,6 +19,33 @@ from .schemas import (
     MetricsResponse,
     OptimizationRequest,
 )
+
+def _load_env_file() -> None:
+    repo_server_root = Path(__file__).resolve().parents[1]
+    env_path = Path(
+        os.getenv("SELFAI_ENV_FILE", str(repo_server_root / ".env"))
+    ).expanduser()
+    if not env_path.exists():
+        return
+
+    for raw_line in env_path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip()
+        if (
+            len(value) >= 2
+            and value[0] == value[-1]
+            and value[0] in {"'", '"'}
+        ):
+            value = value[1:-1]
+        if key:
+            os.environ.setdefault(key, value)
+
+
+_load_env_file()
 
 SERVERLESS_MODE = os.getenv("VERCEL") == "1" or os.getenv("SELFAI_SERVERLESS") == "1"
 
@@ -76,6 +105,18 @@ def metrics() -> MetricsResponse:
 @app.get("/api/v1/demo/experiments", response_model=list[DemoExperimentResponse])
 def demo_experiments() -> list[DemoExperimentResponse]:
     return [DemoExperimentResponse(**item) for item in load_demo_experiments()]
+
+
+@app.post("/api/v1/demo/optimize")
+def demo_optimize(req: DemoOptimizeRequest) -> dict:
+    if SERVERLESS_MODE:
+        _raise_serverless_not_supported("/api/v1/demo/optimize")
+    from .runner import run_demo_optimize
+
+    try:
+        return run_demo_optimize(req)
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
 
 
 @app.post("/api/v1/jobs/optimize", response_model=JobCreateResponse)

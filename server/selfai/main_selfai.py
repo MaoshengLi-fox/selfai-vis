@@ -3,15 +3,24 @@ import sys
 
 import json
 import shutil
-try:
-    from pptree import *
-except ImportError:
-    pass
+from pptree import *
 import copy
 from collections import OrderedDict
 from tqdm import tqdm
 
-print_tqdm = tqdm.write
+def print_tqdm(message):
+    tqdm.write(message)
+    log_path = os.environ.get("SELF_AI_STREAM_LOG_FILE", "").strip()
+    if not log_path:
+        return
+    try:
+        with open(log_path, "a", encoding="utf-8") as fp:
+            fp.write(str(message))
+            if not str(message).endswith("\n"):
+                fp.write("\n")
+            fp.flush()
+    except Exception:
+        return
 
 from utils.utils import yaml2dict, filtered_trials, load_json
 from utils.client import Agent, create_logger, print_log, CachedBase
@@ -395,10 +404,15 @@ def interact(args, logger=None):
 
             print_tqdm(f"We can stop Optimization: {end_flag.replace('_', '')}\n")
             if not args.debug:
-                shutil.move(
-                    args.train_json_path,
-                    f"{args.train_json_path.replace('.json', '')}{end_flag}.json",
+                output_dir = (
+                    os.path.dirname(args.log_file)
+                    if hasattr(args, "log_file") and args.log_file
+                    else os.path.dirname(args.train_json_path)
                 )
+                os.makedirs(output_dir, exist_ok=True)
+                output_name = f"{os.path.splitext(os.path.basename(args.train_json_path))[0]}{end_flag}.json"
+                output_path = os.path.join(output_dir, output_name)
+                shutil.copy(args.train_json_path, output_path)
             break
 
 
@@ -421,7 +435,7 @@ def objective(trial, model_name_list, json_name_list):
     if json_name == "resnet":
         os.environ["com_flag"] = "less"  # less
     args = SimpleNamespace(
-        train_json_path=f"{work_dir}/{json_name}_train_{model_name.replace(":", "_")}.json",
+        train_json_path=f"{work_dir}/{json_name}_train_{model_name.replace(':', '_')}.json",
         gt_json_path=f"{os.path.dirname(work_dir)}/{json_name}_gt.json",
         experimental_desc=f"{json_name}{prefix}_train_{model_name}{version}",
         # metric="Training accuracy",
@@ -549,40 +563,26 @@ def main(model_name_list, json_name_list):
 
     os.environ["MODEL_INFO"] = model_name_list[0]
 
-    os.environ["OPENAI_API_KEY"] = os.environ.get("OPENAI_API_KEY", "")
-
-
     # work_dir = "/home/yutong.xie/xiaowu/huggingface/datasets/completion/MIA"
     # work_dir = r"/home/yutong.xie/xiaowu/huggingface/datasets/completion"
     # work_dir = "/home/yutong.xie/xiaowu/SelfAI/completion"
 
-    db_name = os.environ.get("SELF_AI_DB_NAME", "ollama_completion")
+    db_name = "ollama_completion"
 
     task_name = os.path.dirname(json_name_list[0])
     model_name = os.path.basename(model_name_list[0]).replace(":", "_")
-    work_dir = os.environ.get(
-        "SELF_AI_WORK_DIR",
-        rf"C:\Projects\Xiao\SelfAI\completion/{json_name_list[0]}/{model_name}",
-    )
-    if not os.environ.get("max_retries"):
-        os.environ["max_retries"] = "1"
+    work_dir = rf"C:\Projects\Xiao\SelfAI\completion/{json_name_list[0]}/{model_name}"
+    os.environ["max_retries"] = "1"
     os.environ["work_dir"] = work_dir
-    os.environ["cached_mode"] = os.environ.get("cached_mode", "all")
-    os.environ["cache_path"] = os.environ.get("cache_path", "")
-    os.environ["saved_as_path"] = os.environ.get(
-        "saved_as_path", os.environ["cache_path"]
-    )
+    os.environ["cached_mode"] = "all"
+    os.environ["cache_path"] = ""
+    os.environ["saved_as_path"] = os.environ["cache_path"]
     cache = CachedBase()
     cache.init(
-        saved_fname=os.environ.get(
-            "SELF_AI_CACHE_NAME",
-            f"{os.path.basename(json_name_list[0])}_train_{model_name}_record",
-        )
+        saved_fname=f"{os.path.basename(json_name_list[0])}_train_{model_name}_record"
     )
 
-    if os.path.exists(f"{work_dir}/{db_name}_{model_name}.db") and os.environ.get(
-        "SELF_AI_CLEAR_DB", "1"
-    ) == "1":
+    if os.path.exists(f"{work_dir}/{db_name}_{model_name}.db"):
         os.remove(f"{work_dir}/{db_name}_{model_name}.db")
 
     sampler = optuna.samplers.GridSampler(
@@ -590,8 +590,8 @@ def main(model_name_list, json_name_list):
     )
 
     study = optuna.create_study(
-        study_name=os.environ.get("SELF_AI_STUDY_NAME", "ollama"),
-        direction=os.environ.get("SELF_AI_STUDY_DIRECTION", "maximize"),
+        study_name="ollama",
+        direction="maximize",
         storage=f"sqlite:///{work_dir}/{db_name}_{model_name}.db",
         load_if_exists=True,
         sampler=sampler,
@@ -599,12 +599,12 @@ def main(model_name_list, json_name_list):
     study.optimize(
         lambda trial: objective(trial, model_name_list, json_name_list),
         n_trials=sampler._n_min_trials,
-        n_jobs=int(os.environ.get("SELF_AI_OPTUNA_N_JOBS", "1")),
+        n_jobs=1,
     )
 
 
 if __name__ == "__main__":
-    os.environ["n_jobs"] = "3"
+    os.environ["n_jobs"] = "1"
     os.environ["completed_trials"] = "3"
     model_name_list = [
         # "deepseek-r1:7b",
