@@ -58,25 +58,13 @@ def _build_task_payloads(category: str, task_dir: Path) -> list[dict[str, Any]]:
         return []
 
     payloads: list[dict[str, Any]] = []
-    gt_prefixes = sorted(gt_file.name.removesuffix("_gt.json") for gt_file in task_dir.glob("*_gt.json"))
-    task_variants = gt_prefixes or [None]
-
-    for task_variant in task_variants:
-        for model_dir in sorted(model_dirs, key=lambda p: p.name.lower()):
-            chosen_run = _latest_run_file(model_dir, run_prefix=task_variant)
-            if chosen_run is None:
-                continue
-            task_name = f"{task_dir.name} / {task_variant}" if task_variant else task_dir.name
-            payload = _build_experiment_payload(
-                category,
-                task_dir,
-                model_dir,
-                chosen_run,
-                task_name_override=task_name,
-                task_variant=task_variant,
-            )
-            if payload is not None:
-                payloads.append(payload)
+    for model_dir in sorted(model_dirs, key=lambda p: p.name.lower()):
+        chosen_run = _latest_run_file(model_dir)
+        if chosen_run is None:
+            continue
+        payload = _build_experiment_payload(category, task_dir, model_dir, chosen_run)
+        if payload is not None:
+            payloads.append(payload)
 
     # Keep preferred models first for better UX in dropdowns.
     preferred_order = {name.lower(): idx for idx, name in enumerate(PREFERRED_MODELS)}
@@ -91,14 +79,7 @@ def _build_task_payloads(category: str, task_dir: Path) -> list[dict[str, Any]]:
     return payloads
 
 
-def _build_experiment_payload(
-    category: str,
-    task_dir: Path,
-    model_dir: Path,
-    run_file: Path,
-    task_name_override: str | None = None,
-    task_variant: str | None = None,
-) -> dict[str, Any] | None:
+def _build_experiment_payload(category: str, task_dir: Path, model_dir: Path, run_file: Path) -> dict[str, Any] | None:
     run_data = _read_json(run_file)
     if not isinstance(run_data, list) or len(run_data) < 2:
         return None
@@ -127,13 +108,13 @@ def _build_experiment_payload(
             "id": trial.get("number", idx + 1),
             "proposal": _params_to_text(_trial_params(trial, metric_name)),
             "metric": _to_float(trial.get(metric_name)),
-            "status": "Best" if trial.get("number") == best_trial_number else "Done",
+            "status": "Best" if (best_trial_number is not None and trial.get("number") == best_trial_number) else "Done",
         }
         for idx, trial in enumerate(trials)
         if isinstance(trial, dict)
     ]
 
-    task_name = task_name_override or task_dir.name
+    task_name = task_dir.name
     model_name = model_dir.name
     task_key = _slug(f"{category}-{task_name}")
     run_tag = run_file.stem
@@ -144,7 +125,6 @@ def _build_experiment_payload(
         "category": category,
         "taskKey": task_key,
         "taskName": task_name,
-        "taskVariant": task_variant or "",
         "modelName": model_name,
         "shortName": f"{category} · {task_name}",
         "name": f"{task_name} / {model_name}",
@@ -167,11 +147,11 @@ def _build_experiment_payload(
     }
 
 
-def _latest_run_file(model_dir: Path, run_prefix: str | None = None) -> Path | None:
+def _latest_run_file(model_dir: Path) -> Path | None:
     candidates = [
         p
         for p in model_dir.rglob("*_train_*.json")
-        if "_record.json" not in p.name and (run_prefix is None or p.name.startswith(f"{run_prefix}_train_"))
+        if "_record.json" not in p.name
     ]
     if not candidates:
         return None

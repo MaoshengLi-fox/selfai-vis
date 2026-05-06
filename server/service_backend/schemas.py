@@ -127,12 +127,14 @@ class DemoExperimentResponse(BaseModel):
     modelName: str
     shortName: str
     name: str
+    runFile: str | None = None
     objective: str
     status: str
     progress: DemoProgress
     metricName: str
     bestMetric: float | None = None
     curve: list[float] = Field(default_factory=list)
+    metricValues: list[float] = Field(default_factory=list)
     trials: list[DemoTrial] = Field(default_factory=list)
     logs: list[str] = Field(default_factory=list)
     conversation: list[DemoMessage] = Field(default_factory=list)

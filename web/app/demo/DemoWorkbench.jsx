@@ -276,7 +276,9 @@ function MetricChart({ series, metricName = 'Metric', yTickCount = 3, yMinInput 
   }
   const chartWidth = width - padding.left - padding.right;
   const chartHeight = height - padding.top - padding.bottom;
-  const xStep = chartWidth / Math.max(values.length - 1, 1);
+  const minTrial = Math.min(...series.map((point) => point.trial));
+  const maxTrial = Math.max(...series.map((point) => point.trial));
+  const xForTrial = (trial) => padding.left + ((trial - minTrial) / (maxTrial - minTrial || 1)) * chartWidth;
   const hasManualStep = yStepInput !== '' && Number.isFinite(parsedYStep) && parsedYStep > 0;
   const yTicks = hasManualStep
     ? (() => {
@@ -296,8 +298,8 @@ function MetricChart({ series, metricName = 'Metric', yTickCount = 3, yMinInput 
       });
 
   const points = series
-    .map((point, index) => {
-      const x = padding.left + index * xStep;
+    .map((point) => {
+      const x = xForTrial(point.trial);
       const y = padding.top + chartHeight - ((point.value - min) / (max - min || 1)) * chartHeight;
       return `${x},${y}`;
     })
@@ -334,7 +336,7 @@ function MetricChart({ series, metricName = 'Metric', yTickCount = 3, yMinInput 
         );
       })}
       {[0, Math.floor((series.length - 1) / 2), series.length - 1].map((index) => {
-        const x = padding.left + index * xStep;
+        const x = xForTrial(series[index].trial);
         return (
           <g key={`x-${index}`}>
             <line className={styles.tickLine} x1={x} y1={padding.top + chartHeight} x2={x} y2={padding.top + chartHeight + 5} />
@@ -349,7 +351,7 @@ function MetricChart({ series, metricName = 'Metric', yTickCount = 3, yMinInput 
       <g clipPath="url(#metric-chart-clip)">
         <polyline className={styles.chartLine} points={points} />
         {series.map((point, index) => {
-          const x = padding.left + index * xStep;
+          const x = xForTrial(point.trial);
           const y = padding.top + chartHeight - ((point.value - min) / (max - min || 1)) * chartHeight;
         return <circle key={`${chartKey}-${point.trial}-${index}-${point.value}`} cx={x} cy={y} r="3.2" className={styles.chartDot} />;
       })}
@@ -1189,12 +1191,6 @@ export default function DemoWorkbench() {
                         yStepInput={yAxisStep}
                         onYZoom={handleYZoom}
                       />
-                      <div className={styles.metricChips}>
-                        <span>Dice Score <b>Minimize</b></span>
-                        <span>AUP_D <b>Maximize</b></span>
-                        <span>Hausdorff (95) <b>Minimize</b></span>
-                        <button type="button">+ Add Metric</button>
-                      </div>
                     </section>
                     <section className={styles.card}>
                       <div className={styles.cardHeaderInline}>

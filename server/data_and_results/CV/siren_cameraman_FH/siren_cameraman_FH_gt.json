@@ -1,0 +1,66 @@
+[
+    {
+        "role": "system",
+        "content": {
+            "description": "You are a Senior Computer Vision Researcher specializing in implicit neural representations. 'nan' denotes unknown data. Please provide professional and detailed answers.",
+            "model": "SIREN-FH (Implicit Neural Representations with Periodic Activation Functions, Frobenius norm of Hessian regularization)",
+            "task": "Image Denoising",
+            "basic_idea": "SIREN is an implicit neural network that utilizes coordinate inputs. Regularization is part of the loss functions to introduce edge-aware priors.",
+            "instruction": "Complete instructions under limited trials"
+        }
+    },
+    {
+    "role": "user",
+    "content": {
+        "max_trials": 25,
+        "completed_trials": 25,
+        "search_space":
+            {
+                "lr": [0.1, 0.01, 0.001, 0.0005, 0.0001],
+                "k2": [0.1, 0.01, 0.001, 0.0005, 0.0001]
+            },
+        "trials": [
+                {"PSNR": 6.00046, "k2": 0.1, "lr": 0.1},
+                {"PSNR": 10.7823, "k2": 0.1, "lr": 0.01},
+                {"PSNR": 10.781, "k2": 0.1, "lr": 0.001},
+                {"PSNR": 10.9244, "k2": 0.1, "lr": 0.0005},
+                {"PSNR": 13.4284, "k2": 0.1, "lr": 0.0001},
+                {"PSNR": 4.97294, "k2": 0.01, "lr": 0.1},
+                {"PSNR": 10.7823, "k2": 0.01, "lr": 0.01},
+                {"PSNR": 10.7813, "k2": 0.01, "lr": 0.001},
+                {"PSNR": 16.5158, "k2": 0.01, "lr": 0.0005},
+                {"PSNR": 16.4729, "k2": 0.01, "lr": 0.0001},
+                {"PSNR": 4.97294, "k2": 0.001, "lr": 0.1},
+                {"PSNR": 10.7814, "k2": 0.001, "lr": 0.01},
+                {"PSNR": 10.781, "k2": 0.001, "lr": 0.001},
+                {"PSNR": 19.3093, "k2": 0.001, "lr": 0.0005},
+                {"PSNR": 19.3198, "k2": 0.001, "lr": 0.0001},
+                {"PSNR": 4.97294, "k2": 0.0005, "lr": 0.1},
+                {"PSNR": 10.7821, "k2": 0.0005, "lr": 0.01},
+                {"PSNR": 13.5747, "k2": 0.0005, "lr": 0.001},
+                {"PSNR": 20.1123, "k2": 0.0005, "lr": 0.0005},
+                {"PSNR": 20.1108, "k2": 0.0005, "lr": 0.0001},
+                {"PSNR": 4.97294, "k2": 0.0001, "lr": 0.1},
+                {"PSNR": 10.7814, "k2": 0.0001, "lr": 0.01},
+                {"PSNR": 23.6519, "k2": 0.0001, "lr": 0.001},
+                {"PSNR": 24.0807, "k2": 0.0001, "lr": 0.0005},
+                {"PSNR": 24.6831, "k2": 0.0001, "lr": 0.0001}
+            ]
+        },
+        "instructions": [
+            {
+                "task": "Stop optimization",
+                "description": "You needn't to test all the hyper-parameters in the search space. If the PSNR is already high, you can reject tasks: optimization recommendation and experiment planning."
+            },
+            {
+                "task": "Optimization Recommendation",
+                "n_jobs": 3,
+                "description": "Evaluate the performance of different hyper-parameters based on the analysis and suggest next hyper-parameters for the next $n_jobs trials from the given search space. Note that the trial can't re-test the same hyper-parameters."
+            },
+            {
+                "task": "Experiment Planning",
+                "description": "Convert Optimization Recommendation to YAML format."
+            }
+        ]
+    }
+]

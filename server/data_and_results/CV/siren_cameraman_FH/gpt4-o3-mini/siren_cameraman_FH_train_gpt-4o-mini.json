@@ -1,0 +1,146 @@
+[
+    {
+        "role": "system",
+        "content": {
+            "description": "You are a Senior Computer Vision Researcher specializing in implicit neural representations. 'nan' denotes unknown data. Please provide professional and detailed answers.",
+            "model": "SIREN-FH (Implicit Neural Representations with Periodic Activation Functions, Frobenius norm of Hessian regularization)",
+            "task": "Image Denoising",
+            "basic_idea": "SIREN is an implicit neural network that utilizes coordinate inputs. Regularization is part of the loss functions to introduce edge-aware priors.",
+            "instrustion": "Complete instructions under limited trials"
+        }
+    },
+    {
+        "role": "user",
+        "content": {
+            "max_trials": 25,
+            "completed_trials": 18,
+            "search_space": {
+                "lr": [
+                    0.1,
+                    0.01,
+                    0.001,
+                    0.0005,
+                    0.0001
+                ],
+                "k2": [
+                    0.1,
+                    0.01,
+                    0.001,
+                    0.0005,
+                    0.0001
+                ]
+            },
+            "trials": [
+                {
+                    "k2": 0.01,
+                    "lr": 0.1,
+                    "PSNR": 4.97294
+                },
+                {
+                    "k2": 0.01,
+                    "lr": 0.0005,
+                    "PSNR": 16.5158
+                },
+                {
+                    "k2": 0.0005,
+                    "lr": 0.0005,
+                    "PSNR": 20.1123
+                },
+                {
+                    "k2": 0.1,
+                    "lr": 0.0001,
+                    "PSNR": 13.4284
+                },
+                {
+                    "k2": 0.0001,
+                    "lr": 0.001,
+                    "PSNR": 23.6519
+                },
+                {
+                    "k2": 0.0001,
+                    "lr": 0.01,
+                    "PSNR": 10.7814
+                },
+                {
+                    "k2": 0.001,
+                    "lr": 0.0001,
+                    "PSNR": 19.3198
+                },
+                {
+                    "k2": 0.0005,
+                    "lr": 0.01,
+                    "PSNR": 10.7821
+                },
+                {
+                    "k2": 0.1,
+                    "lr": 0.001,
+                    "PSNR": 10.781
+                },
+                {
+                    "k2": 0.001,
+                    "lr": 0.0005,
+                    "PSNR": 19.3093
+                },
+                {
+                    "k2": 0.0005,
+                    "lr": 0.0001,
+                    "PSNR": 20.1108
+                },
+                {
+                    "k2": 0.1,
+                    "lr": 0.0005,
+                    "PSNR": 10.9244
+                },
+                {
+                    "k2": 0.001,
+                    "lr": 0.01,
+                    "PSNR": 10.7814
+                },
+                {
+                    "k2": 0.0005,
+                    "lr": 0.1,
+                    "PSNR": 4.97294
+                },
+                {
+                    "k2": 0.01,
+                    "lr": 0.0001,
+                    "PSNR": 16.4729
+                },
+                {
+                    "k2": 0.0001,
+                    "lr": 0.0005,
+                    "PSNR": 24.0807
+                },
+                {
+                    "k2": 0.001,
+                    "lr": 0.001,
+                    "PSNR": 10.781
+                },
+                {
+                    "k2": 0.01,
+                    "lr": 0.001,
+                    "PSNR": 10.7813
+                }
+            ],
+            "instructions": [
+                {
+                    "task": "Analysis of Current Trials",
+                    "description": "1. Summarize performance metrics\n2. Evaluate performance trends for hyper-parameters.\n3. Highlight promising hyper-parameter combinations."
+                },
+                {
+                    "task": "Optimization Recommendation",
+                    "n_jobs": 3,
+                    "description": "Based on the hyper-parameter analysis, recommend hyper-parameters for next $n_jobs trials based on the provided search space, along with reasons for each choice. Your suggestion must be satisfied below requirements:\n1) Suggested trials can't be in the completed trials \n 2) Suggested trials can't re-test the same hyper-parameters. \n 3) Suggested hyper-parameters should be from the given search space."
+                },
+                {
+                    "task": "Experiment Planning",
+                    "description": "Convert Optimization Recommendation to be below YAML format with ```yaml```: $trial_fmt, and 1) No markdown code blocks.\n 2) Output ONLY raw YAML without explanations."
+                },
+                {
+                    "task": "Stop Optimization",
+                    "description": "If the results are already high or higher than $threshold (needn't to be specified), you can reject tasks. Your answer like below format:\nAnswer: Yes or Answer: No with confidence score: $confidence_score"
+                }
+            ]
+        }
+    }
+]
